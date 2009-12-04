@@ -54,4 +54,22 @@ public class Signature {
 	public List<HashAlgorithm> getPreferredHashAlgorithms() {
 		return IntegerEquivalents.fromIntArray(HashAlgorithm.class, subpackets.getPreferredHashAlgorithms());
 	}
+	
+	public boolean verifyCertification(MasterKey key) {
+		try {
+			signature.initVerify(key.getPublicKey(), "BC");
+			return signature.verifyCertification(key.getUserID(), key.getPublicKey());
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public boolean verifyCertification(SubKey key, MasterKey masterKey) {
+		try {
+			signature.initVerify(masterKey.getPublicKey(), "BC");
+			return signature.verifyCertification(masterKey.getPublicKey(), key.getPublicKey());
+		} catch (Exception e) {
+			return false;
+		}
+	}
 }

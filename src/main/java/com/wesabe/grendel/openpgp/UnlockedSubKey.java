@@ -1,0 +1,24 @@
+package com.wesabe.grendel.openpgp;
+
+import org.bouncycastle.openpgp.PGPPrivateKey;
+import org.bouncycastle.openpgp.PGPSecretKey;
+
+public class UnlockedSubKey extends SubKey implements UnlockedKey {
+	private final PGPPrivateKey privateKey;
+	
+	public UnlockedSubKey(PGPSecretKey key, MasterKey masterKey, PGPPrivateKey privateKey) {
+		super(key, masterKey);
+		this.privateKey = privateKey;
+	}
+
+	@Override
+	public UnlockedSubKey unlock(char[] passphrase) {
+		return this;
+	}
+
+	@Override
+	public PGPPrivateKey getPrivateKey() {
+		return privateKey;
+	}
+
+}
