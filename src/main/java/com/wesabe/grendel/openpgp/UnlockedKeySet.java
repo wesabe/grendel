@@ -1,18 +1,16 @@
 package com.wesabe.grendel.openpgp;
 
-import org.bouncycastle.openpgp.PGPPrivateKey;
-
 public class UnlockedKeySet extends KeySet {
 	
 	protected UnlockedKeySet(UnlockedMasterKey masterKey, UnlockedSubKey subKey) {
 		super(masterKey, subKey);
 	}
 	
-	public PGPPrivateKey getMasterPrivateKey() {
-		return ((UnlockedMasterKey) getMasterKey()).getPrivateKey();
+	public UnlockedMasterKey getUnlockedMasterKey() {
+		return (UnlockedMasterKey) getMasterKey();
 	}
 	
-	public PGPPrivateKey getSubPrivateKey() {
-		return ((UnlockedSubKey) getSubKey()).getPrivateKey();
+	public UnlockedSubKey getUnlockedSubKey() {
+		return (UnlockedSubKey) getSubKey();
 	}
 }

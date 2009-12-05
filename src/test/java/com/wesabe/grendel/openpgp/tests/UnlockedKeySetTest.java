@@ -34,12 +34,12 @@ public class UnlockedKeySetTest {
 		
 		@Test
 		public void itHasAnUnlockedMasterKey() throws Exception {
-			assertThat(unlockedKeySet.getMasterPrivateKey().getKeyID()).isEqualTo(0x8C7035EF8838238CL);
+			assertThat(unlockedKeySet.getUnlockedMasterKey().getKeyID()).isEqualTo(0x8C7035EF8838238CL);
 		}
 		
 		@Test
 		public void itHasAnUnlockedSubKey() throws Exception {
-			assertThat(unlockedKeySet.getSubPrivateKey().getKeyID()).isEqualTo(0xA3A5D038FF30574EL);
+			assertThat(unlockedKeySet.getUnlockedSubKey().getKeyID()).isEqualTo(0xA3A5D038FF30574EL);
 		}
 	}
 }
