@@ -23,7 +23,7 @@ public class SubKey extends AbstractKey {
 		return subKey.signature.verifyCertification(subKey, masterKey);
 	}
 	
-	public SubKey(PGPSecretKey key, MasterKey masterKey) {
+	protected SubKey(PGPSecretKey key, MasterKey masterKey) {
 		super(key, masterKey.getSecretKey(), SignatureType.SUBKEY_BINDING);
 		this.masterKey = masterKey;
 	}
