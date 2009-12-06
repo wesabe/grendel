@@ -6,7 +6,22 @@ import org.bouncycastle.openpgp.PGPException;
 import org.bouncycastle.openpgp.PGPPrivateKey;
 import org.bouncycastle.openpgp.PGPSecretKey;
 
+/**
+ * A PGP master key, used for signing and verifying data. <b>Must</b> be a
+ * self-certified key.
+ * 
+ * @author coda
+ */
 public class MasterKey extends AbstractKey {
+	
+	/**
+	 * Loads a master key from a {@link PGPSecretKey} instance and verifies its
+	 * certification.
+	 * 
+	 * @param key a {@link PGPSecretKey} instance
+	 * @return a {@link MasterKey} instance
+	 * @throws CryptographicException if the key is not a self-signed master key
+	 */
 	public static MasterKey load(PGPSecretKey key) throws CryptographicException {
 		final MasterKey masterKey = new MasterKey(key);
 		if (verify(masterKey)) {
