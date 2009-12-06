@@ -10,6 +10,11 @@ import org.bouncycastle.openpgp.PGPSecretKeyRing;
 
 import com.wesabe.grendel.util.Iterators;
 
+/**
+ * A {@link MasterKey} and {@link SubKey} pair.
+ * 
+ * @author coda
+ */
 public class KeySet {
 	private final MasterKey masterKey;
 	private final SubKey subKey;
@@ -27,19 +32,36 @@ public class KeySet {
 		this.subKey = subKey;
 	}
 	
+	/**
+	 * Returns the keyset's {@link MasterKey}.
+	 */
 	public MasterKey getMasterKey() {
 		return masterKey;
 	}
 	
+	/**
+	 * Returns the keyset's {@link SubKey}.
+	 */
 	public SubKey getSubKey() {
 		return subKey;
 	}
 	
+	/**
+	 * Writes the keyset in encoded form, to {@code output}.
+	 * 
+	 * @param output an {@link OutputStream}
+	 * @throws IOException if there is an error writing to {@code output}
+	 */
 	public void encode(OutputStream output) throws IOException {
 		masterKey.getSecretKey().encode(output);
 		subKey.getSecretKey().encode(output);
 	}
 	
+	/**
+	 * Returns the keyset in encoded form.
+	 * 
+	 * @throws IOException if there is an error encoding the keyset
+	 */
 	public byte[] getEncoded() throws IOException {
 		final ByteArrayOutputStream output = new ByteArrayOutputStream();
 		encode(output);
@@ -51,6 +73,14 @@ public class KeySet {
 		return String.format("[%s, %s]", masterKey, subKey);
 	}
 	
+	/**
+	 * Given the keyset's passphrase, unlocks the secret keys and returns an
+	 * {@link UnlockedKeySet} equivalent of {@code this}.
+	 * 
+	 * @param passphrase the key's passphrase
+	 * @return a {@link UnlockedKeySet} equivalent of {@code this}
+	 * @throws CryptographicException if {@code passphrase} is incorrect
+	 */
 	public UnlockedKeySet unlock(char[] passphrase) throws CryptographicException {
 		final UnlockedMasterKey unlockedMasterKey = masterKey.unlock(passphrase);
 		final UnlockedSubKey unlockedSubKey = subKey.unlock(passphrase);
