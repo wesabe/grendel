@@ -6,7 +6,7 @@ import org.bouncycastle.openpgp.PGPSecretKey;
 public class UnlockedSubKey extends SubKey implements UnlockedKey {
 	private final PGPPrivateKey privateKey;
 	
-	public UnlockedSubKey(PGPSecretKey key, MasterKey masterKey, PGPPrivateKey privateKey) {
+	protected UnlockedSubKey(PGPSecretKey key, MasterKey masterKey, PGPPrivateKey privateKey) {
 		super(key, masterKey);
 		this.privateKey = privateKey;
 	}
