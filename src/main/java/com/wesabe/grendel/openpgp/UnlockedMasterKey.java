@@ -3,6 +3,11 @@ package com.wesabe.grendel.openpgp;
 import org.bouncycastle.openpgp.PGPPrivateKey;
 import org.bouncycastle.openpgp.PGPSecretKey;
 
+/**
+ * An unlocked {@link MasterKey}.
+ * 
+ * @author coda
+ */
 public class UnlockedMasterKey extends MasterKey implements UnlockedKey {
 	private final PGPPrivateKey privateKey;
 	
