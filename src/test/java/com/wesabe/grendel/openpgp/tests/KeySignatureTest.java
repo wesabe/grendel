@@ -23,15 +23,15 @@ import com.wesabe.grendel.openpgp.AsymmetricAlgorithm;
 import com.wesabe.grendel.openpgp.CompressionAlgorithm;
 import com.wesabe.grendel.openpgp.HashAlgorithm;
 import com.wesabe.grendel.openpgp.KeyFlag;
-import com.wesabe.grendel.openpgp.Signature;
+import com.wesabe.grendel.openpgp.KeySignature;
 import com.wesabe.grendel.openpgp.SignatureType;
 import com.wesabe.grendel.openpgp.SymmetricAlgorithm;
 
 @RunWith(Enclosed.class)
-public class SignatureTest {
+public class KeySignatureTest {
 	public static class A_Self_Signature {
 		private PGPSecretKey key;
-		private Signature signature;
+		private KeySignature signature;
 		
 		@Before
 		public void setup() throws Exception {
@@ -42,7 +42,7 @@ public class SignatureTest {
 			
 			this.key = keyRing.getSecretKey(0x8C7035EF8838238CL);
 			final Iterator<?> sigs = key.getPublicKey().getSignatures();
-			this.signature = new Signature((PGPSignature) sigs.next());
+			this.signature = new KeySignature((PGPSignature) sigs.next());
 		}
 		
 		@Test
