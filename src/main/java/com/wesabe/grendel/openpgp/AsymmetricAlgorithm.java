@@ -132,7 +132,8 @@ public enum AsymmetricAlgorithm implements IntegerEquivalent {
 	}
 
 	/**
-	 * Returns the {@link java.security.spec.AlgorithmParameterSpec} required to generate keys for this algorithm.
+	 * Returns the {@link java.security.spec.AlgorithmParameterSpec} required to
+	 * generate keys for this algorithm.
 	 */
 	public AlgorithmParameterSpec getAlgorithmParameterSpec() {
 		throw new UnsupportedOperationException(this + " keys cannot be generated");
