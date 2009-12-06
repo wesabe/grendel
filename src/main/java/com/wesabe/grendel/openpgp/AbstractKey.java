@@ -64,7 +64,7 @@ public abstract class AbstractKey {
 	}
 	
 	public String getHumanKeyID() {
-		return Integer.toHexString((int) secretKey.getKeyID()).toUpperCase();
+		return String.format("%08X", (int) secretKey.getKeyID());
 	}
 	
 	public AsymmetricAlgorithm getAlgorithm() {
