@@ -19,6 +19,7 @@ import org.bouncycastle.openpgp.PGPSignatureSubpacketGenerator;
 import org.bouncycastle.openpgp.PGPSignatureSubpacketVector;
 import org.joda.time.DateTime;
 
+import com.google.inject.Inject;
 import com.google.inject.internal.ImmutableList;
 import com.wesabe.grendel.util.IntegerEquivalents;
 
@@ -62,6 +63,7 @@ public class KeySetGenerator {
 	 * 
 	 * @param random a secure random number generator
 	 */
+	@Inject
 	public KeySetGenerator(SecureRandom random) {
 		this.random = random;
 		this.executor = Executors.newCachedThreadPool();
