@@ -1,8 +1,10 @@
 package com.wesabe.grendel.openpgp;
 
+import java.security.SignatureException;
 import java.util.List;
 import java.util.Set;
 
+import org.bouncycastle.openpgp.PGPException;
 import org.bouncycastle.openpgp.PGPSignature;
 import org.bouncycastle.openpgp.PGPSignatureSubpacketVector;
 import org.joda.time.DateTime;
@@ -102,8 +104,12 @@ public class KeySignature {
 		try {
 			signature.initVerify(key.getPublicKey(), "BC");
 			return signature.verifyCertification(key.getUserID(), key.getPublicKey());
-		} catch (Exception e) {
+		} catch (PGPException e) {
 			return false;
+		} catch (SignatureException e) {
+			return false;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 
