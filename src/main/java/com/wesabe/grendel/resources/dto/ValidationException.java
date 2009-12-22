@@ -32,6 +32,13 @@ public class ValidationException extends WebApplicationException {
 	}
 	
 	/**
+	 * Adds a failure to include a required property to the list.
+	 */
+	public void missingRequiredProperty(String propertyName) {
+		addReason("missing required property: " + propertyName);
+	}
+	
+	/**
 	 * Returns {@code true} if the exception has reasons, {@code false}
 	 * otherwise.
 	 */

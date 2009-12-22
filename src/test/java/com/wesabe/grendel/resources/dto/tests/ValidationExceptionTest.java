@@ -21,6 +21,7 @@ public class ValidationExceptionTest {
 			this.e = new ValidationException();
 			e.addReason("insufficient zazz");
 			e.addReason("over-familiar tone");
+			e.missingRequiredProperty("dingo");
 		}
 		
 		@Test
@@ -39,7 +40,8 @@ public class ValidationExceptionTest {
 				"\n" +
 				"\n" +
 				"* insufficient zazz\n" +
-				"* over-familiar tone\n"
+				"* over-familiar tone\n" +
+				"* missing required property: dingo\n"
 			);
 		}
 	}
