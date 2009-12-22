@@ -7,7 +7,14 @@
 	<name>Grendel</name>
 	<properties>
 		<bouncycastle.version>143</bouncycastle.version>
+		<jackson.version>1.4.0</jackson.version>
 	</properties>
+	<repositories>
+		<repository>
+			<id>jackson-repo</id>
+			<url>http://repository.codehaus.org/</url>
+		</repository>
+	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -98,6 +105,11 @@
 			<groupId>bouncycastle</groupId>
 			<artifactId>bcpg-jdk16</artifactId>
 			<version>${bouncycastle.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-jaxrs</artifactId>
+			<version>${jackson.version}</version>
 		</dependency>
 	</dependencies>
 	<developers>
