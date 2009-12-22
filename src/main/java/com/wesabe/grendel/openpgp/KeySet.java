@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
+import org.bouncycastle.openpgp.PGPException;
 import org.bouncycastle.openpgp.PGPSecretKey;
 import org.bouncycastle.openpgp.PGPSecretKeyRing;
 
@@ -18,6 +19,16 @@ import com.wesabe.grendel.util.Iterators;
 public class KeySet {
 	private final MasterKey masterKey;
 	private final SubKey subKey;
+	
+	public static KeySet load(byte[] encoded) throws CryptographicException {
+		try {
+			return load(new PGPSecretKeyRing(encoded));
+		} catch (IOException e) {
+			throw new CryptographicException(e);
+		} catch (PGPException e) {
+			throw new CryptographicException(e);
+		}
+	}
 	
 	public static KeySet load(PGPSecretKeyRing keyRing) throws CryptographicException {
 		final List<PGPSecretKey> secretKeys = Iterators.toList(keyRing.getSecretKeys());
@@ -59,12 +70,14 @@ public class KeySet {
 	
 	/**
 	 * Returns the keyset in encoded form.
-	 * 
-	 * @throws IOException if there is an error encoding the keyset
 	 */
-	public byte[] getEncoded() throws IOException {
+	public byte[] getEncoded() {
 		final ByteArrayOutputStream output = new ByteArrayOutputStream();
-		encode(output);
+		try {
+			encode(output);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 		return output.toByteArray();
 	}
 	
