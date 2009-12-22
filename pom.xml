@@ -13,6 +13,10 @@
 			<id>jackson-repo</id>
 			<url>http://repository.codehaus.org/</url>
 		</repository>
+		<repository>
+			<id>codahale-repo</id>
+			<url>http://repo.codahale.com</url>
+		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
@@ -36,7 +40,7 @@
 		<dependency>
 			<groupId>com.codahale</groupId>
 			<artifactId>shore</artifactId>
-			<version>0.2-SNAPSHOT</version>
+			<version>0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
