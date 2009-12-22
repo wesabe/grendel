@@ -5,6 +5,35 @@
 	<artifactId>grendel</artifactId>
 	<version>0.1-SNAPSHOT</version>
 	<name>Grendel</name>
+	<description>A secure document storage service.</description>
+	<url>http://github.com/wesabe/grendel/tree</url>
+	<scm>
+		<url>http://github.com/wesabe/grendel/tree</url>
+		<connection>scm:git:git://github.com/wesabe/grendel.git</connection>
+	</scm>
+	<issueManagement>
+		<system>Github</system>
+		<url>https://github.com/wesabe/grendel/issues</url>
+	</issueManagement>
+	<developers>
+		<developer>
+			<id>coda</id>
+			<name>Coda Hale</name>
+			<email>coda.hale@gmail.com</email>
+			<timezone>8</timezone>
+			<url>http://www.codahale.com</url>
+			<roles>
+				<role>Lead Developer</role>
+			</roles>
+		</developer>
+	</developers>
+	<licenses>
+		<license>
+			<name>The MIT License</name>
+			<distribution>repo</distribution>
+			<url>COPYING.txt</url>
+		</license>
+	</licenses>
 	<properties>
 		<bouncycastle.version>143</bouncycastle.version>
 	</properties>
@@ -115,12 +144,6 @@
 			<version>1.4.0</version>
 		</dependency>
 	</dependencies>
-	<developers>
-		<developer>
-			<name>Coda Hale</name>
-			<email>coda.hale@gmail.com</email>
-		</developer>
-	</developers>
 	<build>
 		<defaultGoal>test</defaultGoal>
 		<plugins>
