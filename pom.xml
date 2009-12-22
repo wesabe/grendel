@@ -7,7 +7,6 @@
 	<name>Grendel</name>
 	<properties>
 		<bouncycastle.version>143</bouncycastle.version>
-		<jackson.version>1.4.0</jackson.version>
 	</properties>
 	<repositories>
 		<repository>
@@ -109,7 +108,7 @@
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-jaxrs</artifactId>
-			<version>${jackson.version}</version>
+			<version>1.4.0</version>
 		</dependency>
 	</dependencies>
 	<developers>
