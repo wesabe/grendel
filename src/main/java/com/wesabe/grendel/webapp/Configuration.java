@@ -2,6 +2,9 @@ package com.wesabe.grendel.webapp;
 
 import java.security.SecureRandom;
 
+import org.eclipse.jetty.server.NCSARequestLog;
+import org.eclipse.jetty.server.RequestLog;
+
 import com.codahale.shore.AbstractConfiguration;
 import com.google.inject.AbstractModule;
 import com.google.inject.Stage;
@@ -20,6 +23,13 @@ public class Configuration extends AbstractConfiguration {
 			}
 		});
 		setStage(Stage.PRODUCTION);
+	}
+	
+	@Override
+	protected void configureRequestLog(RequestLog log) {
+		final NCSARequestLog ncsaLog = (NCSARequestLog) log;
+		ncsaLog.setExtended(true);
+		ncsaLog.setLogLatency(true);
 	}
 
 	@Override
