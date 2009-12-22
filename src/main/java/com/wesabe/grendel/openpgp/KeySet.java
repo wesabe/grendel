@@ -58,6 +58,13 @@ public class KeySet {
 	}
 	
 	/**
+	 * Returns the keyset's user ID.
+	 */
+	public String getUserID() {
+		return masterKey.getUserID();
+	}
+	
+	/**
 	 * Writes the keyset in encoded form, to {@code output}.
 	 * 
 	 * @param output an {@link OutputStream}

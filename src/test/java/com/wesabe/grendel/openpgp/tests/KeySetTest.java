@@ -44,6 +44,11 @@ public class KeySetTest {
 		public void itIsHumanReadable() throws Exception {
 			assertThat(keySet.toString()).isEqualTo("[2048-RSA/8838238C Sample Key <sample@wesabe.com>, 2048-RSA/FF30574E Sample Key <sample@wesabe.com>]");
 		}
+		
+		@Test
+		public void itHasAUserID() throws Exception {
+			assertThat(keySet.getUserID()).isEqualTo("Sample Key <sample@wesabe.com>");
+		}
 
 		@Test
 		public void itSerializesItselfToAStream() throws Exception {

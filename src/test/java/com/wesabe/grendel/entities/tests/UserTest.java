@@ -15,23 +15,18 @@ import org.junit.runner.RunWith;
 
 import com.wesabe.grendel.entities.User;
 import com.wesabe.grendel.openpgp.KeySet;
-import com.wesabe.grendel.openpgp.MasterKey;
 
 @RunWith(Enclosed.class)
 public class UserTest {
 	public static class A_Fresh_User {
 		private KeySet keySet;
-		private MasterKey masterKey;
 		
 		@Before
 		public void setup() throws Exception {
 			Security.addProvider(new BouncyCastleProvider());
 			
-			this.masterKey = mock(MasterKey.class);
-			when(masterKey.getUserID()).thenReturn("user");
-			
 			this.keySet = mock(KeySet.class);
-			when(keySet.getMasterKey()).thenReturn(masterKey);
+			when(keySet.getUserID()).thenReturn("user");
 			when(keySet.getEncoded()).thenReturn(new byte[] { (byte) 0xDE, (byte) 0xAD, (byte) 0xBE, (byte) 0xEF});
 		}
 		
@@ -67,7 +62,7 @@ public class UserTest {
 		
 		@Test
 		public void itHasAUserId() throws Exception {
-			assertThat(user.getKeySet().getMasterKey().getUserID()).isEqualTo("Sample Key <sample@wesabe.com>");
+			assertThat(user.getKeySet().getUserID()).isEqualTo("Sample Key <sample@wesabe.com>");
 		}
 	}
 }

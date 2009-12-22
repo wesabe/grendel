@@ -57,7 +57,7 @@ public class User {
 	
 	public void setKeySet(KeySet keySet) {
 		this.keySet = keySet;
-		this.id = keySet.getMasterKey().getUserID();
+		this.id = keySet.getUserID();
 		this.encodedKeySet = keySet.getEncoded();
 	}
 	
