@@ -47,11 +47,11 @@ public class NewUserRequest implements Validatable {
 	public void validate() throws ValidationException {
 		final ValidationException error = new ValidationException();
 		
-		if (username == null) {
+		if ((username == null) || username.isEmpty()) {
 			error.missingRequiredProperty("username");
 		}
 		
-		if (password == null) {
+		if ((password == null) || (password.length == 0)) {
 			error.missingRequiredProperty("password");
 		}
 		

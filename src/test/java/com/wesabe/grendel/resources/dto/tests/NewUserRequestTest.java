@@ -52,7 +52,7 @@ public class NewUserRequestTest {
 		}
 	}
 	
-	public static class An_Inalid_New_User_Request {
+	public static class An_Invalid_New_User_Request {
 		private NewUserRequest req;
 		
 		@Before
