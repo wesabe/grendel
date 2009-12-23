@@ -1,5 +1,7 @@
 package com.wesabe.grendel.resources.dto;
 
+import java.util.Arrays;
+
 /**
  * A data transfer object for a request to create a new user.
  * <p>
@@ -18,9 +20,9 @@ package com.wesabe.grendel.resources.dto;
  */
 public class NewUserRequest implements Validatable {
 	private String username;
-	private String password;
+	private char[] password;
 	
-	public String getPassword() {
+	public char[] getPassword() {
 		return password;
 	}
 	
@@ -28,12 +30,17 @@ public class NewUserRequest implements Validatable {
 		return username;
 	}
 	
-	public void setPassword(String password) {
-		this.password = password;
+	public void setPassword(char[] password) {
+		this.password = Arrays.copyOf(password, password.length);
+		Arrays.fill(password, '\0');
 	}
 	
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	
+	public void sanitize() {
+		Arrays.fill(password, '\0');
 	}
 
 	@Override

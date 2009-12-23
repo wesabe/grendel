@@ -21,7 +21,7 @@ public class NewUserRequestTest {
 			this.req = new NewUserRequest();
 			
 			req.setUsername("dingo");
-			req.setPassword("happenstance");
+			req.setPassword("happenstance".toCharArray());
 		}
 		
 		@Test
@@ -41,7 +41,14 @@ public class NewUserRequestTest {
 		
 		@Test
 		public void itHasAPassword() throws Exception {
-			assertThat(req.getPassword()).isEqualTo("happenstance");
+			assertThat(req.getPassword()).isEqualTo("happenstance".toCharArray());
+		}
+		
+		@Test
+		public void itCanBeSanitized() throws Exception {
+			assertThat(req.getPassword()).isEqualTo("happenstance".toCharArray());
+			req.sanitize();
+			assertThat(req.getPassword()).isEqualTo("\0\0\0\0\0\0\0\0\0\0\0\0".toCharArray());
 		}
 	}
 	
