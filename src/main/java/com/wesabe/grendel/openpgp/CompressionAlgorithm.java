@@ -40,7 +40,7 @@ public enum CompressionAlgorithm implements IntegerEquivalent {
 	/**
 	 * The default compression algorithm to use.
 	 */
-	public static final CompressionAlgorithm DEFAULT = BZIP2;
+	public static final CompressionAlgorithm DEFAULT = ZLIB;
 	
 	private final String name;
 	private final int value;

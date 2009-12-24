@@ -61,8 +61,8 @@ public class CompressionAlgorithmTest {
 	
 	public static class Default {
 		@Test
-		public void itUsesBZIP2ByDefault() throws Exception {
-			assertThat(CompressionAlgorithm.DEFAULT).isEqualTo(CompressionAlgorithm.BZIP2);
+		public void itUsesZLIBByDefault() throws Exception {
+			assertThat(CompressionAlgorithm.DEFAULT).isEqualTo(CompressionAlgorithm.ZLIB);
 		}
 	}
 }
