@@ -1,7 +1,9 @@
 package com.wesabe.grendel.openpgp;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
@@ -21,13 +23,7 @@ public class KeySet {
 	private final SubKey subKey;
 	
 	public static KeySet load(byte[] encoded) throws CryptographicException {
-		try {
-			return load(new PGPSecretKeyRing(encoded));
-		} catch (IOException e) {
-			throw new CryptographicException(e);
-		} catch (PGPException e) {
-			throw new CryptographicException(e);
-		}
+		return load(new ByteArrayInputStream(encoded));
 	}
 	
 	public static KeySet load(PGPSecretKeyRing keyRing) throws CryptographicException {
@@ -36,6 +32,18 @@ public class KeySet {
 		final SubKey subKey = SubKey.load(secretKeys.get(1), masterKey);
 		
 		return new KeySet(masterKey, subKey);
+	}
+	
+	public static KeySet load(InputStream input) throws CryptographicException {
+		try {
+			final PGPSecretKeyRing keyRing = new PGPSecretKeyRing(input);
+			input.close();
+			return load(keyRing);
+		} catch (IOException e) {
+			throw new CryptographicException(e);
+		} catch (PGPException e) {
+			throw new CryptographicException(e);
+		}
 	}
 	
 	protected KeySet(MasterKey masterKey, SubKey subKey) {

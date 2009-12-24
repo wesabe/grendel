@@ -55,9 +55,7 @@ public class UserTest {
 				output.write(buffer, 0, r);
 			}
 			keyRingFile.close();
-			this.user = new User();
-			user.setEncodedKeySet(output.toByteArray());
-			user.setId("Sample Key <sample@wesabe.com>");
+			this.user = new User(KeySet.load(output.toByteArray()));
 		}
 		
 		@Test

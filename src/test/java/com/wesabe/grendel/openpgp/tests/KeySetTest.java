@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.security.Security;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.openpgp.PGPSecretKeyRing;
 import org.bouncycastle.util.encoders.Base64;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,10 +23,7 @@ public class KeySetTest {
 		public void setup() throws Exception {
 			Security.addProvider(new BouncyCastleProvider());
 			final FileInputStream keyRingFile = new FileInputStream("src/test/resources/secret-keyring.gpg");
-			final PGPSecretKeyRing keyRing = new PGPSecretKeyRing(keyRingFile);
-			keyRingFile.close();
-
-			this.keySet = KeySet.load(keyRing);
+			this.keySet = KeySet.load(keyRingFile);
 		}
 
 		@Test
