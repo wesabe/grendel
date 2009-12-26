@@ -159,6 +159,7 @@ public class HashAlgorithmTest {
 	}
 	
 	public static class Acceptable_Algorithms {
+		@SuppressWarnings("deprecation")
 		@Test
 		public void itAcceptsAllSHA2Variants() throws Exception {
 			assertThat(HashAlgorithm.ACCEPTABLE_ALGORITHMS)
@@ -166,7 +167,8 @@ public class HashAlgorithmTest {
 					HashAlgorithm.SHA_224,
 					HashAlgorithm.SHA_256,
 					HashAlgorithm.SHA_384,
-					HashAlgorithm.SHA_512
+					HashAlgorithm.SHA_512,
+					HashAlgorithm.SHA_1
 				));
 		}
 	}
