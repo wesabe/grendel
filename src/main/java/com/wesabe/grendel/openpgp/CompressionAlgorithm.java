@@ -13,7 +13,12 @@ import com.wesabe.grendel.util.IntegerEquivalent;
 public enum CompressionAlgorithm implements IntegerEquivalent {
 	/**
 	 * Uncompressed
+	 * 
+	 * @deprecated Leaves messages vulnerable to adaptive chosen-plaintext
+	 *             attacks.
+	 * @see <a href="http://www.cs.umd.edu/~jkatz/papers/pgp-attack.pdf">Implementation of Chosen-Ciphertext Attacks against PGP and GnuPG</a>
 	 */
+	@Deprecated
 	NONE(	"None",		CompressionAlgorithmTags.UNCOMPRESSED),
 	
 	/**

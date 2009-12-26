@@ -11,6 +11,7 @@ import com.wesabe.grendel.openpgp.CompressionAlgorithm;
 
 @RunWith(Enclosed.class)
 public class CompressionAlgorithmTest {
+	@SuppressWarnings("deprecation")
 	public static class None {
 		@Test
 		public void itHasTheSameValueAsTheBCTag() throws Exception {
