@@ -2,9 +2,7 @@ package com.wesabe.grendel.entities;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
 import javax.persistence.FetchType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
@@ -17,8 +15,6 @@ import javax.persistence.ManyToOne;
 public class DocumentReference implements Serializable {
 	private static final long serialVersionUID = -4514388507586009635L;
 	
-	@Id
-	@Column(name="name", nullable=false)
 	private String name;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
