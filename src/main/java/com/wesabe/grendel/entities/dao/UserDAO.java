@@ -29,4 +29,8 @@ public class UserDAO extends AbstractDAO<User> {
 		return user;
 	}
 
+	public void delete(User user) {
+		currentSession().delete(user);
+	}
+
 }

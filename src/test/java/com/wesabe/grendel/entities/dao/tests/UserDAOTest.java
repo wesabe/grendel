@@ -122,4 +122,23 @@ public class UserDAOTest {
 			verify(session).save(user);
 		}
 	}
+	
+	public static class Deleting_A_User extends Context {
+		private User user;
+		
+		@Before
+		@Override
+		public void setup() throws Exception {
+			super.setup();
+			
+			this.user = mock(User.class);
+		}
+		
+		@Test
+		public void itDeletesTheUser() throws Exception {
+			dao.delete(user);
+			
+			verify(session).delete(user);
+		}
+	}
 }
