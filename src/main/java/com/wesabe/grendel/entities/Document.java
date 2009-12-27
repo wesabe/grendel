@@ -87,19 +87,19 @@ public class Document {
 	}
 	
 	public DateTime getCreatedAt() {
-		return createdAt;
+		return toUTC(createdAt);
 	}
 	
 	public void setCreatedAt(DateTime createdAt) {
-		this.createdAt = createdAt;
+		this.createdAt = toUTC(createdAt);
 	}
 	
 	public DateTime getModifiedAt() {
-		return modifiedAt;
+		return toUTC(modifiedAt);
 	}
 	
 	public void setModifiedAt(DateTime modifiedAt) {
-		this.modifiedAt = modifiedAt;
+		this.modifiedAt = toUTC(modifiedAt);
 	}
 	
 	public void encryptAndSetBody(char[] ownerPassphrase, List<KeySet> recipients, SecureRandom random, byte[] body) throws CryptographicException {
@@ -119,5 +119,9 @@ public class Document {
 	
 	public byte[] decryptBodyForRecipient(KeySet recipient, char[] passphrase) throws CryptographicException {
 		return decryptBody(recipient.unlock(passphrase));
+	}
+	
+	private DateTime toUTC(DateTime dateTime) {
+		return dateTime.toDateTime(DateTimeZone.UTC);
 	}
 }

@@ -89,18 +89,22 @@ public class User {
 	}
 	
 	public DateTime getCreatedAt() {
-		return createdAt;
+		return toUTC(createdAt);
 	}
 	
 	public void setCreatedAt(DateTime createdAt) {
-		this.createdAt = createdAt;
+		this.createdAt = toUTC(createdAt);
 	}
 	
 	public DateTime getModifiedAt() {
-		return modifiedAt;
+		return toUTC(modifiedAt);
 	}
 	
 	public void setModifiedAt(DateTime modifiedAt) {
-		this.modifiedAt = modifiedAt;
+		this.modifiedAt = toUTC(modifiedAt);
+	}
+	
+	private DateTime toUTC(DateTime dateTime) {
+		return dateTime.toDateTime(DateTimeZone.UTC);
 	}
 }
