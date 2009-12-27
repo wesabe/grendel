@@ -22,6 +22,10 @@ import com.wesabe.grendel.openpgp.KeySet;
 	@NamedQuery(
 		name="com.wesabe.grendel.entities.User.Exists",
 		query="SELECT u.id FROM User AS u WHERE u.id = :id"
+	),
+	@NamedQuery(
+		name="com.wesabe.grendel.entities.User.All",
+		query="SELECT u FROM User AS u ORDER BY u.id"
 	)
 })
 public class User {

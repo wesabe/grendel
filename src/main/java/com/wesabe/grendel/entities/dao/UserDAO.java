@@ -1,5 +1,7 @@
 package com.wesabe.grendel.entities.dao;
 
+import java.util.List;
+
 import org.hibernate.Session;
 
 import com.codahale.shore.dao.AbstractDAO;
@@ -22,6 +24,10 @@ public class UserDAO extends AbstractDAO<User> {
 	
 	public User findById(String id) {
 		return get(id);
+	}
+	
+	public List<User> findAll() {
+		return list(namedQuery("com.wesabe.grendel.entities.User.All"));
 	}
 	
 	public User create(User user) {

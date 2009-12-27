@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Provider;
 import com.wesabe.grendel.entities.User;
 import com.wesabe.grendel.entities.dao.UserDAO;
@@ -96,6 +97,36 @@ public class UserDAOTest {
 			dao.findById("woo");
 			
 			verify(session).get(User.class, "woo");
+		}
+	}
+	
+	public static class Finding_All_Users extends Context {
+		private User user;
+		private Query query;
+		
+		@Before
+		@Override
+		public void setup() throws Exception {
+			super.setup();
+			
+			this.user = mock(User.class);
+			this.query = mock(Query.class);
+			
+			when(session.getNamedQuery(Mockito.anyString())).thenReturn(query);
+		}
+		
+		@Test
+		public void itCreatesANamedQueryAndParameterizesIt() throws Exception {
+			dao.findAll();
+			
+			verify(session).getNamedQuery("com.wesabe.grendel.entities.User.All");
+		}
+		
+		@Test
+		public void itReturnsTheUsers() throws Exception {
+			when(query.list()).thenReturn(ImmutableList.of(user));
+
+			assertThat(dao.findAll()).containsOnly(user);
 		}
 	}
 	
