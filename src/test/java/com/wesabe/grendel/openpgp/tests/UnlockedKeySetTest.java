@@ -1,8 +1,10 @@
 package com.wesabe.grendel.openpgp.tests;
 
 import static org.fest.assertions.Assertions.*;
+import static org.junit.Assert.*;
 
 import java.io.FileInputStream;
+import java.security.SecureRandom;
 import java.security.Security;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -12,6 +14,7 @@ import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
+import com.wesabe.grendel.openpgp.CryptographicException;
 import com.wesabe.grendel.openpgp.KeySet;
 import com.wesabe.grendel.openpgp.UnlockedKeySet;
 
@@ -40,6 +43,26 @@ public class UnlockedKeySetTest {
 		@Test
 		public void itHasAnUnlockedSubKey() throws Exception {
 			assertThat(unlockedKeySet.getUnlockedSubKey().getKeyID()).isEqualTo(0xA3A5D038FF30574EL);
+		}
+		
+		@Test
+		public void itCanRelockTheKeySetWithADifferentPassphrase() throws Exception {
+			final KeySet newKeySet = unlockedKeySet.relock("test".toCharArray(), "yay".toCharArray(), new SecureRandom());
+			
+			try {
+				newKeySet.unlock("test".toCharArray());
+				fail("should have thrown a CryptographicException but didn't");
+			} catch (CryptographicException e) {
+				assertThat(e.getMessage()).isEqualTo("incorrect passphrase");
+			}
+			
+			try {
+				newKeySet.unlock("yay".toCharArray());
+			} catch (CryptographicException e) {
+				e.printStackTrace();
+				fail("should not have thrown a CryptographicException but did");
+			}
+			
 		}
 	}
 }
