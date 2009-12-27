@@ -1,4 +1,4 @@
-package com.wesabe.grendel.resources.dto;
+package com.wesabe.grendel.representations;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;

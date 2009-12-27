@@ -15,8 +15,8 @@ import com.wesabe.grendel.entities.dao.UserDAO;
 import com.wesabe.grendel.openpgp.CryptographicException;
 import com.wesabe.grendel.openpgp.KeySet;
 import com.wesabe.grendel.openpgp.KeySetGenerator;
-import com.wesabe.grendel.resources.dto.NewUserRequest;
-import com.wesabe.grendel.resources.dto.ValidationException;
+import com.wesabe.grendel.representations.CreateUserRepresentation;
+import com.wesabe.grendel.representations.ValidationException;
 import com.wideplay.warp.persist.Transactional;
 
 @Path("/users/")
@@ -34,16 +34,16 @@ public class UsersResource {
 	
 	@POST
 	@Transactional
-	public Response create(@Context UriInfo uriInfo, NewUserRequest request) throws CryptographicException {
+	public Response create(@Context UriInfo uriInfo, CreateUserRepresentation request) throws CryptographicException {
 		request.validate();
 		
-		if (userDAO.contains(request.getUsername())) {
+		if (userDAO.contains(request.getId())) {
 			final ValidationException e = new ValidationException();
 			e.addReason("username is already taken");
 			throw e;
 		}
 
-		final KeySet keySet = generator.generate(request.getUsername(), request.getPassword());
+		final KeySet keySet = generator.generate(request.getId(), request.getPassword());
 		final User user = userDAO.create(new User(keySet));
 		
 		request.sanitize();

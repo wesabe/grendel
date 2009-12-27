@@ -1,4 +1,4 @@
-package com.wesabe.grendel.resources.dto;
+package com.wesabe.grendel.representations;
 
 /**
  * An interface for data transfer objects (DTOs) capable of validation.

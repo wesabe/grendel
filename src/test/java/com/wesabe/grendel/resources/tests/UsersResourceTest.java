@@ -20,9 +20,9 @@ import com.wesabe.grendel.entities.User;
 import com.wesabe.grendel.entities.dao.UserDAO;
 import com.wesabe.grendel.openpgp.KeySet;
 import com.wesabe.grendel.openpgp.KeySetGenerator;
+import com.wesabe.grendel.representations.CreateUserRepresentation;
+import com.wesabe.grendel.representations.ValidationException;
 import com.wesabe.grendel.resources.UsersResource;
-import com.wesabe.grendel.resources.dto.NewUserRequest;
-import com.wesabe.grendel.resources.dto.ValidationException;
 
 @RunWith(Enclosed.class)
 public class UsersResourceTest {
@@ -41,7 +41,7 @@ public class UsersResourceTest {
 	
 	public static class Creating_A_New_User extends Context {
 		private UriInfo uriInfo;
-		private NewUserRequest request;
+		private CreateUserRepresentation request;
 		private KeySet keySet;
 		private User user;
 		private UriBuilder uriBuilder;
@@ -53,8 +53,8 @@ public class UsersResourceTest {
 			
 			this.uriInfo = mock(UriInfo.class);
 			
-			this.request = mock(NewUserRequest.class);
-			when(request.getUsername()).thenReturn("username");
+			this.request = mock(CreateUserRepresentation.class);
+			when(request.getId()).thenReturn("username");
 			when(request.getPassword()).thenReturn("password".toCharArray());
 			
 			this.keySet = mock(KeySet.class);
@@ -125,7 +125,7 @@ public class UsersResourceTest {
 	
 	public static class Creating_A_New_User_With_A_Conflicting_Username extends Context {
 		private UriInfo uriInfo;
-		private NewUserRequest request;
+		private CreateUserRepresentation request;
 		
 		@Before
 		@Override
@@ -134,8 +134,8 @@ public class UsersResourceTest {
 			
 			this.uriInfo = mock(UriInfo.class);
 			
-			this.request = mock(NewUserRequest.class);
-			when(request.getUsername()).thenReturn("username");
+			this.request = mock(CreateUserRepresentation.class);
+			when(request.getId()).thenReturn("username");
 			when(request.getPassword()).thenReturn("password".toCharArray());
 			
 			when(userDAO.contains(Mockito.anyString())).thenReturn(true);

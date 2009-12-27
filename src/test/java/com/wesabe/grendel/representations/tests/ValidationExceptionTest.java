@@ -1,4 +1,4 @@
-package com.wesabe.grendel.resources.dto.tests;
+package com.wesabe.grendel.representations.tests;
 
 import static org.fest.assertions.Assertions.*;
 
@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
-import com.wesabe.grendel.resources.dto.ValidationException;
+import com.wesabe.grendel.representations.ValidationException;
 
 @RunWith(Enclosed.class)
 public class ValidationExceptionTest {

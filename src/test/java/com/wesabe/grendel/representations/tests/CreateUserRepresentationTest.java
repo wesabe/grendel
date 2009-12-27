@@ -1,4 +1,4 @@
-package com.wesabe.grendel.resources.dto.tests;
+package com.wesabe.grendel.representations.tests;
 
 import static org.fest.assertions.Assertions.*;
 import static org.junit.Assert.*;
@@ -8,19 +8,19 @@ import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
-import com.wesabe.grendel.resources.dto.NewUserRequest;
-import com.wesabe.grendel.resources.dto.ValidationException;
+import com.wesabe.grendel.representations.CreateUserRepresentation;
+import com.wesabe.grendel.representations.ValidationException;
 
 @RunWith(Enclosed.class)
-public class NewUserRequestTest {
+public class CreateUserRepresentationTest {
 	public static class A_Valid_New_User_Request {
-		private NewUserRequest req;
+		private CreateUserRepresentation req;
 		
 		@Before
 		public void setup() throws Exception {
-			this.req = new NewUserRequest();
+			this.req = new CreateUserRepresentation();
 			
-			req.setUsername("dingo");
+			req.setId("dingo");
 			req.setPassword("happenstance".toCharArray());
 		}
 		
@@ -36,7 +36,7 @@ public class NewUserRequestTest {
 		
 		@Test
 		public void itHasAUsername() throws Exception {
-			assertThat(req.getUsername()).isEqualTo("dingo");
+			assertThat(req.getId()).isEqualTo("dingo");
 		}
 		
 		@Test
@@ -53,11 +53,11 @@ public class NewUserRequestTest {
 	}
 	
 	public static class An_Invalid_New_User_Request {
-		private NewUserRequest req;
+		private CreateUserRepresentation req;
 		
 		@Before
 		public void setup() throws Exception {
-			this.req = new NewUserRequest();
+			this.req = new CreateUserRepresentation();
 		}
 		
 		@Test
@@ -72,7 +72,7 @@ public class NewUserRequestTest {
 					"Grendel was unable to process your request for the following reason(s):" +
 					"\n" +
 					"\n" +
-					"* missing required property: username\n" +
+					"* missing required property: id\n" +
 					"* missing required property: password\n"
 				);
 			}

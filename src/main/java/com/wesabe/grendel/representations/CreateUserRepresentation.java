@@ -1,9 +1,10 @@
-package com.wesabe.grendel.resources.dto;
+package com.wesabe.grendel.representations;
 
 import java.util.Arrays;
 
 import org.codehaus.jackson.annotate.JsonGetter;
 import org.codehaus.jackson.annotate.JsonSetter;
+
 
 /**
  * A data transfer object for a request to create a new user.
@@ -11,18 +12,18 @@ import org.codehaus.jackson.annotate.JsonSetter;
  * Example JSON:
  * <pre>
  * {
- *   "username": "Example User",
+ *   "id": "Example User",
  *   "password": "snoopersneekrit"
  * }
  * </pre>
  * 
- * Both {@code username} and {@code password} properties are required.
+ * Both {@code id} and {@code password} properties are required.
  * 
  * @author coda
  *
  */
-public class NewUserRequest implements Validatable {
-	private String username;
+public class CreateUserRepresentation implements Validatable {
+	private String id;
 	private char[] password;
 	
 	@JsonGetter("password")
@@ -30,9 +31,9 @@ public class NewUserRequest implements Validatable {
 		return password;
 	}
 	
-	@JsonGetter("username")
-	public String getUsername() {
-		return username;
+	@JsonGetter("id")
+	public String getId() {
+		return id;
 	}
 	
 	@JsonSetter("password")
@@ -41,9 +42,9 @@ public class NewUserRequest implements Validatable {
 		Arrays.fill(password, '\0');
 	}
 	
-	@JsonSetter("username")
-	public void setUsername(String username) {
-		this.username = username;
+	@JsonSetter("id")
+	public void setId(String username) {
+		this.id = username;
 	}
 	
 	public void sanitize() {
@@ -54,8 +55,8 @@ public class NewUserRequest implements Validatable {
 	public void validate() throws ValidationException {
 		final ValidationException error = new ValidationException();
 		
-		if ((username == null) || username.isEmpty()) {
-			error.missingRequiredProperty("username");
+		if ((id == null) || id.isEmpty()) {
+			error.missingRequiredProperty("id");
 		}
 		
 		if ((password == null) || (password.length == 0)) {
