@@ -2,6 +2,9 @@ package com.wesabe.grendel.resources.dto;
 
 import java.util.Arrays;
 
+import org.codehaus.jackson.annotate.JsonGetter;
+import org.codehaus.jackson.annotate.JsonSetter;
+
 /**
  * A data transfer object for a request to create a new user.
  * <p>
@@ -22,19 +25,23 @@ public class NewUserRequest implements Validatable {
 	private String username;
 	private char[] password;
 	
+	@JsonGetter("password")
 	public char[] getPassword() {
 		return password;
 	}
 	
+	@JsonGetter("username")
 	public String getUsername() {
 		return username;
 	}
 	
+	@JsonSetter("password")
 	public void setPassword(char[] password) {
 		this.password = Arrays.copyOf(password, password.length);
 		Arrays.fill(password, '\0');
 	}
 	
+	@JsonSetter("username")
 	public void setUsername(String username) {
 		this.username = username;
 	}
