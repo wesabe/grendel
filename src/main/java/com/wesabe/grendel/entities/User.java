@@ -32,6 +32,7 @@ public class User {
 	@Transient
 	private KeySet keySet = null;
 	
+	@Deprecated
 	public User() {
 		// blank constructor to be used by Hibernate
 	}
