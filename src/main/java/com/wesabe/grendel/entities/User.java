@@ -9,6 +9,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
@@ -35,10 +36,12 @@ public class User {
 	@Transient
 	private KeySet keySet = null;
 	
-	@Column(name="created_at", nullable=false, columnDefinition="datetime")
+	@Column(name="created_at", nullable=false)
+	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
 	private DateTime createdAt;
 	
-	@Column(name="modified_at", nullable=false, columnDefinition="datetime")
+	@Column(name="modified_at", nullable=false)
+	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
 	private DateTime modifiedAt;
 	
 	@Deprecated
