@@ -9,6 +9,9 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+
 import com.wesabe.grendel.openpgp.CryptographicException;
 import com.wesabe.grendel.openpgp.KeySet;
 
@@ -32,6 +35,12 @@ public class User {
 	@Transient
 	private KeySet keySet = null;
 	
+	@Column(name="created_at", nullable=false, columnDefinition="datetime")
+	private DateTime createdAt;
+	
+	@Column(name="modified_at", nullable=false, columnDefinition="datetime")
+	private DateTime modifiedAt;
+	
 	@Deprecated
 	public User() {
 		// blank constructor to be used by Hibernate
@@ -39,6 +48,8 @@ public class User {
 	
 	public User(KeySet keySet) {
 		setKeySet(keySet);
+		this.createdAt = new DateTime(DateTimeZone.UTC);
+		this.modifiedAt = new DateTime(DateTimeZone.UTC);
 	}
 	
 	public String getId() {
@@ -72,5 +83,21 @@ public class User {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+	
+	public DateTime getCreatedAt() {
+		return createdAt;
+	}
+	
+	public void setCreatedAt(DateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+	
+	public DateTime getModifiedAt() {
+		return modifiedAt;
+	}
+	
+	public void setModifiedAt(DateTime modifiedAt) {
+		this.modifiedAt = modifiedAt;
 	}
 }

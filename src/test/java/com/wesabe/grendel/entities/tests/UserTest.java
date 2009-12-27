@@ -8,6 +8,10 @@ import java.io.FileInputStream;
 import java.security.Security;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeUtils;
+import org.joda.time.DateTimeZone;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
@@ -20,14 +24,23 @@ import com.wesabe.grendel.openpgp.KeySet;
 public class UserTest {
 	public static class A_Fresh_User {
 		private KeySet keySet;
+		private DateTime now;
 		
 		@Before
 		public void setup() throws Exception {
 			Security.addProvider(new BouncyCastleProvider());
 			
+			this.now = new DateTime(2009, 12, 27, 10, 0, 43, 0, DateTimeZone.UTC);
+			DateTimeUtils.setCurrentMillisFixed(now.getMillis());
+			
 			this.keySet = mock(KeySet.class);
 			when(keySet.getUserID()).thenReturn("user");
 			when(keySet.getEncoded()).thenReturn(new byte[] { (byte) 0xDE, (byte) 0xAD, (byte) 0xBE, (byte) 0xEF});
+		}
+		
+		@After
+		public void teardown() {
+			DateTimeUtils.setCurrentMillisSystem();
 		}
 		
 		@Test
@@ -37,6 +50,20 @@ public class UserTest {
 			assertThat(user.getId()).isEqualTo("user");
 			assertThat(user.getKeySet()).isEqualTo(keySet);
 			assertThat(user.getEncodedKeySet()).isEqualTo(new byte[] { (byte) 0xDE, (byte) 0xAD, (byte) 0xBE, (byte) 0xEF});
+		}
+		
+		@Test
+		public void itHasAModificationTimestamp() throws Exception {
+			final User user = new User(keySet);
+			
+			assertThat(user.getModifiedAt()).isEqualTo(now);
+		}
+		
+		@Test
+		public void itHasACreationTimestamp() throws Exception {
+			final User user = new User(keySet);
+			
+			assertThat(user.getCreatedAt()).isEqualTo(now);
 		}
 	}
 	
