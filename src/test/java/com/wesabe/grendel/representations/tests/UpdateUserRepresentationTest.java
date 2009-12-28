@@ -21,7 +21,6 @@ public class UpdateUserRepresentationTest {
 		public void setup() throws Exception {
 			this.req = new UpdateUserRepresentation();
 			
-			req.setId("dingo");
 			req.setPassword("happenstance".toCharArray());
 		}
 		
@@ -33,11 +32,6 @@ public class UpdateUserRepresentationTest {
 			} catch (ValidationException e) {
 				fail("didn't expect a ValidationException but one was thrown");
 			}
-		}
-		
-		@Test
-		public void itHasAUsername() throws Exception {
-			assertThat(req.getId()).isEqualTo("dingo");
 		}
 		
 		@Test
@@ -73,7 +67,7 @@ public class UpdateUserRepresentationTest {
 					"Grendel was unable to process your request for the following reason(s):" +
 					"\n" +
 					"\n" +
-					"* must have id or password\n"
+					"* missing required property: password\n"
 				);
 			}
 		}
@@ -82,12 +76,11 @@ public class UpdateUserRepresentationTest {
 	public static class Deserializing_From_Json {
 		@Test
 		public void itDeserializesJSON() throws Exception {
-			final String json = "{\"id\":\"mrpeepers\",\"password\":\"hoohah\"}";
+			final String json = "{\"password\":\"hoohah\"}";
 			
 			final ObjectMapper mapper = new ObjectMapper();
 			final UpdateUserRepresentation rep = mapper.readValue(json, UpdateUserRepresentation.class);
 			
-			assertThat(rep.getId()).isEqualTo("mrpeepers");
 			assertThat(rep.getPassword()).isEqualTo("hoohah".toCharArray());
 		}
 	}

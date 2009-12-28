@@ -22,8 +22,8 @@ import org.codehaus.jackson.annotate.JsonSetter;
  * @author coda
  */
 public class CreateUserRepresentation implements Validatable {
-	protected String id;
-	protected char[] password;
+	private String id;
+	private char[] password;
 	
 	@JsonGetter("password")
 	public char[] getPassword() {
