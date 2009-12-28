@@ -86,7 +86,7 @@ public class MasterKeyTest {
 		
 		@Test
 		public void itIsHumanReadable() throws Exception {
-			assertThat(key.toString()).isEqualTo("2048-RSA/8838238C Sample Key <sample@wesabe.com>");
+			assertThat(key.toString()).isEqualTo("2048-RSA/8838238C");
 		}
 		
 		@SuppressWarnings("deprecation")

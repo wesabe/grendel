@@ -38,7 +38,7 @@ public class KeySetTest {
 
 		@Test
 		public void itIsHumanReadable() throws Exception {
-			assertThat(keySet.toString()).isEqualTo("[2048-RSA/8838238C Sample Key <sample@wesabe.com>, 2048-RSA/FF30574E Sample Key <sample@wesabe.com>]");
+			assertThat(keySet.toString()).isEqualTo("[2048-RSA/8838238C, 2048-RSA/FF30574E]");
 		}
 		
 		@Test

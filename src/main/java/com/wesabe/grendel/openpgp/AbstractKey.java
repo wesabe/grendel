@@ -164,8 +164,8 @@ public abstract class AbstractKey {
 	@Override
 	public String toString() {
 		return String.format(
-			"%d-%s/%s %s",
-			getSize(), getAlgorithm(), getHumanKeyID(), getUserID()
+			"%d-%s/%s",
+			getSize(), getAlgorithm(), getHumanKeyID()
 		);
 	}
 	
