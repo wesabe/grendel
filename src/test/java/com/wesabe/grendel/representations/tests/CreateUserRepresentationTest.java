@@ -3,6 +3,7 @@ package com.wesabe.grendel.representations.tests;
 import static org.fest.assertions.Assertions.*;
 import static org.junit.Assert.*;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
@@ -76,6 +77,19 @@ public class CreateUserRepresentationTest {
 					"* missing required property: password\n"
 				);
 			}
+		}
+	}
+	
+	public static class Deserializing_From_Json {
+		@Test
+		public void itDeserializesJSON() throws Exception {
+			final String json = "{\"id\":\"mrpeepers\",\"password\":\"hoohah\"}";
+			
+			final ObjectMapper mapper = new ObjectMapper();
+			final CreateUserRepresentation rep = mapper.readValue(json, CreateUserRepresentation.class);
+			
+			assertThat(rep.getId()).isEqualTo("mrpeepers");
+			assertThat(rep.getPassword()).isEqualTo("hoohah".toCharArray());
 		}
 	}
 }
