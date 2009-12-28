@@ -93,7 +93,7 @@ public class DocumentDAOTest {
 		}
 	}
 	
-	public static class Saving_Or_Creating_A_User extends Context {
+	public static class Saving_Or_Creating_A_Document extends Context {
 		private Document doc;
 		
 		@Before
@@ -114,6 +114,33 @@ public class DocumentDAOTest {
 			dao.saveOrUpdate(doc);
 			
 			verify(session).saveOrUpdate(doc);
+		}
+	}
+	
+	public static class Building_A_New_Document extends Context {
+		private User user;
+		
+		@Before
+		@Override
+		public void setup() throws Exception {
+			super.setup();
+			
+			this.user = mock(User.class);
+		}
+		
+		@Test
+		public void itReturnsADocumentWithTheOwner() throws Exception {
+			assertThat(dao.newDocument(user, "document1.txt", "text/plain").getOwner()).isEqualTo(user);
+		}
+		
+		@Test
+		public void itReturnsADocumentWithTheName() throws Exception {
+			assertThat(dao.newDocument(user, "document1.txt", "text/plain").getName()).isEqualTo("document1.txt");
+		}
+		
+		@Test
+		public void itReturnsADocumentWithTheOnwerr() throws Exception {
+			assertThat(dao.newDocument(user, "document1.txt", "text/plain").getContentType()).isEqualTo("text/plain");
 		}
 	}
 }

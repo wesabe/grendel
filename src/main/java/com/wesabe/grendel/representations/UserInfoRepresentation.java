@@ -13,7 +13,7 @@ import org.joda.time.format.ISODateTimeFormat;
 import com.google.common.collect.Lists;
 import com.wesabe.grendel.entities.Document;
 import com.wesabe.grendel.entities.User;
-import com.wesabe.grendel.resources.UserResource;
+import com.wesabe.grendel.resources.DocumentResource;
 
 public class UserInfoRepresentation {
 	private static final DateTimeFormatter ISO_DATETIME = ISODateTimeFormat.basicDateTimeNoMillis();
@@ -73,8 +73,7 @@ public class UserInfoRepresentation {
 		for (Document doc : user.getDocuments()) {
 			uris.add(new DocumentLink(
 				doc.getName(),
-				// FIXME coda@wesabe.com -- Dec 28, 2009: replace this when DocumentResource is done
-				uriInfo.getBaseUriBuilder().path(UserResource.class).path("documents/"+doc.getName()).build(user.getId())
+				uriInfo.getBaseUriBuilder().path(DocumentResource.class).build(user.getId(), doc.getName())
 			));
 		}
 		return uris;

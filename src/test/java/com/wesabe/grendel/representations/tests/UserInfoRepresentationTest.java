@@ -68,7 +68,7 @@ public class UserInfoRepresentationTest {
 					"\"documents\":[" +
 						"{" +
 							"\"name\":\"document1.txt\"," +
-							"\"uri\":\"http://example.com/users/mrpeepers/documents/document1.txt\"" +
+							"\"uri\":\"http://example.com/users/mrpeepers/document1.txt\"" +
 						"}" +
 					"]," +
 					"\"keys\":\"[2048-RSA 5F2910, 2048-RSA 23B19D3]\"" +

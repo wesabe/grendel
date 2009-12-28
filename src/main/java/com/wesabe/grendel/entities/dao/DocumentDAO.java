@@ -15,6 +15,12 @@ public class DocumentDAO extends AbstractDAO<Document> {
 		super(provider, Document.class);
 	}
 	
+	public Document newDocument(User owner, String name, String contentType) {
+		final Document doc = new Document(owner, name);
+		doc.setContentType(contentType);
+		return doc;
+	}
+	
 	public Document findByOwnerAndName(User owner, String name) {
 		return uniqueResult(
 			namedQuery("com.wesabe.grendel.entities.Document.ByOwnerAndName")
