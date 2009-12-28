@@ -1,12 +1,14 @@
 package com.wesabe.grendel.entities;
 
-import static com.google.common.base.Objects.equal;
+import static com.google.common.base.Objects.*;
 
 import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -65,6 +67,7 @@ public class User implements Serializable {
 	// I've tried just about every approach to composite keys in Hibernate that
 	// I found, and none of them changed this behavior.
 	@OneToMany(mappedBy="owner", fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+	@OnDelete(action=OnDeleteAction.CASCADE)
 	private Set<Document> documents = Sets.newHashSet();
 	
 	@Deprecated
