@@ -31,13 +31,9 @@ import com.wesabe.grendel.util.HashCode;
 @IdClass(DocumentReference.class)
 @NamedQueries({
 	@NamedQuery(
-		name="com.wesabe.grendel.entities.Document.Exists",
-		query="SELECT d.id FROM Document AS d WHERE d.name = :name AND d.owner = :owner"
+		name="com.wesabe.grendel.entities.Document.ByOwnerAndName",
+		query="SELECT d FROM Document AS d WHERE d.name = :name AND d.owner = :owner"
 	),
-	@NamedQuery(
-		name="com.wesabe.grendel.entities.Document.ForUser",
-		query="SELECT d FROM Document AS d WHERE d.owner = :owner"
-	)
 })
 public class Document implements Serializable {
 	private static final long serialVersionUID = 5699449595549234402L;
