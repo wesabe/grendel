@@ -1,5 +1,8 @@
 package com.wesabe.grendel.entities;
 
+import static com.google.common.base.Objects.equal;
+
+import java.io.Serializable;
 import java.security.SecureRandom;
 import java.util.List;
 
@@ -21,6 +24,7 @@ import com.wesabe.grendel.openpgp.KeySet;
 import com.wesabe.grendel.openpgp.MessageReader;
 import com.wesabe.grendel.openpgp.MessageWriter;
 import com.wesabe.grendel.openpgp.UnlockedKeySet;
+import com.wesabe.grendel.util.HashCode;
 
 @Entity
 @Table(name="documents")
@@ -35,7 +39,9 @@ import com.wesabe.grendel.openpgp.UnlockedKeySet;
 		query="SELECT d FROM Document AS d WHERE d.owner = :owner"
 	)
 })
-public class Document {
+public class Document implements Serializable {
+	private static final long serialVersionUID = 5699449595549234402L;
+
 	@Id
 	private String name;
 	
@@ -123,5 +129,30 @@ public class Document {
 	
 	private DateTime toUTC(DateTime dateTime) {
 		return dateTime.toDateTime(DateTimeZone.UTC);
+	}
+
+	@Override
+	public int hashCode() {
+		return HashCode.calculate(getClass(), body, contentType, createdAt, modifiedAt, name, owner);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		
+		if (!(obj instanceof Document)) {
+			return false;
+		}
+		
+		final Document that = (Document) obj;
+		return equal(name, that.name) && equal(owner, that.owner) &&
+				equal(body, that.body) && equal(createdAt, that.createdAt) &&
+				equal(contentType, that.contentType) &&
+				equal(modifiedAt, that.modifiedAt);
 	}
 }
