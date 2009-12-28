@@ -30,13 +30,12 @@ public class UserDAO extends AbstractDAO<User> {
 		return list(namedQuery("com.wesabe.grendel.entities.User.All"));
 	}
 	
-	public User create(User user) {
-		currentSession().save(user);
+	public User saveOrUpdate(User user) {
+		currentSession().saveOrUpdate(user);
 		return user;
 	}
 
 	public void delete(User user) {
 		currentSession().delete(user);
 	}
-
 }

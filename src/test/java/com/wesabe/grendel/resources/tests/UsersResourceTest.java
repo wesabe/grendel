@@ -113,7 +113,7 @@ public class UsersResourceTest {
 			when(generator.generate(Mockito.anyString(), Mockito.any(char[].class))).thenReturn(keySet);
 			
 			when(userDAO.contains(Mockito.anyString())).thenReturn(false);
-			when(userDAO.create(Mockito.any(User.class))).thenReturn(user);
+			when(userDAO.saveOrUpdate(Mockito.any(User.class))).thenReturn(user);
 			
 			this.uriBuilder = mock(UriBuilder.class);
 			when(uriBuilder.path(Mockito.any(Class.class))).thenReturn(uriBuilder);
@@ -156,7 +156,7 @@ public class UsersResourceTest {
 			resource.create(uriInfo, request);
 			
 			final ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
-			verify(userDAO).create(userCaptor.capture());
+			verify(userDAO).saveOrUpdate(userCaptor.capture());
 			
 			assertThat(userCaptor.getValue().getKeySet()).isSameAs(keySet);
 		}

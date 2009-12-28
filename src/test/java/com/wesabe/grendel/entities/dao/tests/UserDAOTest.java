@@ -130,7 +130,7 @@ public class UserDAOTest {
 		}
 	}
 	
-	public static class Creating_A_User extends Context {
+	public static class Saving_Or_Creating_A_User extends Context {
 		private User user;
 		
 		@Before
@@ -143,14 +143,14 @@ public class UserDAOTest {
 		
 		@Test
 		public void itReturnsTheUser() throws Exception {
-			assertThat(dao.create(user)).isEqualTo(user);
+			assertThat(dao.saveOrUpdate(user)).isEqualTo(user);
 		}
 		
 		@Test
 		public void itCreatesADatabaseEntry() throws Exception {
-			dao.create(user);
+			dao.saveOrUpdate(user);
 			
-			verify(session).save(user);
+			verify(session).saveOrUpdate(user);
 		}
 	}
 	

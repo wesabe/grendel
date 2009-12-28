@@ -54,7 +54,7 @@ public class UsersResource {
 		}
 
 		final KeySet keySet = generator.generate(request.getId(), request.getPassword());
-		final User user = userDAO.create(new User(keySet));
+		final User user = userDAO.saveOrUpdate(new User(keySet));
 		
 		request.sanitize();
 		
