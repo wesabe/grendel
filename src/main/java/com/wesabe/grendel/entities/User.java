@@ -50,6 +50,20 @@ public class User implements Serializable {
 	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
 	private DateTime modifiedAt;
 	
+	// FIXME coda@wesabe.com -- Dec 27, 2009: User#documents double-loads document primary keys.
+	// This may be a bug in Hibernate, but the SQL this generates produces
+	// queries which look like this:
+	//    documents0_.owner_id as owner6_1_,
+	//    documents0_.name as name1_,
+	//    documents0_.name as name1_0_,
+	//    documents0_.owner_id as owner6_1_0_,
+	//    documents0_.body as body1_0_,
+	//    documents0_.content_type as content3_1_0_,
+	//    documents0_.created_at as created4_1_0_,
+	//    documents0_.modified_at as modified5_1_0_
+	//
+	// I've tried just about every approach to composite keys in Hibernate that
+	// I found, and none of them changed this behavior.
 	@OneToMany(mappedBy="owner", fetch=FetchType.LAZY, cascade={CascadeType.ALL})
 	private Set<Document> documents = Sets.newHashSet();
 	
