@@ -4,6 +4,7 @@ import static org.fest.assertions.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
@@ -15,13 +16,17 @@ import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
+import com.google.common.collect.ImmutableList;
 import com.wesabe.grendel.entities.User;
 import com.wesabe.grendel.entities.dao.UserDAO;
 import com.wesabe.grendel.openpgp.KeySet;
 import com.wesabe.grendel.openpgp.KeySetGenerator;
 import com.wesabe.grendel.representations.CreateUserRepresentation;
 import com.wesabe.grendel.representations.ValidationException;
+import com.wesabe.grendel.representations.UserListRepresentation.UserListItem;
 import com.wesabe.grendel.resources.UsersResource;
 
 @RunWith(Enclosed.class)
@@ -36,6 +41,48 @@ public class UsersResourceTest {
 			this.userDAO = mock(UserDAO.class);
 			
 			this.resource = new UsersResource(generator, userDAO);
+		}
+	}
+	
+	public static class Listing_All_Users extends Context {
+		private User user;
+		private UriInfo uriInfo;
+		
+		@Before
+		@Override
+		public void setup() throws Exception {
+			super.setup();
+			
+			this.uriInfo = mock(UriInfo.class);
+			when(uriInfo.getBaseUriBuilder()).thenAnswer(new Answer<UriBuilder>() {
+				@Override
+				public UriBuilder answer(InvocationOnMock invocation) throws Throwable {
+					return UriBuilder.fromUri("http://example.com");
+				}
+			});
+			
+			this.user = mock(User.class);
+			when(user.getId()).thenReturn("mrpeeper");
+			
+			when(userDAO.findAll()).thenReturn(ImmutableList.of(user));
+		}
+		
+		@Test
+		public void itFindsAllUsers() throws Exception {
+			resource.list(uriInfo);
+			
+			verify(userDAO).findAll();
+		}
+		
+		@Test
+		public void itReturnsAListOfAllUsers() throws Exception {
+			final List<UserListItem> list = resource.list(uriInfo).getUsers();
+			
+			assertThat(list).hasSize(1);
+			
+			assertThat(list.get(0).getId()).isEqualTo("mrpeeper");
+			// FIXME coda@wesabe.com -- Dec 27, 2009: direct this to where it should go
+			assertThat(list.get(0).getUri()).isEqualTo("http://example.com/users/");
 		}
 	}
 	

@@ -1,6 +1,9 @@
 package com.wesabe.grendel.resources;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -16,6 +19,7 @@ import com.wesabe.grendel.openpgp.CryptographicException;
 import com.wesabe.grendel.openpgp.KeySet;
 import com.wesabe.grendel.openpgp.KeySetGenerator;
 import com.wesabe.grendel.representations.CreateUserRepresentation;
+import com.wesabe.grendel.representations.UserListRepresentation;
 import com.wesabe.grendel.representations.ValidationException;
 import com.wideplay.warp.persist.Transactional;
 
@@ -30,6 +34,12 @@ public class UsersResource {
 	public UsersResource(KeySetGenerator generator, UserDAO userDAO) {
 		this.generator = generator;
 		this.userDAO = userDAO;
+	}
+	
+	@GET
+	public UserListRepresentation list(@Context UriInfo uriInfo) {
+		final List<User> users = userDAO.findAll();
+		return new UserListRepresentation(uriInfo, users);
 	}
 	
 	@POST
