@@ -36,6 +36,7 @@
 	</licenses>
 	<properties>
 		<bouncycastle.version>143</bouncycastle.version>
+		<jackson.version>1.4.0</jackson.version>
 	</properties>
 	<repositories>
 		<repository>
@@ -152,7 +153,12 @@
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-jaxrs</artifactId>
-			<version>1.4.0</version>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-xc</artifactId>
+			<version>${jackson.version}</version>
 		</dependency>
 	</dependencies>
 	<build>
