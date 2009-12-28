@@ -1,4 +1,4 @@
-package com.wesabe.grendel.webapp;
+package com.wesabe.grendel;
 
 import java.security.SecureRandom;
 
