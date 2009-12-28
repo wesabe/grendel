@@ -7,7 +7,7 @@ import org.codehaus.jackson.annotate.JsonSetter;
 
 
 /**
- * A data transfer object for a request to create a new user.
+ * A representation of a request to create a new user.
  * <p>
  * Example JSON:
  * <pre>
@@ -20,11 +20,10 @@ import org.codehaus.jackson.annotate.JsonSetter;
  * Both {@code id} and {@code password} properties are required.
  * 
  * @author coda
- *
  */
 public class CreateUserRepresentation implements Validatable {
-	private String id;
-	private char[] password;
+	protected String id;
+	protected char[] password;
 	
 	@JsonGetter("password")
 	public char[] getPassword() {
