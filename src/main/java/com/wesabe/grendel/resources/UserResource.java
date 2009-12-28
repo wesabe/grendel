@@ -81,6 +81,7 @@ public class UserResource {
 	}
 	
 	@DELETE
+	@Transactional
 	public Response delete(@Context UriInfo uriInfo, @Context Credentials credentials, @PathParam("id") String id) {
 		final User user = findUser(id);
 		
