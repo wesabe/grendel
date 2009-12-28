@@ -33,7 +33,7 @@ import com.wesabe.grendel.util.HashCode;
 	@NamedQuery(
 		name="com.wesabe.grendel.entities.Document.ByOwnerAndName",
 		query="SELECT d FROM Document AS d WHERE d.name = :name AND d.owner = :owner"
-	),
+	)
 })
 public class Document implements Serializable {
 	private static final long serialVersionUID = 5699449595549234402L;
