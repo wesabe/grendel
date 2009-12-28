@@ -65,6 +65,13 @@ public class UserTest {
 			
 			assertThat(user.getCreatedAt()).isEqualTo(now);
 		}
+		
+		@Test
+		public void itHasNoDocuments() throws Exception {
+			final User user = new User(keySet);
+			
+			assertThat(user.getDocuments()).isEmpty();
+		}
 	}
 	
 	public static class A_User_Loaded_From_The_Database {

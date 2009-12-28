@@ -1,18 +1,14 @@
 package com.wesabe.grendel.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import java.util.Set;
+
+import javax.persistence.*;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
+import com.google.common.collect.Sets;
 import com.wesabe.grendel.openpgp.CryptographicException;
 import com.wesabe.grendel.openpgp.KeySet;
 
@@ -47,6 +43,9 @@ public class User {
 	@Column(name="modified_at", nullable=false)
 	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
 	private DateTime modifiedAt;
+	
+	@OneToMany(mappedBy="owner", fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+	private Set<Document> documents = Sets.newHashSet();
 	
 	@Deprecated
 	public User() {
@@ -106,6 +105,10 @@ public class User {
 	
 	public void setModifiedAt(DateTime modifiedAt) {
 		this.modifiedAt = toUTC(modifiedAt);
+	}
+
+	public Set<Document> getDocuments() {
+		return documents;
 	}
 	
 	private DateTime toUTC(DateTime dateTime) {
