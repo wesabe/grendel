@@ -81,8 +81,7 @@ public class UsersResourceTest {
 			assertThat(list).hasSize(1);
 			
 			assertThat(list.get(0).getId()).isEqualTo("mrpeeper");
-			// FIXME coda@wesabe.com -- Dec 27, 2009: direct this to where it should go
-			assertThat(list.get(0).getUri()).isEqualTo("http://example.com/users/");
+			assertThat(list.get(0).getUri()).isEqualTo("http://example.com/users/mrpeeper");
 		}
 	}
 	

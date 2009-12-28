@@ -50,8 +50,7 @@ public class UserListRepresentationTest {
 					"\"users\":[" +
 						"{" +
 							"\"id\":\"mrpeepers\"," +
-							// FIXME coda@wesabe.com -- Dec 27, 2009: direct this to where it should go
-							"\"uri\":\"http://example.com/users/\"" +
+							"\"uri\":\"http://example.com/users/mrpeepers\"" +
 						"}" +
 					"]" +
 				"}"

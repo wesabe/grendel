@@ -59,9 +59,8 @@ public class UsersResource {
 		request.sanitize();
 		
 		return Response.created(
-			// FIXME coda@wesabe.com -- Dec 22, 2009: direct this to where it should go
 			uriInfo.getBaseUriBuilder()
-						.path(UsersResource.class)
+						.path(UserResource.class)
 						.build(user.getId())
 		).build();
 	}

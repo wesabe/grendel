@@ -9,7 +9,7 @@ import org.codehaus.jackson.annotate.JsonGetter;
 
 import com.google.common.collect.Lists;
 import com.wesabe.grendel.entities.User;
-import com.wesabe.grendel.resources.UsersResource;
+import com.wesabe.grendel.resources.UserResource;
 
 public class UserListRepresentation {
 	public static class UserListItem {
@@ -46,9 +46,8 @@ public class UserListRepresentation {
 		for (User user : users) {
 			items.add(new UserListItem(
 				user.getId(),
-				// FIXME coda@wesabe.com -- Dec 27, 2009: direct this to where it should go
 				uriInfo.getBaseUriBuilder()
-							.path(UsersResource.class)
+							.path(UserResource.class)
 							.build(user.getId())
 			));
 		}
