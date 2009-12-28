@@ -15,6 +15,7 @@ public class Configuration extends AbstractConfiguration {
 	protected void configure() {
 		addEntityPackage("com.wesabe.grendel.entities");
 		addResourcePackage("org.codehaus.jackson.jaxrs");
+		addResourcePackage("com.wesabe.grendel.auth");
 		addResourcePackage("com.wesabe.grendel.resources");
 		addModule(new AbstractModule() {
 			@Override
