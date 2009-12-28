@@ -137,7 +137,7 @@ public class User implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return HashCode.calculate(createdAt, documents, encodedKeySet, id, modifiedAt);
+		return HashCode.calculate(createdAt, encodedKeySet, id, modifiedAt);
 	}
 
 	@Override
