@@ -30,8 +30,6 @@ import com.wesabe.grendel.representations.UserInfoRepresentation;
 import com.wideplay.warp.persist.Transactional;
 
 @Path("/users/{id}")
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
 public class UserResource {
 	private final UserDAO userDAO;
 	private final Provider<SecureRandom> randomProvider;
@@ -43,6 +41,7 @@ public class UserResource {
 	}
 	
 	@GET
+	@Produces(MediaType.APPLICATION_JSON)
 	public UserInfoRepresentation show(@Context UriInfo uriInfo, @Context Credentials credentials, @PathParam("id") String id) {
 		final User user = findUser(id);
 		
@@ -58,6 +57,7 @@ public class UserResource {
 	
 	@PUT
 	@Transactional
+	@Consumes(MediaType.APPLICATION_JSON)
 	public Response update(@Context Credentials credentials, @PathParam("id") String id, UpdateUserRepresentation request) {
 		request.validate();
 		
