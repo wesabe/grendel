@@ -8,6 +8,8 @@ import java.lang.reflect.Field;
 import java.security.SecureRandom;
 import java.security.Security;
 
+import javax.ws.rs.core.MediaType;
+
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeUtils;
@@ -48,38 +50,37 @@ public class DocumentTest {
 		
 		@Test
 		public void itHasAnOwner() throws Exception {
-			final Document doc = new Document(owner, name);
+			final Document doc = new Document(owner, name, MediaType.APPLICATION_OCTET_STREAM_TYPE);
 			
 			assertThat(doc.getOwner()).isEqualTo(owner);
 		}
 		
 		@Test
 		public void itHasAName() throws Exception {
-			final Document doc = new Document(owner, name);
+			final Document doc = new Document(owner, name, MediaType.APPLICATION_OCTET_STREAM_TYPE);
 			
 			assertThat(doc.getName()).isEqualTo(name);
 		}
 		
 		@Test
 		public void itHasAModificationTimestamp() throws Exception {
-			final Document doc = new Document(owner, name);
+			final Document doc = new Document(owner, name, MediaType.APPLICATION_OCTET_STREAM_TYPE);
 			
 			assertThat(doc.getModifiedAt()).isEqualTo(now);
 		}
 		
 		@Test
 		public void itHasACreationTimestamp() throws Exception {
-			final Document doc = new Document(owner, name);
+			final Document doc = new Document(owner, name, MediaType.APPLICATION_OCTET_STREAM_TYPE);
 			
 			assertThat(doc.getCreatedAt()).isEqualTo(now);
 		}
 		
 		@Test
 		public void itHasAContentType() throws Exception {
-			final Document doc = new Document(owner, name);
-			doc.setContentType("text/plain");
+			final Document doc = new Document(owner, name, MediaType.APPLICATION_OCTET_STREAM_TYPE);
 			
-			assertThat(doc.getContentType()).isEqualTo("text/plain");
+			assertThat(doc.getContentType()).isEqualTo(MediaType.APPLICATION_OCTET_STREAM_TYPE);
 		}
 	}
 	
@@ -101,7 +102,7 @@ public class DocumentTest {
 			recipientKeyring.close();
 			
 			this.owner = new User(ownerKeySet);
-			this.doc = new Document(owner, "test");
+			this.doc = new Document(owner, "test", MediaType.APPLICATION_OCTET_STREAM_TYPE);
 		}
 		
 		@Test
@@ -139,7 +140,7 @@ public class DocumentTest {
 			recipientKeyring.close();
 
 			this.owner = new User(ownerKeySet);
-			this.doc = new Document(owner, "test");
+			this.doc = new Document(owner, "test", MediaType.APPLICATION_OCTET_STREAM_TYPE);
 		}
 
 		@Test

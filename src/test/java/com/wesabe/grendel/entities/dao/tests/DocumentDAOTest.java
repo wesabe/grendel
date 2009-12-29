@@ -4,6 +4,8 @@ import static org.fest.assertions.Assertions.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
+import javax.ws.rs.core.MediaType;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.junit.Before;
@@ -130,17 +132,17 @@ public class DocumentDAOTest {
 		
 		@Test
 		public void itReturnsADocumentWithTheOwner() throws Exception {
-			assertThat(dao.newDocument(user, "document1.txt", "text/plain").getOwner()).isEqualTo(user);
+			assertThat(dao.newDocument(user, "document1.txt", MediaType.APPLICATION_OCTET_STREAM_TYPE).getOwner()).isEqualTo(user);
 		}
 		
 		@Test
 		public void itReturnsADocumentWithTheName() throws Exception {
-			assertThat(dao.newDocument(user, "document1.txt", "text/plain").getName()).isEqualTo("document1.txt");
+			assertThat(dao.newDocument(user, "document1.txt", MediaType.APPLICATION_OCTET_STREAM_TYPE).getName()).isEqualTo("document1.txt");
 		}
 		
 		@Test
 		public void itReturnsADocumentWithTheOnwerr() throws Exception {
-			assertThat(dao.newDocument(user, "document1.txt", "text/plain").getContentType()).isEqualTo("text/plain");
+			assertThat(dao.newDocument(user, "document1.txt", MediaType.APPLICATION_OCTET_STREAM_TYPE).getContentType()).isEqualTo(MediaType.APPLICATION_OCTET_STREAM_TYPE);
 		}
 	}
 }

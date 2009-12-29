@@ -1,5 +1,7 @@
 package com.wesabe.grendel.entities.dao;
 
+import javax.ws.rs.core.MediaType;
+
 import org.hibernate.Session;
 
 import com.codahale.shore.dao.AbstractDAO;
@@ -15,10 +17,8 @@ public class DocumentDAO extends AbstractDAO<Document> {
 		super(provider, Document.class);
 	}
 	
-	public Document newDocument(User owner, String name, String contentType) {
-		final Document doc = new Document(owner, name);
-		doc.setContentType(contentType);
-		return doc;
+	public Document newDocument(User owner, String name, MediaType contentType) {
+		return new Document(owner, name, contentType);
 	}
 	
 	public Document findByOwnerAndName(User owner, String name) {

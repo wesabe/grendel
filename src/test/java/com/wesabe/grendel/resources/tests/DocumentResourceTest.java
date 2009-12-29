@@ -60,7 +60,7 @@ public class DocumentResourceTest {
 			
 			this.document = mock(Document.class);
 			when(document.getName()).thenReturn("document1.txt");
-			when(document.getContentType()).thenReturn("text/plain");
+			when(document.getContentType()).thenReturn(MediaType.TEXT_PLAIN_TYPE);
 			when(document.decryptBodyForOwner(Mockito.any(char[].class))).thenReturn("yay for everyone".getBytes());
 			
 			this.documentDAO = mock(DocumentDAO.class);
@@ -234,7 +234,7 @@ public class DocumentResourceTest {
 			this.headers = mock(HttpHeaders.class);
 			when(headers.getMediaType()).thenReturn(MediaType.TEXT_PLAIN_TYPE);
 			
-			when(documentDAO.newDocument(Mockito.any(User.class), Mockito.anyString(), Mockito.anyString())).thenReturn(document);
+			when(documentDAO.newDocument(Mockito.any(User.class), Mockito.anyString(), Mockito.any(MediaType.class))).thenReturn(document);
 		}
 		
 		@Test
@@ -272,7 +272,7 @@ public class DocumentResourceTest {
 			final InOrder inOrder = inOrder(userDAO, documentDAO, document);
 			inOrder.verify(userDAO).findById("bob");
 			inOrder.verify(documentDAO).findByOwnerAndName(user, "document1.txt");
-			inOrder.verify(documentDAO).newDocument(user, "document1.txt", "text/plain");
+			inOrder.verify(documentDAO).newDocument(user, "document1.txt", MediaType.TEXT_PLAIN_TYPE);
 			
 			final ArgumentCaptor<char[]> password = ArgumentCaptor.forClass(char[].class);
 			final ArgumentCaptor<List> recipients = ArgumentCaptor.forClass(List.class);
@@ -296,7 +296,7 @@ public class DocumentResourceTest {
 			final InOrder inOrder = inOrder(userDAO, documentDAO, document);
 			inOrder.verify(userDAO).findById("bob");
 			inOrder.verify(documentDAO).findByOwnerAndName(user, "document1.txt");
-			inOrder.verify(documentDAO, never()).newDocument(user, "document1.txt", "text/plain");
+			inOrder.verify(documentDAO, never()).newDocument(user, "document1.txt", MediaType.TEXT_PLAIN_TYPE);
 			
 			final ArgumentCaptor<char[]> password = ArgumentCaptor.forClass(char[].class);
 			final ArgumentCaptor<List> recipients = ArgumentCaptor.forClass(List.class);

@@ -14,6 +14,7 @@ import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.ws.rs.core.MediaType;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
@@ -64,9 +65,10 @@ public class Document implements Serializable {
 		// for Hibernate usage only
 	}
 	
-	public Document(User owner, String name) {
+	public Document(User owner, String name, MediaType contentType) {
 		this.owner = owner;
 		this.name = name;
+		this.contentType = contentType.toString();
 		
 		this.createdAt = new DateTime(DateTimeZone.UTC);
 		this.modifiedAt = new DateTime(DateTimeZone.UTC);
@@ -80,12 +82,8 @@ public class Document implements Serializable {
 		return name;
 	}
 	
-	public String getContentType() {
-		return contentType;
-	}
-	
-	public void setContentType(String contentType) {
-		this.contentType = contentType;
+	public MediaType getContentType() {
+		return MediaType.valueOf(contentType);
 	}
 	
 	public DateTime getCreatedAt() {

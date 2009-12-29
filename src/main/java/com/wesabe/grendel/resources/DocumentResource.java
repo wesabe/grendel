@@ -118,7 +118,7 @@ public class DocumentResource {
 		if (isValidUsername(owner, credentials.getUsername())) {
 			Document doc = documentDAO.findByOwnerAndName(owner, name);
 			if (doc == null) {
-				doc = documentDAO.newDocument(owner, name, headers.getMediaType().toString());
+				doc = documentDAO.newDocument(owner, name, headers.getMediaType());
 			}
 			
 			try {
