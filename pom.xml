@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.wesabe</groupId>
 	<artifactId>grendel</artifactId>
-	<version>0.1</version>
+	<version>0.1.1-SNAPSHOT</version>
 	<name>Grendel</name>
 	<description>A secure document storage service.</description>
 	<url>http://github.com/wesabe/grendel/tree</url>
@@ -35,7 +35,7 @@
 		</license>
 	</licenses>
 	<properties>
-		<bouncycastle.version>143</bouncycastle.version>
+		<bouncycastle.version>144</bouncycastle.version>
 		<jackson.version>1.4.0</jackson.version>
 	</properties>
 	<repositories>
