@@ -13,6 +13,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
@@ -61,6 +63,7 @@ public class DocumentResourceTest {
 			this.document = mock(Document.class);
 			when(document.getName()).thenReturn("document1.txt");
 			when(document.getContentType()).thenReturn(MediaType.TEXT_PLAIN_TYPE);
+			when(document.getModifiedAt()).thenReturn(new DateTime(2009, 12, 29, 8, 42, 32, 00, DateTimeZone.UTC));
 			when(document.decryptBodyForOwner(Mockito.any(char[].class))).thenReturn("yay for everyone".getBytes());
 			
 			this.documentDAO = mock(DocumentDAO.class);
@@ -134,6 +137,7 @@ public class DocumentResourceTest {
 			assertThat(response.getStatus()).isEqualTo(Status.OK.getStatusCode());
 			assertThat(response.getMetadata().getFirst("Content-Type")).isEqualTo(MediaType.valueOf("text/plain"));
 			assertThat(response.getMetadata().getFirst("Cache-Control").toString()).isEqualTo("private, no-cache, no-store, no-transform");
+			assertThat(response.getMetadata().getFirst("Last-Modified").toString()).isEqualTo("Tue Dec 29 00:42:32 PST 2009");
 			assertThat((byte[]) response.getEntity()).isEqualTo("yay for everyone".getBytes());
 			
 			ArgumentCaptor<char[]> password = ArgumentCaptor.forClass(char[].class);

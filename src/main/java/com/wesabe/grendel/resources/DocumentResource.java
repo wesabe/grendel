@@ -71,6 +71,7 @@ public class DocumentResource {
 						.entity(body)
 						.type(doc.getContentType())
 						.cacheControl(CACHE_SETTINGS)
+						.lastModified(doc.getModifiedAt().toDate())
 						.build();
 			} catch (CryptographicException e) {
 				throw new WebApplicationException(Credentials.CHALLENGE);
