@@ -86,7 +86,7 @@ with a list of all users' ids and URIs:
     <   "users":[
     <       {
     <           "id":"user1",
-    <           "uri":"http://grendel.server/users/user1"
+    <           "uri":"http://example.com/users/codahale"
     <       }
     <   ]
     < }
@@ -104,12 +104,12 @@ create a new user and return the URI of the new user's **User Resource**.
     > Content-Type: application/json
     >
     > {
-    >   "id": "newuser",
+    >   "id": "codahale",
     >   "password": "woowoo"
     > }
     
     < HTTP/1.1 201 Created
-    < Location: http://grendel.server/users/newuser
+    < Location: http://example.com/users/codahale
 
 Both the `id` and the `password` properties are **required**. This action may
 take some time (~1s), as Grendel will generate an OpenPGP keyset for the user.
@@ -147,7 +147,7 @@ object with information about the user `codahale`:
     <   "created-at":"20091227T211120Z",
     <   "documents":[
     <       {
-    <           "uri":"http://grendel.server/users/codahale/document1.txt",
+    <           "uri":"http://example.com/users/codahale/document1.txt",
     <           "name":"document1.txt"
     <       }
     <   ],
