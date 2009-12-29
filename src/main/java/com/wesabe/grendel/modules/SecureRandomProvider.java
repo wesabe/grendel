@@ -17,6 +17,8 @@ import com.google.inject.Provider;
  * @author coda
  */
 public class SecureRandomProvider implements Provider<SecureRandom> {
+	private static final int ENTROPY_UPDATE_SIZE = 64;
+	
 	/**
 	 * A scheduled, asynchronous task which generates additional entropy and
 	 * adds it to the PRNG's entropy pool.
@@ -33,7 +35,7 @@ public class SecureRandomProvider implements Provider<SecureRandom> {
 		@Override
 		public void run() {
 			logger.info("Generating new PRNG seed");
-			final byte[] seed = SecureRandom.getSeed(64);
+			final byte[] seed = SecureRandom.getSeed(ENTROPY_UPDATE_SIZE);
 			logger.info("Updating PRNG seed");
 			random.setSeed(seed);
 		}
