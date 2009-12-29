@@ -108,7 +108,8 @@ public enum HashAlgorithm implements IntegerEquivalent {
 	/**
 	 * A list of hash algorithms which are acceptable for use in Grendel.
 	 */
-	public static final List<HashAlgorithm> ACCEPTABLE_ALGORITHMS = ImmutableList.of(SHA_224, SHA_256, SHA_384, SHA_512, SHA_1);
+	public static final List<HashAlgorithm> ACCEPTABLE_ALGORITHMS =
+		ImmutableList.of(SHA_224, SHA_256, SHA_384, SHA_512, SHA_1);
 	
 	private final int value;
 	private final String name;

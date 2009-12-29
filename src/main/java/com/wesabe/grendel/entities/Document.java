@@ -27,6 +27,12 @@ import com.wesabe.grendel.openpgp.MessageWriter;
 import com.wesabe.grendel.openpgp.UnlockedKeySet;
 import com.wesabe.grendel.util.HashCode;
 
+/**
+ * A document with an abritrary body, stored as an encrypted+signed OpenPGP
+ * message.
+ * 
+ * @author coda
+ */
 @Entity
 @Table(name="documents")
 @IdClass(DocumentPK.class)
@@ -65,6 +71,14 @@ public class Document implements Serializable {
 		// for Hibernate usage only
 	}
 	
+	/**
+	 * Creates a new {@link Document}, owned by the given {@link User} and with
+	 * the given name.
+	 * 
+	 * @param owner the new document's owner
+	 * @param name the new document's name
+	 * @param contentType the document's content type
+	 */
 	public Document(User owner, String name, MediaType contentType) {
 		this.owner = owner;
 		this.name = name;
@@ -74,34 +88,73 @@ public class Document implements Serializable {
 		this.modifiedAt = new DateTime(DateTimeZone.UTC);
 	}
 	
+	/**
+	 * Returns the document's owner.
+	 */
 	public User getOwner() {
 		return owner;
 	}
 	
+	/**
+	 * Returns the document's name.
+	 */
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * Returns the document's content type.
+	 */
 	public MediaType getContentType() {
 		return MediaType.valueOf(contentType);
 	}
 	
+	/**
+	 * Returns a UTC timestamp of when this document was created.
+	 */
 	public DateTime getCreatedAt() {
 		return toUTC(createdAt);
 	}
 	
+	/**
+	 * Sets a UTC timestamp of when this document was created.
+	 */
 	public void setCreatedAt(DateTime createdAt) {
 		this.createdAt = toUTC(createdAt);
 	}
 	
+	/**
+	 * Returns a UTC timestamp of when this document was last modified.
+	 */
 	public DateTime getModifiedAt() {
 		return toUTC(modifiedAt);
 	}
 	
+	/**
+	 * Sets a UTC timestamp of when this document was last modified.
+	 */
 	public void setModifiedAt(DateTime modifiedAt) {
 		this.modifiedAt = toUTC(modifiedAt);
 	}
 	
+	/**
+	 * Sets the {@link Document}'s body to an encrypted+signed OpenPGP message
+	 * containing {@code body}.
+	 * 
+	 * @param ownerPassphrase
+	 *            the passphrase of the {@link User} that owns this
+	 *            {@link Document}
+	 * @param recipients
+	 *            a collection of receipient's {@link KeySet}s
+	 * @param random
+	 *            a {@link SecureRandom} instance
+	 * @param body
+	 *            the unencrypted document body
+	 * @throws CryptographicException
+	 *             if the owner's {@link KeySet} cannot be unlocked with {@code
+	 *             ownerPassphrase}
+	 * @see MessageWriter
+	 */
 	public void encryptAndSetBody(char[] ownerPassphrase, Collection<KeySet> recipients,
 		SecureRandom random, byte[] body) throws CryptographicException {
 		final UnlockedKeySet ownerKeySet = owner.getKeySet().unlock(ownerPassphrase);
@@ -109,17 +162,45 @@ public class Document implements Serializable {
 		this.body = writer.write(body);
 	}
 	
-	private byte[] decryptBody(UnlockedKeySet unlockedKeySet) throws CryptographicException {
-		final MessageReader reader = new MessageReader(owner.getKeySet(), unlockedKeySet);
-		return reader.read(body);
-	}
-	
+	/**
+	 * Decrypts the document's body using the owner's {@link KeySet}.
+	 * 
+	 * @param ownerPassphrase
+	 *            the passphrase of the {@link User} that owns this
+	 *            {@link Document}
+	 * @return the decrypted document body
+	 * @throws CryptographicException
+	 *             if the owner's {@link KeySet} cannot be unlocked with {@code
+	 *             ownerPassphrase}, or if there is an error decrypting and
+	 *             verifying the encrypted+signed OpenPGP message
+	 * @see MessageReader
+	 */
 	public byte[] decryptBodyForOwner(char[] ownerPassphrase) throws CryptographicException {
 		return decryptBody(owner.getKeySet().unlock(ownerPassphrase));
 	}
 	
-	public byte[] decryptBodyForRecipient(KeySet recipient, char[] passphrase) throws CryptographicException {
+	/**
+	 * Decrypts the document's body using a recipient's {@link KeySet}.
+	 * 
+	 * @param recipient
+	 * 	          a {@link KeySet} of one of the document's recipients
+	 * @param passphrase
+	 *            the passphrase for the given {@link KeySet}
+	 * @return the decrypted document body
+	 * @throws CryptographicException
+	 *             if the owner's {@link KeySet} cannot be unlocked with {@code
+	 *             ownerPassphrase}, or if there is an error decrypting and
+	 *             verifying the encrypted+signed OpenPGP message
+	 * @see MessageReader
+	 */
+	public byte[] decryptBodyForRecipient(KeySet recipient, char[] passphrase)
+		throws CryptographicException {
 		return decryptBody(recipient.unlock(passphrase));
+	}
+	
+	private byte[] decryptBody(UnlockedKeySet unlockedKeySet) throws CryptographicException {
+		final MessageReader reader = new MessageReader(owner.getKeySet(), unlockedKeySet);
+		return reader.read(body);
 	}
 	
 	private DateTime toUTC(DateTime dateTime) {
@@ -128,7 +209,9 @@ public class Document implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return HashCode.calculate(getClass(), body, contentType, createdAt, modifiedAt, name, owner);
+		return HashCode.calculate(
+			getClass(), body, contentType, createdAt, modifiedAt, name, owner
+		);
 	}
 
 	@Override

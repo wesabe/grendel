@@ -11,6 +11,23 @@ import com.google.common.collect.Lists;
 import com.wesabe.grendel.entities.User;
 import com.wesabe.grendel.resources.UserResource;
 
+/**
+ * A representation of a response containing information about a list of users.
+ * <p>
+ * Example JSON:
+ * <pre>
+ * {
+ *   "users":[
+ *     {
+ *       "uri":"http://example.com/users/codahale",
+ *       "id":"codahale"
+ *     }
+ *   ]
+ * }
+ * </pre>
+ * 
+ * @author coda
+ */
 public class UserListRepresentation {
 	public static class UserListItem {
 		private final String id;

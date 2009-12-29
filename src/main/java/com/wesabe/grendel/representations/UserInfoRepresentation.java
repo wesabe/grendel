@@ -15,6 +15,27 @@ import com.wesabe.grendel.entities.Document;
 import com.wesabe.grendel.entities.User;
 import com.wesabe.grendel.resources.DocumentResource;
 
+/**
+ * A representation of a response containing information about a user.
+ * <p>
+ * Example JSON:
+ * <pre>
+ * {
+ *   "id":"codahale",
+ *   "created-at":"20091228T234341Z",
+ *   "modified-at":"20091228T234341Z",
+ *   "keys":"[2048-RSA/38CDB097, 2048-RSA/204DB69D]",
+ *   "documents":[
+ *     {
+ *       "uri":"http://example.com/users/codahale/document1.txt",
+ *       "name":"document1.txt"
+ *     }
+ *   ]
+ * }
+ * </pre>
+ * 
+ * @author coda
+ */
 public class UserInfoRepresentation {
 	private static final DateTimeFormatter ISO_DATETIME = ISODateTimeFormat.basicDateTimeNoMillis();
 	

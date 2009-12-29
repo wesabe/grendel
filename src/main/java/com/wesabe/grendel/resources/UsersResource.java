@@ -23,6 +23,11 @@ import com.wesabe.grendel.representations.UserListRepresentation;
 import com.wesabe.grendel.representations.ValidationException;
 import com.wideplay.warp.persist.Transactional;
 
+/**
+ * A resource for managing the collection of registered {@link User}s.
+ * 
+ * @author coda
+ */
 @Path("/users/")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -36,12 +41,26 @@ public class UsersResource {
 		this.userDAO = userDAO;
 	}
 	
+	/**
+	 * Responds to a {@link GET} request with a list of all the registered
+	 * users.
+	 * 
+	 * @see UserListRepresentation
+	 */
 	@GET
 	public UserListRepresentation list(@Context UriInfo uriInfo) {
 		final List<User> users = userDAO.findAll();
 		return new UserListRepresentation(uriInfo, users);
 	}
 	
+	/**
+	 * Responds to a {@link POST} request by generating a new {@link KeySet},
+	 * creating a new {@link User}, and returning the user's info URI.
+	 * 
+	 * @throws CryptographicException
+	 *             if there is an error generating the {@link KeySet}
+	 * @see UserResource
+	 */
 	@POST
 	@Transactional
 	public Response create(@Context UriInfo uriInfo, CreateUserRepresentation request) throws CryptographicException {

@@ -18,6 +18,11 @@ import com.wesabe.grendel.openpgp.CryptographicException;
 import com.wesabe.grendel.openpgp.KeySet;
 import com.wesabe.grendel.util.HashCode;
 
+/**
+ * A Grendel user.
+ * 
+ * @author coda
+ */
 @Entity
 @Table(name="users")
 @NamedQueries({
@@ -75,16 +80,27 @@ public class User implements Serializable {
 		// blank constructor to be used by Hibernate
 	}
 	
+	/**
+	 * Creates a new Grendel user with a given {@link KeySet}.
+	 * 
+	 * @param keySet the {@link KeySet} belonging to the user
+	 */
 	public User(KeySet keySet) {
 		setKeySet(keySet);
 		this.createdAt = new DateTime(DateTimeZone.UTC);
 		this.modifiedAt = new DateTime(DateTimeZone.UTC);
 	}
 	
+	/**
+	 * Returns the user's id.
+	 */
 	public String getId() {
 		return id;
 	}
 	
+	/**
+	 * Returns the user's {@link KeySet}.
+	 */
 	public KeySet getKeySet() {
 		if (keySet == null) {
 			try {
@@ -96,28 +112,48 @@ public class User implements Serializable {
 		return keySet;
 	}
 	
+	/**
+	 * Replaces the user's {@link KeySet} with another.
+	 * 
+	 * @param keySet a new {@link KeySet}
+	 */
 	public void setKeySet(KeySet keySet) {
 		this.keySet = keySet;
 		this.id = keySet.getUserID();
 		this.encodedKeySet = keySet.getEncoded();
 	}
 	
+	/**
+	 * Returns a UTC timestamp of when this user was created.
+	 */
 	public DateTime getCreatedAt() {
 		return toUTC(createdAt);
 	}
 	
+	/**
+	 * Sets a UTC timestamp of when this user was created.
+	 */
 	public void setCreatedAt(DateTime createdAt) {
 		this.createdAt = toUTC(createdAt);
 	}
 	
+	/**
+	 * Returns a UTC timestamp of when this user was last modified.
+	 */
 	public DateTime getModifiedAt() {
 		return toUTC(modifiedAt);
 	}
 	
+	/**
+	 * Sets a UTC timestamp of when this user was last modified.
+	 */
 	public void setModifiedAt(DateTime modifiedAt) {
 		this.modifiedAt = toUTC(modifiedAt);
 	}
-
+	
+	/**
+	 * Returns a set of the user's {@link Document}s.
+	 */
 	public Set<Document> getDocuments() {
 		return documents;
 	}

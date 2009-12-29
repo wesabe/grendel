@@ -10,6 +10,11 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Stage;
 import com.wesabe.grendel.modules.SecureRandomProvider;
 
+/**
+ * The Shore configuration class.
+ * 
+ * @author coda
+ */
 public class Configuration extends AbstractConfiguration {
 	@Override
 	protected void configure() {

@@ -33,7 +33,8 @@ public abstract class AbstractKey {
 	 * @param signingKey the signing key
 	 * @param requiredSignatureType the type of signature required
 	 */
-	protected AbstractKey(PGPSecretKey key, PGPSecretKey signingKey, SignatureType requiredSignatureType) {
+	protected AbstractKey(PGPSecretKey key, PGPSecretKey signingKey,
+		SignatureType requiredSignatureType) {
 		this.secretKey = key;
 		this.publicKey = secretKey.getPublicKey();
 		this.signature = getSignature(signingKey, requiredSignatureType);
@@ -176,10 +177,13 @@ public abstract class AbstractKey {
 		return flags;
 	}
 	
-	private KeySignature getSignature(PGPSecretKey signingKey, SignatureType requiredSignatureType) {
+	private KeySignature getSignature(PGPSecretKey signingKey,
+		SignatureType requiredSignatureType) {
 		final Iterator<?> signatures = publicKey.getSignatures();
 		while (signatures.hasNext()) {
-			final KeySignature signature = new KeySignature((PGPSignature) signatures.next());
+			final KeySignature signature = new KeySignature(
+				(PGPSignature) signatures.next()
+			);
 			if ((signature.getKeyID() == signingKey.getKeyID())
 				&& (signature.getSignatureType() == requiredSignatureType)) {
 				return signature;

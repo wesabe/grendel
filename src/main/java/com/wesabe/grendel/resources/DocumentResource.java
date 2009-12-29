@@ -29,6 +29,11 @@ import com.wesabe.grendel.openpgp.CryptographicException;
 import com.wesabe.grendel.openpgp.KeySet;
 import com.wideplay.warp.persist.Transactional;
 
+/**
+ * A resource for managing a {@link User}'s {@link Document}s.
+ * 
+ * @author coda
+ */
 @Path("/users/{user_id}/{name}")
 @Consumes(MediaType.WILDCARD)
 @Produces(MediaType.WILDCARD)
@@ -46,14 +51,22 @@ public class DocumentResource {
 	private final DocumentDAO documentDAO;
 	
 	@Inject
-	public DocumentResource(Provider<SecureRandom> randomProvider, UserDAO userDAO, DocumentDAO documentDAO) {
+	public DocumentResource(Provider<SecureRandom> randomProvider, UserDAO userDAO,
+		DocumentDAO documentDAO) {
 		this.randomProvider = randomProvider;
 		this.userDAO = userDAO;
 		this.documentDAO = documentDAO;
 	}
 	
+	/**
+	 * Responds to a {@link GET} request by decrypting the {@link Document} body
+	 * and returning it.
+	 * <p>
+	 * <strong>N.B.:</strong> Requires Basic authentication.
+	 */
 	@GET
-	public Response show(@Context Credentials credentials, @PathParam("user_id") String userId, @PathParam("name") String name) {
+	public Response show(@Context Credentials credentials,
+		@PathParam("user_id") String userId, @PathParam("name") String name) {
 		final User owner = userDAO.findById(userId);
 		if (owner == null) {
 			throw new WebApplicationException(Status.NOT_FOUND);
@@ -66,7 +79,9 @@ public class DocumentResource {
 			}
 			
 			try {
-				final byte[] body = doc.decryptBodyForOwner(credentials.getPassword().toCharArray());
+				final byte[] body = doc.decryptBodyForOwner(
+					credentials.getPassword().toCharArray()
+				);
 				return Response.ok()
 						.entity(body)
 						.type(doc.getContentType())
@@ -81,9 +96,15 @@ public class DocumentResource {
 		return Credentials.CHALLENGE;
 	}
 	
+	/**
+	 * Responds to a {@link DELETE} request by deleting the {@link Document}.
+	 * <p>
+	 * <strong>N.B.:</strong> Requires Basic authentication.
+	 */
 	@DELETE
 	@Transactional
-	public Response delete(@Context Credentials credentials, @PathParam("user_id") String userId, @PathParam("name") String name) {
+	public Response delete(@Context Credentials credentials,
+		@PathParam("user_id") String userId, @PathParam("name") String name) {
 		final User owner = userDAO.findById(userId);
 		if (owner == null) {
 			throw new WebApplicationException(Status.NOT_FOUND);
@@ -107,10 +128,17 @@ public class DocumentResource {
 		return Credentials.CHALLENGE;
 	}
 	
-	
+	/**
+	 * Responds to a {@link PUT} request by replacing the specified
+	 * {@link Document} with the request entity.
+	 * <p>
+	 * <strong>N.B.:</strong> Requires Basic authentication.
+	 */
 	@PUT
 	@Transactional
-	public Response create(@Context HttpHeaders headers, @Context Credentials credentials, @PathParam("user_id") String userId, @PathParam("name") String name, byte[] body) {
+	public Response create(@Context HttpHeaders headers,
+		@Context Credentials credentials, @PathParam("user_id") String userId,
+		@PathParam("name") String name, byte[] body) {
 		final User owner = userDAO.findById(userId);
 		if (owner == null) {
 			throw new WebApplicationException(Status.NOT_FOUND);
@@ -123,7 +151,12 @@ public class DocumentResource {
 			}
 			
 			try {
-				doc.encryptAndSetBody(credentials.getPassword().toCharArray(), ImmutableList.<KeySet>of(), randomProvider.get(), body);
+				doc.encryptAndSetBody(
+					credentials.getPassword().toCharArray(),
+					ImmutableList.<KeySet>of(),
+					randomProvider.get(),
+					body
+				);
 			} catch (CryptographicException e) {
 				return Credentials.CHALLENGE;
 			}

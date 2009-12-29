@@ -22,10 +22,18 @@ public class KeySet {
 	private final MasterKey masterKey;
 	private final SubKey subKey;
 	
+	/**
+	 * Loads a {@link KeySet} from an array of bytes.
+	 * 
+	 * @throws CryptographicException if the encoded {@link KeySet} is malformed
+	 */
 	public static KeySet load(byte[] encoded) throws CryptographicException {
 		return load(new ByteArrayInputStream(encoded));
 	}
 	
+	/**
+	 * Loads a {@link KeySet} from a {@link PGPSecretKeyRing}.
+	 */
 	public static KeySet load(PGPSecretKeyRing keyRing) throws CryptographicException {
 		final List<PGPSecretKey> secretKeys = Iterators.toList(keyRing.getSecretKeys());
 		final MasterKey masterKey = MasterKey.load(secretKeys.get(0));
@@ -34,6 +42,9 @@ public class KeySet {
 		return new KeySet(masterKey, subKey);
 	}
 	
+	/**
+	 * Loads a {@link KeySet} from an {@link InputStream}.
+	 */
 	public static KeySet load(InputStream input) throws CryptographicException {
 		try {
 			final PGPSecretKeyRing keyRing = new PGPSecretKeyRing(input);
