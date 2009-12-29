@@ -165,27 +165,18 @@ public class UserResourceTest {
 			when(dao.findById("bob")).thenReturn(user);
 			when(user.getId()).thenReturn("frank");
 			
-			try {
-				resource.delete(uriInfo, credentials, "bob");
-				fail("should have thrown a 401 but didn't");
-			} catch (WebApplicationException e) {
-				assertThat(e.getResponse().getStatus()).isEqualTo(Status.UNAUTHORIZED.getStatusCode());
-			}
+			final Response response = resource.delete(uriInfo, credentials, "bob");
+			assertThat(response).isEqualTo(Credentials.CHALLENGE);
 		}
 		
 		@Test
 		public void itReturnsA401IfThePasswordDoesntMatch() throws Exception {
 			when(dao.findById("bob")).thenReturn(user);
 			when(user.getId()).thenReturn("bob");
-			
 			when(keySet.unlock(Mockito.any(char[].class))).thenThrow(new CryptographicException("whups"));
 			
-			try {
-				resource.delete(uriInfo, credentials, "bob");
-				fail("should have thrown a 401 but didn't");
-			} catch (WebApplicationException e) {
-				assertThat(e.getResponse().getStatus()).isEqualTo(Status.UNAUTHORIZED.getStatusCode());
-			}
+			final Response response = resource.delete(uriInfo, credentials, "bob");
+			assertThat(response).isEqualTo(Credentials.CHALLENGE);
 		}
 		
 		@Test
@@ -245,12 +236,8 @@ public class UserResourceTest {
 			when(dao.findById("bob")).thenReturn(user);
 			when(user.getId()).thenReturn("frank");
 			
-			try {
-				resource.update(credentials, "bob", request);
-				fail("should have thrown a 401 but didn't");
-			} catch (WebApplicationException e) {
-				assertThat(e.getResponse().getStatus()).isEqualTo(Status.UNAUTHORIZED.getStatusCode());
-			}
+			final Response response = resource.update(credentials, "bob", request);
+			assertThat(response).isEqualTo(Credentials.CHALLENGE);
 		}
 		
 		@Test

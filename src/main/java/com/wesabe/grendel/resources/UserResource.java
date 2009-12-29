@@ -73,11 +73,11 @@ public class UserResource {
 				
 				return Response.noContent().build();
 			} catch (CryptographicException e) {
-				throw new WebApplicationException(Credentials.CHALLENGE);
+				return Credentials.CHALLENGE;
 			}
 		}
 		
-		throw new WebApplicationException(Credentials.CHALLENGE);
+		return Credentials.CHALLENGE;
 	}
 	
 	@DELETE
@@ -93,7 +93,7 @@ public class UserResource {
 			}
 		}
 		
-		throw new WebApplicationException(Credentials.CHALLENGE);
+		return Credentials.CHALLENGE;
 	}
 
 	private User findUser(String id) {
@@ -109,15 +109,11 @@ public class UserResource {
 			user.getKeySet().unlock(password.toCharArray());
 			return true;
 		} catch (CryptographicException e) {
-			throw new WebApplicationException(Credentials.CHALLENGE);
+			return false;
 		}
 	}
 
 	private boolean isValidUsername(User user, String username) {
-		if (!user.getId().equals(username)) {
-			throw new WebApplicationException(Credentials.CHALLENGE);
-		}
-		
-		return true;
+		return user.getId().equals(username);
 	}
 }
