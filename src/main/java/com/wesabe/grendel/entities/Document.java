@@ -29,7 +29,7 @@ import com.wesabe.grendel.util.HashCode;
 
 @Entity
 @Table(name="documents")
-@IdClass(DocumentReference.class)
+@IdClass(DocumentPK.class)
 @NamedQueries({
 	@NamedQuery(
 		name="com.wesabe.grendel.entities.Document.ByOwnerAndName",

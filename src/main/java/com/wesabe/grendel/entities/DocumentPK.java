@@ -16,7 +16,7 @@ import com.wesabe.grendel.util.HashCode;
  * 
  * @author coda
  */
-public class DocumentReference implements Serializable {
+public class DocumentPK implements Serializable {
 	private static final long serialVersionUID = -4514388507586009635L;
 	
 	private String name;
@@ -26,21 +26,8 @@ public class DocumentReference implements Serializable {
 	private User owner;
 	
 	@Deprecated
-	public DocumentReference() {
+	public DocumentPK() {
 		// for Hibernate usage only
-	}
-	
-	public DocumentReference(User owner, String name) {
-		this.owner = owner;
-		this.name = name;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public User getOwner() {
-		return owner;
 	}
 
 	@Override
@@ -57,11 +44,11 @@ public class DocumentReference implements Serializable {
 			return false;
 		}
 		
-		if (!(obj instanceof DocumentReference)) {
+		if (!(obj instanceof DocumentPK)) {
 			return false;
 		}
 		
-		final DocumentReference that = (DocumentReference) obj;
+		final DocumentPK that = (DocumentPK) obj;
 		return equal(name, that.name) && equal(owner, that.owner);
 	}
 }
