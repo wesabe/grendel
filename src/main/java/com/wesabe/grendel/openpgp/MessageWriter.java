@@ -3,7 +3,7 @@ package com.wesabe.grendel.openpgp;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.security.SecureRandom;
-import java.util.List;
+import java.util.Collection;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openpgp.PGPCompressedDataGenerator;
@@ -87,7 +87,7 @@ public class MessageWriter {
 	private static final double ENVELOPE_OVERHEAD = 1.2;
 	private static final double RECIPIENT_OVERHEAD = 300;
 	private final UnlockedKeySet owner;
-	private final List<KeySet> recipients;
+	private final Collection<KeySet> recipients;
 	private final SecureRandom random;
 	
 	/**
@@ -100,7 +100,7 @@ public class MessageWriter {
 	 * @param random
 	 *            a {@link SecureRandom} instance
 	 */
-	public MessageWriter(UnlockedKeySet owner, List<KeySet> recipients, SecureRandom random) {
+	public MessageWriter(UnlockedKeySet owner, Collection<KeySet> recipients, SecureRandom random) {
 		this.owner = owner;
 		this.recipients = recipients;
 		this.random = random;

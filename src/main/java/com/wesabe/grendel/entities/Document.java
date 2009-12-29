@@ -1,10 +1,10 @@
 package com.wesabe.grendel.entities;
 
-import static com.google.common.base.Objects.equal;
+import static com.google.common.base.Objects.*;
 
 import java.io.Serializable;
 import java.security.SecureRandom;
-import java.util.List;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -102,7 +102,8 @@ public class Document implements Serializable {
 		this.modifiedAt = toUTC(modifiedAt);
 	}
 	
-	public void encryptAndSetBody(char[] ownerPassphrase, List<KeySet> recipients, SecureRandom random, byte[] body) throws CryptographicException {
+	public void encryptAndSetBody(char[] ownerPassphrase, Collection<KeySet> recipients,
+		SecureRandom random, byte[] body) throws CryptographicException {
 		final UnlockedKeySet ownerKeySet = owner.getKeySet().unlock(ownerPassphrase);
 		final MessageWriter writer = new MessageWriter(ownerKeySet, recipients, random);
 		this.body = writer.write(body);
