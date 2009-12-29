@@ -102,18 +102,6 @@ public class User implements Serializable {
 		this.encodedKeySet = keySet.getEncoded();
 	}
 	
-	public byte[] getEncodedKeySet() {
-		return encodedKeySet;
-	}
-	
-	public void setEncodedKeySet(byte[] encodedKeySet) {
-		this.encodedKeySet = encodedKeySet;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-	
 	public DateTime getCreatedAt() {
 		return toUTC(createdAt);
 	}

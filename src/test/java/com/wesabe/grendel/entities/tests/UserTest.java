@@ -35,7 +35,6 @@ public class UserTest {
 			
 			this.keySet = mock(KeySet.class);
 			when(keySet.getUserID()).thenReturn("user");
-			when(keySet.getEncoded()).thenReturn(new byte[] { (byte) 0xDE, (byte) 0xAD, (byte) 0xBE, (byte) 0xEF});
 		}
 		
 		@After
@@ -49,7 +48,6 @@ public class UserTest {
 			
 			assertThat(user.getId()).isEqualTo("user");
 			assertThat(user.getKeySet()).isEqualTo(keySet);
-			assertThat(user.getEncodedKeySet()).isEqualTo(new byte[] { (byte) 0xDE, (byte) 0xAD, (byte) 0xBE, (byte) 0xEF});
 		}
 		
 		@Test
