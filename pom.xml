@@ -224,7 +224,7 @@
 								<transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>com.wesabe.grendel.webapp.Runner</mainClass>
+									<mainClass>com.wesabe.grendel.Runner</mainClass>
 								</transformer>
 							</transformers>
 						</configuration>
