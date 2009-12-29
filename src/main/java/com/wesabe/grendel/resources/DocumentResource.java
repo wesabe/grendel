@@ -74,11 +74,11 @@ public class DocumentResource {
 						.lastModified(doc.getModifiedAt().toDate())
 						.build();
 			} catch (CryptographicException e) {
-				throw new WebApplicationException(Credentials.CHALLENGE);
+				return Credentials.CHALLENGE;
 			}
 		}
 		
-		throw new WebApplicationException(Credentials.CHALLENGE);
+		return Credentials.CHALLENGE;
 	}
 	
 	@DELETE
@@ -100,11 +100,11 @@ public class DocumentResource {
 				documentDAO.delete(doc);
 				return Response.noContent().build();
 			} catch (CryptographicException e) {
-				throw new WebApplicationException(Credentials.CHALLENGE);
+				return Credentials.CHALLENGE;
 			}
 		}
 		
-		throw new WebApplicationException(Credentials.CHALLENGE);
+		return Credentials.CHALLENGE;
 	}
 	
 	
@@ -125,7 +125,7 @@ public class DocumentResource {
 			try {
 				doc.encryptAndSetBody(credentials.getPassword().toCharArray(), ImmutableList.<KeySet>of(), randomProvider.get(), body);
 			} catch (CryptographicException e) {
-				throw new WebApplicationException(Credentials.CHALLENGE);
+				return Credentials.CHALLENGE;
 			}
 			
 			documentDAO.saveOrUpdate(doc);
@@ -133,15 +133,11 @@ public class DocumentResource {
 			return Response.noContent().build();
 		}
 		
-		throw new WebApplicationException(Credentials.CHALLENGE);
+		return Credentials.CHALLENGE;
 	}
 	
 	private boolean isValidUsername(User user, String username) {
-		if (!user.getId().equals(username)) {
-			throw new WebApplicationException(Credentials.CHALLENGE);
-		}
-		
-		return true;
+		return user.getId().equals(username);
 	}
 	
 }

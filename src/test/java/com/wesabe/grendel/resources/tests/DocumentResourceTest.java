@@ -98,12 +98,8 @@ public class DocumentResourceTest {
 		public void itReturnsA401IfTheUsernameDoesntMatch() throws Exception {
 			when(user.getId()).thenReturn("frank");
 			
-			try {
-				resource.show(credentials, "bob", "document1.txt");
-				fail("should have thrown a 401 but didn't");
-			} catch (WebApplicationException e) {
-				assertThat(e.getResponse().getStatus()).isEqualTo(Status.UNAUTHORIZED.getStatusCode());
-			}
+			final Response response = resource.show(credentials, "bob", "document1.txt");
+			assertThat(response).isEqualTo(Credentials.CHALLENGE);
 		}
 		
 		@Test
@@ -122,12 +118,8 @@ public class DocumentResourceTest {
 		public void itReturnsA401IfTheDocumentWontUnlock() throws Exception {
 			when(document.decryptBodyForOwner(Mockito.any(char[].class))).thenThrow(new CryptographicException("whups"));
 			
-			try {
-				resource.show(credentials, "bob", "document1.txt");
-				fail("should have thrown a 401 but didn't");
-			} catch (WebApplicationException e) {
-				assertThat(e.getResponse().getStatus()).isEqualTo(Status.UNAUTHORIZED.getStatusCode());
-			}
+			final Response response = resource.show(credentials, "bob", "document1.txt");
+			assertThat(response).isEqualTo(Credentials.CHALLENGE);
 		}
 		
 		@Test
@@ -174,12 +166,8 @@ public class DocumentResourceTest {
 		public void itReturnsA401IfTheUsernameDoesntMatch() throws Exception {
 			when(user.getId()).thenReturn("frank");
 			
-			try {
-				resource.delete(credentials, "bob", "document1.txt");
-				fail("should have thrown a 401 but didn't");
-			} catch (WebApplicationException e) {
-				assertThat(e.getResponse().getStatus()).isEqualTo(Status.UNAUTHORIZED.getStatusCode());
-			}
+			final Response response = resource.delete(credentials, "bob", "document1.txt");
+			assertThat(response).isEqualTo(Credentials.CHALLENGE);
 		}
 		
 		@Test
@@ -198,12 +186,8 @@ public class DocumentResourceTest {
 		public void itReturnsA401IfTheDocumentWontUnlock() throws Exception {
 			when(document.decryptBodyForOwner(Mockito.any(char[].class))).thenThrow(new CryptographicException("whups"));
 			
-			try {
-				resource.delete(credentials, "bob", "document1.txt");
-				fail("should have thrown a 401 but didn't");
-			} catch (WebApplicationException e) {
-				assertThat(e.getResponse().getStatus()).isEqualTo(Status.UNAUTHORIZED.getStatusCode());
-			}
+			final Response response = resource.delete(credentials, "bob", "document1.txt");
+			assertThat(response).isEqualTo(Credentials.CHALLENGE);
 		}
 		
 		@Test
@@ -257,12 +241,8 @@ public class DocumentResourceTest {
 		public void itReturnsA401IfTheUsernameDoesntMatch() throws Exception {
 			when(user.getId()).thenReturn("frank");
 
-			try {
-				resource.create(headers, credentials, "bob", "document1.txt", body);
-				fail("should have thrown a 401 but didn't");
-			} catch (WebApplicationException e) {
-				assertThat(e.getResponse().getStatus()).isEqualTo(Status.UNAUTHORIZED.getStatusCode());
-			}
+			final Response response = resource.create(headers, credentials, "bob", "document1.txt", body);
+			assertThat(response).isEqualTo(Credentials.CHALLENGE);
 		}
 
 		@SuppressWarnings("unchecked")
@@ -321,12 +301,8 @@ public class DocumentResourceTest {
 				.when(document)
 				.encryptAndSetBody(Mockito.any(char[].class), Mockito.anyListOf(KeySet.class), Mockito.any(SecureRandom.class), Mockito.any(byte[].class));
 
-			try {
-				resource.create(headers, credentials, "bob", "document1.txt", body);
-				fail("should have thrown a 401 but didn't");
-			} catch (WebApplicationException e) {
-				assertThat(e.getResponse().getStatus()).isEqualTo(Status.UNAUTHORIZED.getStatusCode());
-			}
+			final Response response = resource.create(headers, credentials, "bob", "document1.txt", body);
+			assertThat(response).isEqualTo(Credentials.CHALLENGE);
 		}
 
 	}
