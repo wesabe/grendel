@@ -35,7 +35,7 @@
 		</license>
 	</licenses>
 	<properties>
-		<bouncycastle.version>144</bouncycastle.version>
+		<bouncycastle.version>1.44</bouncycastle.version>
 		<jackson.version>1.4.0</jackson.version>
 	</properties>
 	<repositories>
@@ -141,12 +141,12 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>bouncycastle</groupId>
+			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcprov-jdk16</artifactId>
 			<version>${bouncycastle.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>bouncycastle</groupId>
+			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcpg-jdk16</artifactId>
 			<version>${bouncycastle.version}</version>
 		</dependency>
