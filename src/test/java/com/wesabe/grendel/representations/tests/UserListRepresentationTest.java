@@ -3,10 +3,14 @@ package com.wesabe.grendel.representations.tests;
 import static org.fest.assertions.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.util.List;
+
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
+import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ObjectNode;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
@@ -44,17 +48,16 @@ public class UserListRepresentationTest {
 		@Test
 		public void itSerializesIntoJSON() throws Exception {
 			final ObjectMapper mapper = new ObjectMapper();
+			final String json = mapper.writeValueAsString(rep);
 			
-			assertThat(mapper.writeValueAsString(rep)).isEqualTo(
-				"{" +
-					"\"users\":[" +
-						"{" +
-							"\"id\":\"mrpeepers\"," +
-							"\"uri\":\"http://example.com/users/mrpeepers\"" +
-						"}" +
-					"]" +
-				"}"
-			);
+			final ObjectNode entity = mapper.readValue(json, ObjectNode.class);
+			final List<JsonNode> users = ImmutableList.copyOf(entity.get("users").getElements());
+			
+			assertThat(users).hasSize(1);
+			
+			final JsonNode user = users.get(0);
+			assertThat(user.get("id").getTextValue()).isEqualTo("mrpeepers");
+			assertThat(user.get("uri").getTextValue()).isEqualTo("http://example.com/users/mrpeepers");
 		}
 	}
 }

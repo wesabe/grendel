@@ -3,10 +3,14 @@ package com.wesabe.grendel.representations.tests;
 import static org.fest.assertions.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.util.List;
+
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
+import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ObjectNode;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Before;
@@ -16,6 +20,7 @@ import org.junit.runner.RunWith;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.wesabe.grendel.entities.Document;
 import com.wesabe.grendel.entities.User;
@@ -60,20 +65,22 @@ public class UserInfoRepresentationTest {
 		@Test
 		public void itSerializesIntoJSON() throws Exception {
 			final ObjectMapper mapper = new ObjectMapper();
-			assertThat(mapper.writeValueAsString(rep)).isEqualTo(
-				"{" +
-					"\"id\":\"mrpeepers\"," +
-					"\"created-at\":\"20091222T040900Z\"," +
-					"\"modified-at\":\"20091228T142300Z\"," +
-					"\"documents\":[" +
-						"{" +
-							"\"name\":\"document1.txt\"," +
-							"\"uri\":\"http://example.com/users/mrpeepers/document1.txt\"" +
-						"}" +
-					"]," +
-					"\"keys\":\"[2048-RSA 5F2910, 2048-RSA 23B19D3]\"" +
-				"}"
-			);
+			
+			final String json = mapper.writeValueAsString(rep);
+			
+			final ObjectNode node = mapper.readValue(json, ObjectNode.class);
+			
+			assertThat(node.get("id").getTextValue()).isEqualTo("mrpeepers");
+			assertThat(node.get("created-at").getTextValue()).isEqualTo("20091222T040900Z");
+			assertThat(node.get("modified-at").getTextValue()).isEqualTo("20091228T142300Z");
+			assertThat(node.get("keys").getTextValue()).isEqualTo("[2048-RSA 5F2910, 2048-RSA 23B19D3]");
+			
+			final List<JsonNode> documents = ImmutableList.copyOf(node.get("documents").getElements());
+			assertThat(documents).hasSize(1);
+			
+			final JsonNode document = documents.get(0);
+			assertThat(document.get("name").getTextValue()).isEqualTo("document1.txt");
+			assertThat(document.get("uri").getTextValue()).isEqualTo("http://example.com/users/mrpeepers/document1.txt");
 		}
 	}
 }
