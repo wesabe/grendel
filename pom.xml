@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.wesabe</groupId>
 	<artifactId>grendel</artifactId>
-	<version>0.1.1</version>
+	<version>0.1.2-SNAPSHOT</version>
 	<name>Grendel</name>
 	<description>A secure document storage service.</description>
 	<url>http://github.com/wesabe/grendel/tree</url>
@@ -198,14 +198,14 @@
 					<createDependencyReducedPom>true</createDependencyReducedPom>
 					<filters>
 						<filter>
-							<artifact>bouncycastle:bcprov-jdk16</artifact>
+							<artifact>org.bouncycastle:bcprov-jdk16</artifact>
 							<excludes>
 								<!-- don't include the damn signature because it kills the shaded JAR -->
 								<exclude>META-INF/BCKEY.*</exclude>
 							</excludes>
 						</filter>
 						<filter>
-							<artifact>bouncycastle:bcpg-jdk16</artifact>
+							<artifact>org.bouncycastle:bcpg-jdk16</artifact>
 							<excludes>
 								<!-- don't include the damn signature because it kills the shaded JAR -->
 								<exclude>META-INF/BCKEY.*</exclude>
