@@ -11,6 +11,38 @@ the user stores a document, the document is signed with the user's master key
 and encrypted with their sub key.
 
 
+Requirements
+------------
+
+* Java 1.6.0 (ideally 1.6.0_17 or newer)
+* Bouncy Castle JCE Provider (1.44 or newer)
+
+To install Bouncy Castle, follow these steps:
+
+1. Download the
+   [latest release of the Bouncy Castle JCE Provider](http://www.bouncycastle.org/latest_releases.html)
+   (1.44 or newer) and copy it to the `lib/ext` directory of your Java install.
+   (On OS X this is `/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home/lib/ext`.)
+2. Add the Bouncy Castle JCE Provider to your list of allowed JCE providers by
+   editing the `security/java.security` file in your Java install and adding
+   the following line:
+   
+        security.provider.<n>=org.bouncycastle.jce.provider.BouncyCastleProvider
+   
+   Where <n> is the number greater than the last number in that section.
+   
+   For example:
+   
+        security.provider.1=sun.security.pkcs11.SunPKCS11 ${java.home}/lib/security/sunpkcs11-macosx.cfg
+        security.provider.2=sun.security.provider.Sun
+        ... etc ...
+        security.provider.10=sun.security.smartcardio.SunPCSC
+        security.provider.11=org.bouncycastle.jce.provider.BouncyCastleProvider
+   
+   For more information, please refer to the
+   [Bouncy Castle documentation](http://www.bouncycastle.org/specifications.html#install).
+
+
 How To Build It
 ---------------
 
