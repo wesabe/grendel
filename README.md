@@ -21,7 +21,7 @@ To install Bouncy Castle, follow these steps:
 
 1. Download the
    [latest release of the Bouncy Castle JCE Provider](http://www.bouncycastle.org/latest_releases.html)
-   (1.44 or newer, no IDEA required -- for instance, bcprov-jdk16-144.jar) and copy it to the `lib/ext` 
+   (1.44 or newer, no IDEA required — for instance, bcprov-jdk16-144.jar) and copy it to the `lib/ext` 
    directory of your Java install.
    (On OS X this is `/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home/lib/ext`.)
 2. Add the Bouncy Castle JCE Provider to your list of allowed JCE providers by
