@@ -102,6 +102,19 @@ To run Grendel as a web service, run this:
 This will run Grendel on port 8080.
 
 
+How To Try It
+-------------
+
+All of the operations documented below are demonstrated with shell scripts that you
+can find in the [examples directory](http://github.com/wesabe/grendel/tree/master/examples/).
+These assume that Grendel is running on localhost, port 8080.  Run them with arguments as shown
+in the source; for instance:
+
+    ./create-user.sh coda seekritpass
+
+The full request and response will be shown as output.
+
+
 The Users Resource (`/users/`)
 ------------------------------
 
