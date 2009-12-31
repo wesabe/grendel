@@ -70,10 +70,9 @@ for MySQL's storage of null `DATETIME` values as all-zero strings.
 It's recommended that your properties file be stored so that only the system
 user running the Grendel server can access it.
 
-Once you have the properties file in place, create a database and a
-database user for Grendel.  Create the tables Grendel needs by
-generating a migration script (see _How To Run It_, below) and running
-it.  For instance:
+Once you have the properties file in place, create a database and a database
+user for Grendel.  Create the tables Grendel needs by generating a full database
+schema script (see _How To Run It_, below) and running it. For instance:
 
     java -jar target/grendel-${VERSION}.jar schema --migration -c grendel.properties > setup-grendel.sql
     mysql -u grendel -p grendel < setup-grendel.sql
