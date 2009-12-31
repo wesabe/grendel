@@ -21,7 +21,8 @@ To install Bouncy Castle, follow these steps:
 
 1. Download the
    [latest release of the Bouncy Castle JCE Provider](http://www.bouncycastle.org/latest_releases.html)
-   (1.44 or newer) and copy it to the `lib/ext` directory of your Java install.
+   (1.44 or newer, no IDEA required -- for instance, bcprov-jdk16-144.jar) and copy it to the `lib/ext` 
+   directory of your Java install.
    (On OS X this is `/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home/lib/ext`.)
 2. Add the Bouncy Castle JCE Provider to your list of allowed JCE providers by
    editing the `security/java.security` file in your Java install and adding
@@ -49,8 +50,8 @@ How To Build It
 Run `mvn clean package` and look for the JAR file in the `target` directory.
 
 
-How To Configure It
--------------------
+How To Set It Up
+----------------
 
 Grendel requires a single configuration file, usually named
 `grendel.properties`. It should look something like this:
@@ -68,6 +69,14 @@ for MySQL's storage of null `DATETIME` values as all-zero strings.
 
 It's recommended that your properties file be stored so that only the system
 user running the Grendel server can access it.
+
+Once you have the properties file in place, create a database and a
+database user for Grendel.  Create the tables Grendel needs by
+generating a migration script (see _How To Run It_, below) and running
+it.  For instance:
+
+    java -jar target/grendel-${VERSION}.jar schema --migration -c grendel.properties > setup-grendel.sql
+    mysql -u grendel -p grendel < setup-grendel.sql
 
 
 How To Run It
