@@ -5,7 +5,6 @@ import java.io.OutputStream;
 import java.security.SecureRandom;
 import java.util.Collection;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openpgp.PGPCompressedDataGenerator;
 import org.bouncycastle.openpgp.PGPEncryptedDataGenerator;
 import org.bouncycastle.openpgp.PGPLiteralData;
@@ -164,7 +163,7 @@ public class MessageWriter {
 
 		final PGPEncryptedDataGenerator encryptedDataGenerator = new PGPEncryptedDataGenerator(
 			SymmetricAlgorithm.DEFAULT.toInteger(), true, random,
-			BouncyCastleProvider.PROVIDER_NAME);
+			"BC");
 
 		for (KeySet recipient : recipients) {
 			if (recipient.getSubKey().getKeyID() != owner.getSubKey().getKeyID()) {
@@ -186,7 +185,7 @@ public class MessageWriter {
 		final PGPSignatureGenerator signatureGenerator = new PGPSignatureGenerator(
 			owner.getPublicKey().getAlgorithm(),
 			HashAlgorithm.DEFAULT.toInteger(),
-			BouncyCastleProvider.PROVIDER_NAME);
+			"BC");
 		signatureGenerator.initSign(PGPSignature.BINARY_DOCUMENT, owner.getPrivateKey());
 
 		final PGPSignatureSubpacketGenerator signatureMetaData = new PGPSignatureSubpacketGenerator();

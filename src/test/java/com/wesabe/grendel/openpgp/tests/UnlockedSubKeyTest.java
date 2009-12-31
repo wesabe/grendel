@@ -3,10 +3,8 @@ package com.wesabe.grendel.openpgp.tests;
 import static org.fest.assertions.Assertions.*;
 
 import java.io.FileInputStream;
-import java.security.Security;
 import java.util.List;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openpgp.PGPSecretKey;
 import org.bouncycastle.openpgp.PGPSecretKeyRing;
 import org.junit.Before;
@@ -26,7 +24,6 @@ public class UnlockedSubKeyTest {
 		
 		@Before
 		public void setup() throws Exception {
-			Security.addProvider(new BouncyCastleProvider());
 			final FileInputStream keyRingFile = new FileInputStream("src/test/resources/secret-keyring.gpg");
 			final PGPSecretKeyRing keyRing = new PGPSecretKeyRing(keyRingFile);
 			keyRingFile.close();

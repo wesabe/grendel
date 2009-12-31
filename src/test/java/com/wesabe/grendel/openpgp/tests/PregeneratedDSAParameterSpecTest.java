@@ -4,11 +4,9 @@ import static org.fest.assertions.Assertions.*;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
-import java.security.Security;
 import java.security.Signature;
 import java.security.spec.DSAParameterSpec;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
@@ -34,8 +32,6 @@ public class PregeneratedDSAParameterSpecTest {
 		
 		@Test
 		public void itCanBeUsedToGenerateDSAKeyPairs() throws Exception {
-			Security.addProvider(new BouncyCastleProvider());
-			
 			final KeyPairGenerator generator = KeyPairGenerator.getInstance("DSA");
 			generator.initialize(spec);
 			

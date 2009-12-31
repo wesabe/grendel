@@ -3,9 +3,7 @@ package com.wesabe.grendel.openpgp.tests;
 import static org.fest.assertions.Assertions.*;
 
 import java.io.FileInputStream;
-import java.security.Security;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openpgp.PGPSecretKeyRing;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -30,7 +28,6 @@ public class MasterKeyTest {
 		
 		@Before
 		public void setup() throws Exception {
-			Security.addProvider(new BouncyCastleProvider());
 			final FileInputStream keyRingFile = new FileInputStream("src/test/resources/secret-keyring.gpg");
 			final PGPSecretKeyRing keyRing = new PGPSecretKeyRing(keyRingFile);
 			keyRingFile.close();
@@ -130,7 +127,6 @@ public class MasterKeyTest {
 
 		@Before
 		public void setup() throws Exception {
-			Security.addProvider(new BouncyCastleProvider());
 			final FileInputStream keyRingFile = new FileInputStream("src/test/resources/secret-keyring.gpg");
 			this.keyRing = new PGPSecretKeyRing(keyRingFile);
 			keyRingFile.close();
@@ -151,7 +147,6 @@ public class MasterKeyTest {
 		
 		@Before
 		public void setup() throws Exception {
-			Security.addProvider(new BouncyCastleProvider());
 			final FileInputStream keyRingFile = new FileInputStream("src/test/resources/secret-keyring.gpg");
 			final PGPSecretKeyRing keyRing = new PGPSecretKeyRing(keyRingFile);
 			keyRingFile.close();

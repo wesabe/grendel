@@ -4,10 +4,8 @@ import static org.fest.assertions.Assertions.*;
 
 import java.io.FileInputStream;
 import java.security.SecureRandom;
-import java.security.Security;
 import java.util.Random;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
@@ -28,7 +26,6 @@ public class MessageWriterTest {
 		
 		@Before
 		public void setup() throws Exception {
-			Security.addProvider(new BouncyCastleProvider());
 			final FileInputStream keyRingFile = new FileInputStream("src/test/resources/secret-keyring.gpg");
 			this.owner = KeySet.load(keyRingFile).unlock("test".toCharArray());
 			

@@ -5,9 +5,7 @@ import static org.mockito.Mockito.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
-import java.security.Security;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
@@ -28,8 +26,6 @@ public class UserTest {
 		
 		@Before
 		public void setup() throws Exception {
-			Security.addProvider(new BouncyCastleProvider());
-			
 			this.now = new DateTime(2009, 12, 27, 10, 0, 43, 0, DateTimeZone.UTC);
 			DateTimeUtils.setCurrentMillisFixed(now.getMillis());
 			
@@ -77,8 +73,6 @@ public class UserTest {
 		
 		@Before
 		public void setup() throws Exception {
-			Security.addProvider(new BouncyCastleProvider());
-			
 			final FileInputStream keyRingFile = new FileInputStream("src/test/resources/secret-keyring.gpg");
 			final ByteArrayOutputStream output = new ByteArrayOutputStream();
 			byte[] buffer = new byte[4096];

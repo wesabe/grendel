@@ -4,12 +4,10 @@ import static org.fest.assertions.Assertions.*;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
-import java.security.Security;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.DHParameterSpec;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
@@ -23,8 +21,6 @@ public class PregeneratedDHParameterSpecTest {
 		
 		@Test
 		public void itCanBeUsedToGenerateElGamalKeyPairs() throws Exception {
-			Security.addProvider(new BouncyCastleProvider());
-			
 			final KeyPairGenerator generator = KeyPairGenerator.getInstance("ElGamal");
 			generator.initialize(spec);
 			final KeyPair kp = generator.generateKeyPair();

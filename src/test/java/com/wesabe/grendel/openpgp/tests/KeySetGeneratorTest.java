@@ -3,9 +3,7 @@ package com.wesabe.grendel.openpgp.tests;
 import static org.fest.assertions.Assertions.*;
 
 import java.security.SecureRandom;
-import java.security.Security;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
@@ -28,8 +26,6 @@ public class KeySetGeneratorTest {
 
 		@BeforeClass
 		public static void setupOnce() throws Exception {
-			Security.addProvider(new BouncyCastleProvider());
-
 			final KeySetGenerator generator = new KeySetGenerator(new SecureRandom());
 			keySet = generator.generate("Sample User <sample@example.com", "hello there".toCharArray());
 		}

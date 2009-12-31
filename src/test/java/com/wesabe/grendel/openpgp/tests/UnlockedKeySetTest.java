@@ -5,9 +5,7 @@ import static org.junit.Assert.*;
 
 import java.io.FileInputStream;
 import java.security.SecureRandom;
-import java.security.Security;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openpgp.PGPSecretKeyRing;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +24,6 @@ public class UnlockedKeySetTest {
 
 		@Before
 		public void setup() throws Exception {
-			Security.addProvider(new BouncyCastleProvider());
 			final FileInputStream keyRingFile = new FileInputStream("src/test/resources/secret-keyring.gpg");
 			final PGPSecretKeyRing keyRing = new PGPSecretKeyRing(keyRingFile);
 			keyRingFile.close();

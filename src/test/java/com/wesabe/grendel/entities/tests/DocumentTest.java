@@ -6,11 +6,9 @@ import static org.mockito.Mockito.*;
 import java.io.FileInputStream;
 import java.lang.reflect.Field;
 import java.security.SecureRandom;
-import java.security.Security;
 
 import javax.ws.rs.core.MediaType;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
@@ -91,8 +89,6 @@ public class DocumentTest {
 		
 		@Before
 		public void setup() throws Exception {
-			Security.addProvider(new BouncyCastleProvider());
-			
 			final FileInputStream ownerKeyring = new FileInputStream("src/test/resources/secret-keyring.gpg");
 			this.ownerKeySet = KeySet.load(ownerKeyring);
 			ownerKeyring.close();
@@ -129,8 +125,6 @@ public class DocumentTest {
 
 		@Before
 		public void setup() throws Exception {
-			Security.addProvider(new BouncyCastleProvider());
-
 			final FileInputStream ownerKeyring = new FileInputStream("src/test/resources/secret-keyring.gpg");
 			this.ownerKeySet = KeySet.load(ownerKeyring);
 			ownerKeyring.close();
