@@ -236,10 +236,43 @@ Sending a `DELETE` request to `/users/codahale` will delete user `codahale`
     < HTTP/1.1 204 No Content
 
 
+The Documents Resource (`/users/{id}/documents/`)
+-------------------------------------------------
+
+The **Documents Resource** provides access to a list of a user's documents.
+
+Basic authentication, using the user's id and password, is required for all
+methods of this resource.
+
+
+`GET`
+-----
+
+Sending a `GET` request to `/users/codahale/documents/` will return a list of
+documents belonging to user `codahale`:
+
+    > GET /users/codahale/documents/ HTTP/1.1
+    > Authorization: Basic Y29kYWhhbGU6d29vd29v
+    > Accept: application/json
+    >
+    
+    < HTTP/1.1 200 OK
+    < Content-Type: application/json
+    <
+    < {
+    <   "documents":[
+    <       {
+    <           "name":"document1.txt",
+    <           "uri":"http://example.com/users/codahale/documents/document1.txt"
+    <       }
+    <   ]
+    < }
+
+
 The Document Resource (`/users/{id}/documents/{name}`)
 ------------------------------------------------------
 
-The **Document Resource** provides access a user's documents.
+The **Document Resource** provides to a document.
 
 Basic authentication, using the user's id and password, is required for all
 methods of this resource.

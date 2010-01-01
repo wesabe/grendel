@@ -31,7 +31,7 @@ import com.wesabe.grendel.openpgp.KeySet;
 import com.wideplay.warp.persist.Transactional;
 
 /**
- * A resource for managing a {@link User}'s {@link Document}s.
+ * A class which exposes {@link Document} as a resource.
  * 
  * @author coda
  */
