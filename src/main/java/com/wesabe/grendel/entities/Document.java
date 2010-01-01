@@ -212,4 +212,9 @@ public class Document implements Serializable {
 				equal(contentType, that.contentType) &&
 				equal(modifiedAt, that.modifiedAt);
 	}
+	
+	@Override
+	public String toString() {
+		return name;
+	}
 }

@@ -94,7 +94,7 @@ public class UserInfoRepresentation {
 		for (Document doc : user.getDocuments()) {
 			uris.add(new DocumentLink(
 				doc.getName(),
-				uriInfo.getBaseUriBuilder().path(DocumentResource.class).build(user.getId(), doc.getName())
+				uriInfo.getBaseUriBuilder().path(DocumentResource.class).build(user, doc)
 			));
 		}
 		return uris;

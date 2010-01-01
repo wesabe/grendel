@@ -65,7 +65,7 @@ public class UserListRepresentation {
 				user.getId(),
 				uriInfo.getBaseUriBuilder()
 							.path(UserResource.class)
-							.build(user.getId())
+							.build(user)
 			));
 		}
 		return items;

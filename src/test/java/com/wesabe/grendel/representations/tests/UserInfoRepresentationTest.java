@@ -51,12 +51,14 @@ public class UserInfoRepresentationTest {
 			
 			this.user = mock(User.class);
 			when(user.getId()).thenReturn("mrpeepers");
+			when(user.toString()).thenReturn("mrpeepers");
 			when(user.getKeySet()).thenReturn(keySet);
 			when(user.getCreatedAt()).thenReturn(new DateTime(2009, 12, 22, 4, 9, 00, 00, DateTimeZone.UTC));
 			when(user.getModifiedAt()).thenReturn(new DateTime(2009, 12, 28, 14, 23, 00, 00, DateTimeZone.UTC));
 			
 			this.document = mock(Document.class);
 			when(document.getName()).thenReturn("document1.txt");
+			when(document.toString()).thenReturn("document1.txt");
 			when(user.getDocuments()).thenReturn(ImmutableSet.of(document));
 			
 			this.rep = new UserInfoRepresentation(uriInfo, user);

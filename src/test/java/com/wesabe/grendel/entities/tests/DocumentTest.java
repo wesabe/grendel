@@ -80,6 +80,13 @@ public class DocumentTest {
 			
 			assertThat(doc.getContentType()).isEqualTo(MediaType.APPLICATION_OCTET_STREAM_TYPE);
 		}
+		
+		@Test
+		public void itIsLinkable() throws Exception {
+			final Document doc = new Document(owner, name, MediaType.APPLICATION_OCTET_STREAM_TYPE);
+			
+			assertThat(doc.toString()).isEqualTo(name);
+		}
 	}
 	
 	public static class Encrypting_A_Document_Body {

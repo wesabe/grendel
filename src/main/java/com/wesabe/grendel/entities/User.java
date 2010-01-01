@@ -185,4 +185,9 @@ public class User implements Serializable {
 				equal(createdAt, that.createdAt) && equal(modifiedAt, that.modifiedAt) &&
 				equal(encodedKeySet, that.encodedKeySet);
 	}
+	
+	@Override
+	public String toString() {
+		return id;
+	}
 }

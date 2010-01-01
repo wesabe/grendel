@@ -41,6 +41,7 @@ public class UserListRepresentationTest {
 			
 			this.user = mock(User.class);
 			when(user.getId()).thenReturn("mrpeepers");
+			when(user.toString()).thenReturn("mrpeepers");
 			
 			this.rep = new UserListRepresentation(uriInfo, ImmutableList.of(user));
 		}

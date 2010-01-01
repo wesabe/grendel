@@ -66,6 +66,13 @@ public class UserTest {
 			
 			assertThat(user.getDocuments()).isEmpty();
 		}
+		
+		@Test
+		public void itIsLinkable() throws Exception {
+			final User user = new User(keySet);
+			
+			assertThat(user.toString()).isEqualTo("user");
+		}
 	}
 	
 	public static class A_User_Loaded_From_The_Database {

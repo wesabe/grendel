@@ -63,6 +63,7 @@ public class UsersResourceTest {
 			
 			this.user = mock(User.class);
 			when(user.getId()).thenReturn("mrpeeper");
+			when(user.toString()).thenReturn("mrpeeper");
 			
 			when(userDAO.findAll()).thenReturn(ImmutableList.of(user));
 		}

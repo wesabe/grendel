@@ -80,7 +80,7 @@ public class UsersResource {
 		return Response.created(
 			uriInfo.getBaseUriBuilder()
 						.path(UserResource.class)
-						.build(user.getId())
+						.build(user)
 		).build();
 	}
 }
