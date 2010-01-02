@@ -21,6 +21,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.wesabe.grendel.auth.Credentials;
+import com.wesabe.grendel.auth.Session;
 import com.wesabe.grendel.entities.Document;
 import com.wesabe.grendel.entities.User;
 import com.wesabe.grendel.entities.dao.DocumentDAO;
@@ -63,37 +64,27 @@ public class DocumentResource {
 	 * and returning it.
 	 * <p>
 	 * <strong>N.B.:</strong> Requires Basic authentication.
+	 * @throws CryptographicException
 	 */
 	@GET
 	public Response show(@Context Credentials credentials,
-		@PathParam("user_id") String userId, @PathParam("name") String name) {
-		final User owner = userDAO.findById(userId);
-		if (owner == null) {
+		@PathParam("user_id") String userId, @PathParam("name") String name) throws CryptographicException {
+		
+		final Session session = credentials.buildSession(userDAO, userId);
+		
+		final Document doc = documentDAO.findByOwnerAndName(session.getUser(), name);
+		
+		if (doc == null) {
 			throw new WebApplicationException(Status.NOT_FOUND);
 		}
 		
-		if (isValidUsername(owner, credentials.getUsername())) {
-			Document doc = documentDAO.findByOwnerAndName(owner, name);
-			if (doc == null) {
-				throw new WebApplicationException(Status.NOT_FOUND);
-			}
-			
-			try {
-				final byte[] body = doc.decryptBodyForOwner(
-					credentials.getPassword().toCharArray()
-				);
-				return Response.ok()
-						.entity(body)
-						.type(doc.getContentType())
-						.cacheControl(CACHE_SETTINGS)
-						.lastModified(doc.getModifiedAt().toDate())
-						.build();
-			} catch (CryptographicException e) {
-				return Credentials.CHALLENGE;
-			}
-		}
-		
-		return Credentials.CHALLENGE;
+		final byte[] body = doc.decryptBody(session.getKeySet());
+		return Response.ok()
+				.entity(body)
+				.type(doc.getContentType())
+				.cacheControl(CACHE_SETTINGS)
+				.lastModified(doc.getModifiedAt().toDate())
+				.build();
 	}
 	
 	/**
@@ -105,27 +96,15 @@ public class DocumentResource {
 	@Transactional
 	public Response delete(@Context Credentials credentials,
 		@PathParam("user_id") String userId, @PathParam("name") String name) {
-		final User owner = userDAO.findById(userId);
-		if (owner == null) {
+		
+		final Session session = credentials.buildSession(userDAO, userId);
+		final Document doc = documentDAO.findByOwnerAndName(session.getUser(), name);
+		if (doc == null) {
 			throw new WebApplicationException(Status.NOT_FOUND);
 		}
 		
-		if (isValidUsername(owner, credentials.getUsername())) {
-			Document doc = documentDAO.findByOwnerAndName(owner, name);
-			if (doc == null) {
-				throw new WebApplicationException(Status.NOT_FOUND);
-			}
-			
-			try {
-				doc.decryptBodyForOwner(credentials.getPassword().toCharArray());
-				documentDAO.delete(doc);
-				return Response.noContent().build();
-			} catch (CryptographicException e) {
-				return Credentials.CHALLENGE;
-			}
-		}
-		
-		return Credentials.CHALLENGE;
+		documentDAO.delete(doc);
+		return Response.noContent().build();
 	}
 	
 	/**
@@ -133,44 +112,30 @@ public class DocumentResource {
 	 * {@link Document} with the request entity.
 	 * <p>
 	 * <strong>N.B.:</strong> Requires Basic authentication.
+	 * @throws CryptographicException
 	 */
 	@PUT
 	@Transactional
 	public Response create(@Context HttpHeaders headers,
 		@Context Credentials credentials, @PathParam("user_id") String userId,
-		@PathParam("name") String name, byte[] body) {
-		final User owner = userDAO.findById(userId);
-		if (owner == null) {
-			throw new WebApplicationException(Status.NOT_FOUND);
+		@PathParam("name") String name, byte[] body) throws CryptographicException {
+		
+		final Session session = credentials.buildSession(userDAO, userId);
+		Document doc = documentDAO.findByOwnerAndName(session.getUser(), name);
+		if (doc == null) {
+			doc = documentDAO.newDocument(session.getUser(), name, headers.getMediaType());
 		}
 		
-		if (isValidUsername(owner, credentials.getUsername())) {
-			Document doc = documentDAO.findByOwnerAndName(owner, name);
-			if (doc == null) {
-				doc = documentDAO.newDocument(owner, name, headers.getMediaType());
-			}
-			
-			try {
-				doc.encryptAndSetBody(
-					credentials.getPassword().toCharArray(),
-					ImmutableList.<KeySet>of(),
-					randomProvider.get(),
-					body
-				);
-			} catch (CryptographicException e) {
-				return Credentials.CHALLENGE;
-			}
-			
-			documentDAO.saveOrUpdate(doc);
-			
-			return Response.noContent().build();
-		}
+		doc.encryptAndSetBody(
+			session.getKeySet(),
+			ImmutableList.<KeySet>of(),
+			randomProvider.get(),
+			body
+		);
 		
-		return Credentials.CHALLENGE;
-	}
-	
-	private boolean isValidUsername(User user, String username) {
-		return user.getId().equals(username);
+		documentDAO.saveOrUpdate(doc);
+			
+		return Response.noContent().build();
 	}
 	
 }
