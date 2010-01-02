@@ -34,7 +34,7 @@ public class Configuration extends AbstractConfiguration {
 	@Override
 	protected void configureRequestLog(RequestLog log) {
 		final NCSARequestLog ncsaLog = (NCSARequestLog) log;
-		ncsaLog.setExtended(true);
+		ncsaLog.setExtended(false);
 		ncsaLog.setLogLatency(true);
 	}
 
