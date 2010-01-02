@@ -5,15 +5,9 @@ import static com.google.common.base.Objects.*;
 import java.io.Serializable;
 import java.security.SecureRandom;
 import java.util.Collection;
+import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Lob;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.ws.rs.core.MediaType;
 
 import org.hibernate.annotations.Type;
@@ -66,6 +60,10 @@ public class Document implements Serializable {
 	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
 	private DateTime modifiedAt;
 	
+	@ManyToMany(fetch=FetchType.LAZY, mappedBy="linkedDocuments", cascade={CascadeType.ALL})
+	@JoinTable(name="links")
+	private Set<User> linkedUsers;
+	
 	@Deprecated
 	public Document() {
 		// for Hibernate usage only
@@ -100,6 +98,10 @@ public class Document implements Serializable {
 	 */
 	public String getName() {
 		return name;
+	}
+	
+	public Set<User> getLinkedUsers() {
+		return linkedUsers;
 	}
 	
 	/**

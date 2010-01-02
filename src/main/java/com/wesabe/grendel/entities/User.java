@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.ForeignKey;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;
@@ -74,6 +75,31 @@ public class User implements Serializable {
 	@OneToMany(mappedBy="owner", fetch=FetchType.LAZY, cascade={CascadeType.ALL})
 	@OnDelete(action=OnDeleteAction.CASCADE)
 	private Set<Document> documents = Sets.newHashSet();
+	
+	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+	@ForeignKey(
+		name="FK_LINK_TO_USER",
+		inverseName="FK_LINK_TO_DOCUMENT"
+	)
+	@JoinTable(
+		name="links",
+		joinColumns={
+			@JoinColumn(name="user_id", nullable=false, referencedColumnName="id")
+		},
+		inverseJoinColumns={
+			@JoinColumn(name="document_name", nullable=false, referencedColumnName="name"),
+			@JoinColumn(name="document_owner_id", nullable=false, referencedColumnName="owner_id")
+		}
+	)
+	// FIXME coda@wesabe.com -- Dec 31, 2009: Fix links's ON CASCADE actions.
+	// The foreign-key constraint FK_LINK_TO_USER and FK_USER_TO_LINK don't work
+	// with this @OnDelete annotation or the one on Document#linkedUsers, which
+	// means there's a potential consistency problem. The code *should* take
+	// care of that, but it's still a worry. Apparently this is a long-standing
+	// bug/deficiency with Hibernate's @OnDelete:
+	// http://opensource.atlassian.com/projects/hibernate/browse/HHH-4404
+	// @OnDelete(action=OnDeleteAction.CASCADE)
+	private Set<Document> linkedDocuments = Sets.newHashSet();
 	
 	@Deprecated
 	public User() {
@@ -156,6 +182,13 @@ public class User implements Serializable {
 	 */
 	public Set<Document> getDocuments() {
 		return documents;
+	}
+	
+	/**
+	 * Returns a set of the user's linked {@link Document}s.
+	 */
+	public Set<Document> getLinkedDocuments() {
+		return linkedDocuments;
 	}
 	
 	private DateTime toUTC(DateTime dateTime) {
