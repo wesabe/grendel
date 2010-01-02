@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.wesabe</groupId>
 	<artifactId>grendel</artifactId>
-	<version>0.1.3-SNAPSHOT</version>
+	<version>0.2.0</version>
 	<name>Grendel</name>
 	<description>A secure document storage service.</description>
 	<url>http://github.com/wesabe/grendel/tree</url>
