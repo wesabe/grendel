@@ -5,3 +5,4 @@ Things What Remain To Do
   vs. the Servlet API (e.g., handle everything as a `String`)
 * add ETags and `If-Match` and `If-None-Match` support for documents
 * add more configuration details for things like key algorithms, etc.
+* key rotation!
