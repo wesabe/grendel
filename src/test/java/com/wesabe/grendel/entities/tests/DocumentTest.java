@@ -105,7 +105,7 @@ public class DocumentTest {
 		public void itStoresItAsAnEncryptedOpenPGPMessage() throws Exception {
 			final byte[] originalBody = "I am a secret document".getBytes();
 			
-			doc.encryptAndSetBody("test".toCharArray(), ImmutableList.of(recipientKeySet), new SecureRandom(), originalBody);
+			doc.encryptAndSetBody(ownerKeySet.unlock("test".toCharArray()), ImmutableList.of(recipientKeySet), new SecureRandom(), originalBody);
 			
 			final Field bodyField = doc.getClass().getDeclaredField("body");
 			bodyField.setAccessible(true);
@@ -138,7 +138,7 @@ public class DocumentTest {
 		}
 
 		@Test
-		public void itCanDecryptItForARecipient() throws Exception {
+		public void itCanDecryptIt() throws Exception {
 			final byte[] originalBody = "I am a secret document".getBytes();
 			
 			final MessageWriter writer = new MessageWriter(ownerKeySet.unlock("test".toCharArray()), ImmutableList.of(recipientKeySet), new SecureRandom());
@@ -148,22 +148,7 @@ public class DocumentTest {
 			bodyField.setAccessible(true);
 			bodyField.set(doc, encryptedBody);
 			
-			final byte[] decryptedBody = doc.decryptBodyForRecipient(recipientKeySet, "test2".toCharArray());
-			assertThat(decryptedBody).isEqualTo(originalBody);
-		}
-		
-		@Test
-		public void itCanDecryptItForTheOwner() throws Exception {
-			final byte[] originalBody = "I am a secret document".getBytes();
-			
-			final MessageWriter writer = new MessageWriter(ownerKeySet.unlock("test".toCharArray()), ImmutableList.of(recipientKeySet), new SecureRandom());
-			final byte[] encryptedBody = writer.write(originalBody);
-			
-			final Field bodyField = doc.getClass().getDeclaredField("body");
-			bodyField.setAccessible(true);
-			bodyField.set(doc, encryptedBody);
-			
-			final byte[] decryptedBody = doc.decryptBodyForOwner("test".toCharArray());
+			final byte[] decryptedBody = doc.decryptBody(recipientKeySet.unlock("test2".toCharArray()));
 			assertThat(decryptedBody).isEqualTo(originalBody);
 		}
 	}

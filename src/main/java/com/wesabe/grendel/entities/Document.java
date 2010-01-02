@@ -141,8 +141,8 @@ public class Document implements Serializable {
 	 * Sets the {@link Document}'s body to an encrypted+signed OpenPGP message
 	 * containing {@code body}.
 	 * 
-	 * @param ownerPassphrase
-	 *            the passphrase of the {@link User} that owns this
+	 * @param keySet
+	 *            the {@link UnlockedKeySet} of the {@link User} that owns this
 	 *            {@link Document}
 	 * @param recipients
 	 *            a collection of receipient's {@link KeySet}s
@@ -155,50 +155,29 @@ public class Document implements Serializable {
 	 *             ownerPassphrase}
 	 * @see MessageWriter
 	 */
-	public void encryptAndSetBody(char[] ownerPassphrase, Collection<KeySet> recipients,
+	public void encryptAndSetBody(UnlockedKeySet keySet, Collection<KeySet> recipients,
 		SecureRandom random, byte[] body) throws CryptographicException {
-		final UnlockedKeySet ownerKeySet = owner.getKeySet().unlock(ownerPassphrase);
-		final MessageWriter writer = new MessageWriter(ownerKeySet, recipients, random);
+		
+		// TODO coda@wesabe.com -- Jan 2, 2010: select recipients automatically
+		
+		final MessageWriter writer = new MessageWriter(keySet, recipients, random);
 		this.body = writer.write(body);
 	}
 	
 	/**
-	 * Decrypts the document's body using the owner's {@link KeySet}.
+	 * Decrypts the document's body using the {@link UnlockedKeySet} of the
+	 * owner or a recipient;
 	 * 
-	 * @param ownerPassphrase
-	 *            the passphrase of the {@link User} that owns this
-	 *            {@link Document}
+	 * @param unlockedKeySet
+	 *             an {@link UnlockedKeySet} belonging to either the
+	 *             {@link Document}'s owner or a recipient
 	 * @return the decrypted document body
 	 * @throws CryptographicException
-	 *             if the owner's {@link KeySet} cannot be unlocked with {@code
-	 *             ownerPassphrase}, or if there is an error decrypting and
-	 *             verifying the encrypted+signed OpenPGP message
+	 *             if there is an error decrypting and verifying the
+	 *             encrypted+signed OpenPGP message
 	 * @see MessageReader
 	 */
-	public byte[] decryptBodyForOwner(char[] ownerPassphrase) throws CryptographicException {
-		return decryptBody(owner.getKeySet().unlock(ownerPassphrase));
-	}
-	
-	/**
-	 * Decrypts the document's body using a recipient's {@link KeySet}.
-	 * 
-	 * @param recipient
-	 * 	          a {@link KeySet} of one of the document's recipients
-	 * @param passphrase
-	 *            the passphrase for the given {@link KeySet}
-	 * @return the decrypted document body
-	 * @throws CryptographicException
-	 *             if the owner's {@link KeySet} cannot be unlocked with {@code
-	 *             ownerPassphrase}, or if there is an error decrypting and
-	 *             verifying the encrypted+signed OpenPGP message
-	 * @see MessageReader
-	 */
-	public byte[] decryptBodyForRecipient(KeySet recipient, char[] passphrase)
-		throws CryptographicException {
-		return decryptBody(recipient.unlock(passphrase));
-	}
-	
-	private byte[] decryptBody(UnlockedKeySet unlockedKeySet) throws CryptographicException {
+	public byte[] decryptBody(UnlockedKeySet unlockedKeySet) throws CryptographicException {
 		final MessageReader reader = new MessageReader(owner.getKeySet(), unlockedKeySet);
 		return reader.read(body);
 	}
