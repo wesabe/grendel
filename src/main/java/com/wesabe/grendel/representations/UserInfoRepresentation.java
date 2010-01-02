@@ -1,7 +1,6 @@
 package com.wesabe.grendel.representations;
 
 import java.net.URI;
-import java.util.List;
 
 import javax.ws.rs.core.UriInfo;
 
@@ -10,10 +9,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
-import com.google.common.collect.Lists;
-import com.wesabe.grendel.entities.Document;
 import com.wesabe.grendel.entities.User;
-import com.wesabe.grendel.resources.DocumentResource;
 
 /**
  * A representation of a response containing information about a user.
@@ -24,13 +20,7 @@ import com.wesabe.grendel.resources.DocumentResource;
  *   "id":"codahale",
  *   "created-at":"20091228T234341Z",
  *   "modified-at":"20091228T234341Z",
- *   "keys":"[2048-RSA/38CDB097, 2048-RSA/204DB69D]",
- *   "documents":[
- *     {
- *       "uri":"http://example.com/users/codahale/document1.txt",
- *       "name":"document1.txt"
- *     }
- *   ]
+ *   "keys":"[2048-RSA/38CDB097, 2048-RSA/204DB69D]"
  * }
  * </pre>
  * 
@@ -86,18 +76,6 @@ public class UserInfoRepresentation {
 	@JsonGetter("keys")
 	public String getKeys() {
 		return user.getKeySet().toString();
-	}
-	
-	@JsonGetter("documents")
-	public List<DocumentLink> getDocuments() {
-		final List<DocumentLink> uris = Lists.newArrayListWithCapacity(user.getDocuments().size());
-		for (Document doc : user.getDocuments()) {
-			uris.add(new DocumentLink(
-				doc.getName(),
-				uriInfo.getBaseUriBuilder().path(DocumentResource.class).build(user, doc)
-			));
-		}
-		return uris;
 	}
 
 	@JsonIgnore

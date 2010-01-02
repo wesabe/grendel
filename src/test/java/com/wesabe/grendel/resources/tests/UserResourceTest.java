@@ -1,11 +1,13 @@
 package com.wesabe.grendel.resources.tests;
 
 import static org.fest.assertions.Assertions.*;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 import java.security.SecureRandom;
 
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
@@ -82,10 +84,24 @@ public class UserResourceTest {
 		}
 		
 		@Test
-		public void itReturnsAUserListIfValid() throws Exception {
-			final UserInfoRepresentation list = resource.show(uriInfo, credentials, "bob");
+		public void itReturnsAUserIfFound() throws Exception {
+			when(dao.findById("bob")).thenReturn(user);
+			
+			final UserInfoRepresentation list = resource.show(uriInfo, "bob");
 			assertThat(list.getUser()).isEqualTo(user);
 			assertThat(list.getUriInfo()).isEqualTo(uriInfo);
+		}
+		
+		@Test
+		public void itThrowsA404IfNotFound() throws Exception {
+			when(dao.findById("bob")).thenReturn(null);
+			
+			try {
+				resource.show(uriInfo, "bob");
+				fail("should have throw a 404 Not Found but didn't");
+			} catch (WebApplicationException e) {
+				assertThat(e.getResponse().getStatus()).isEqualTo(Status.NOT_FOUND.getStatusCode());
+			}
 		}
 	}
 	

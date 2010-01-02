@@ -178,7 +178,7 @@ The User Resource (`/users/{id}`)
 The **User Resource** provides access an individual user's metadata.
 
 Basic authentication, using the user's id and password, is required for all
-methods of this resource.
+methods of this resource *except* `GET`.
 
 `GET`
 -----
@@ -198,17 +198,8 @@ object with information about the user `codahale`:
     <   "id":"codahale",
     <   "modified-at":"20091227T211120Z",
     <   "created-at":"20091227T211120Z",
-    <   "documents":[
-    <       {
-    <           "uri":"http://example.com/users/codahale/document1.txt",
-    <           "name":"document1.txt"
-    <       }
-    <   ],
     <   "keys":"[2048-RSA/0A895A19, 2048-RSA/39D1621B]"
     < }
-
-The `documents` property is a list of all the user's documents, including
-absolute URIs.
 
 
 `PUT`

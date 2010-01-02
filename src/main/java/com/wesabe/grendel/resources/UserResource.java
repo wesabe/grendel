@@ -9,10 +9,12 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.Response.Status;
 
 import org.joda.time.DateTime;
 
@@ -48,17 +50,15 @@ public class UserResource {
 	/**
 	 * Responds to a {@link GET} request with information about the specified
 	 * user.
-	 * <p>
-	 * <strong>N.B.:</strong> Requires Basic authentication.
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public UserInfoRepresentation show(@Context UriInfo uriInfo,
-		@Context Credentials credentials, @PathParam("id") String id) {
-		
-		final Session session = credentials.buildSession(userDAO, id);
-		
-		return new UserInfoRepresentation(uriInfo, session.getUser());
+	public UserInfoRepresentation show(@Context UriInfo uriInfo, @PathParam("id") String id) {
+		final User user = userDAO.findById(id);
+		if (user == null) {
+			throw new WebApplicationException(Status.NOT_FOUND);
+		}
+		return new UserInfoRepresentation(uriInfo, user);
 	}
 	
 	/**
