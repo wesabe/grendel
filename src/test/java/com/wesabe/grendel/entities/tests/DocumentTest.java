@@ -91,7 +91,7 @@ public class DocumentTest {
 	
 	public static class Encrypting_A_Document_Body {
 		private KeySet ownerKeySet, recipientKeySet;
-		private User owner;
+		private User owner, reader;
 		private Document doc;
 		
 		@Before
@@ -105,6 +105,7 @@ public class DocumentTest {
 			recipientKeyring.close();
 			
 			this.owner = new User(ownerKeySet);
+			this.reader = new User(recipientKeySet);
 			this.doc = new Document(owner, "test", MediaType.APPLICATION_OCTET_STREAM_TYPE);
 		}
 		
@@ -112,14 +113,15 @@ public class DocumentTest {
 		public void itStoresItAsAnEncryptedOpenPGPMessage() throws Exception {
 			final byte[] originalBody = "I am a secret document".getBytes();
 			
-			doc.encryptAndSetBody(ownerKeySet.unlock("test".toCharArray()), ImmutableList.of(recipientKeySet), new SecureRandom(), originalBody);
-			
+			doc.linkUser(reader);
+			doc.encryptAndSetBody(ownerKeySet.unlock("test".toCharArray()), new SecureRandom(), originalBody);
+
 			final Field bodyField = doc.getClass().getDeclaredField("body");
 			bodyField.setAccessible(true);
-			
+
 			final byte[] encryptedBody = (byte[]) bodyField.get(doc);
 			final MessageReader reader = new MessageReader(ownerKeySet, recipientKeySet.unlock("test2".toCharArray()));
-			
+
 			final byte[] decryptedBody = reader.read(encryptedBody);
 			assertThat(decryptedBody).isEqualTo(originalBody);
 		}
@@ -157,6 +159,56 @@ public class DocumentTest {
 			
 			final byte[] decryptedBody = doc.decryptBody(recipientKeySet.unlock("test2".toCharArray()));
 			assertThat(decryptedBody).isEqualTo(originalBody);
+		}
+	}
+	
+	public static class Linking_A_User {
+		private User user;
+		private Document document;
+		
+		@SuppressWarnings("deprecation")
+		@Before
+		public void setup() throws Exception {
+			this.user = new User();
+			this.document = new Document();
+			
+			document.linkUser(user);
+		}
+		
+		@Test
+		public void itAddsTheDocumentToTheUsersLinkedDocuments() throws Exception {
+			assertThat(user.getLinkedDocuments()).contains(document);
+		}
+		
+		@Test
+		public void itAddsTheUserToTheDocumentsLinkedUsers() throws Exception {
+			assertThat(document.getLinkedUsers()).contains(user);
+		}
+	}
+	
+	public static class Unlinking_A_User {
+		private User user;
+		private Document document;
+		
+		@SuppressWarnings("deprecation")
+		@Before
+		public void setup() throws Exception {
+			this.user = new User();
+			this.document = new Document();
+			
+			document.linkUser(user);
+			
+			document.unlinkUser(user);
+		}
+		
+		@Test
+		public void itAddsTheDocumentToTheUsersLinkedDocuments() throws Exception {
+			assertThat(user.getLinkedDocuments()).excludes(document);
+		}
+		
+		@Test
+		public void itAddsTheUserToTheDocumentsLinkedUsers() throws Exception {
+			assertThat(document.getLinkedUsers()).excludes(user);
 		}
 	}
 }

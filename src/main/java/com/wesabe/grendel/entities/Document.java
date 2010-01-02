@@ -4,7 +4,6 @@ import static com.google.common.base.Objects.*;
 
 import java.io.Serializable;
 import java.security.SecureRandom;
-import java.util.Collection;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -14,6 +13,7 @@ import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
+import com.google.common.collect.Sets;
 import com.wesabe.grendel.openpgp.CryptographicException;
 import com.wesabe.grendel.openpgp.KeySet;
 import com.wesabe.grendel.openpgp.MessageReader;
@@ -62,7 +62,7 @@ public class Document implements Serializable {
 	
 	@ManyToMany(fetch=FetchType.LAZY, mappedBy="linkedDocuments", cascade={CascadeType.ALL})
 	@JoinTable(name="links")
-	private Set<User> linkedUsers;
+	private Set<User> linkedUsers = Sets.newHashSet();
 	
 	@Deprecated
 	public Document() {
@@ -100,8 +100,28 @@ public class Document implements Serializable {
 		return name;
 	}
 	
+	/**
+	 * Returns a set of {@link User}s who have read-only access to this
+	 * document.
+	 */
 	public Set<User> getLinkedUsers() {
 		return linkedUsers;
+	}
+	
+	/**
+	 * Provide a {@link User} with read-only access to this document.
+	 */
+	public void linkUser(User user) {
+		linkedUsers.add(user);
+		user.getLinkedDocuments().add(this);
+	}
+	
+	/**
+	 * Remove a {@link User}'s read-only access to this document.
+	 */
+	public void unlinkUser(User user) {
+		linkedUsers.remove(user);
+		user.getLinkedDocuments().remove(this);
 	}
 	
 	/**
@@ -146,8 +166,6 @@ public class Document implements Serializable {
 	 * @param keySet
 	 *            the {@link UnlockedKeySet} of the {@link User} that owns this
 	 *            {@link Document}
-	 * @param recipients
-	 *            a collection of receipient's {@link KeySet}s
 	 * @param random
 	 *            a {@link SecureRandom} instance
 	 * @param body
@@ -157,10 +175,13 @@ public class Document implements Serializable {
 	 *             ownerPassphrase}
 	 * @see MessageWriter
 	 */
-	public void encryptAndSetBody(UnlockedKeySet keySet, Collection<KeySet> recipients,
-		SecureRandom random, byte[] body) throws CryptographicException {
+	public void encryptAndSetBody(UnlockedKeySet keySet, SecureRandom random,
+		byte[] body) throws CryptographicException {
 		
-		// TODO coda@wesabe.com -- Jan 2, 2010: select recipients automatically
+		final Set<KeySet> recipients = Sets.newHashSetWithExpectedSize(linkedUsers.size());
+		for (User linkedUser : linkedUsers) {
+			recipients.add(linkedUser.getKeySet());
+		}
 		
 		final MessageWriter writer = new MessageWriter(keySet, recipients, random);
 		this.body = writer.write(body);

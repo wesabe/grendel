@@ -21,7 +21,6 @@ import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 
-import com.google.common.collect.ImmutableList;
 import com.google.inject.Provider;
 import com.wesabe.grendel.auth.Credentials;
 import com.wesabe.grendel.auth.Session;
@@ -29,7 +28,6 @@ import com.wesabe.grendel.entities.Document;
 import com.wesabe.grendel.entities.User;
 import com.wesabe.grendel.entities.dao.DocumentDAO;
 import com.wesabe.grendel.entities.dao.UserDAO;
-import com.wesabe.grendel.openpgp.KeySet;
 import com.wesabe.grendel.openpgp.UnlockedKeySet;
 import com.wesabe.grendel.resources.DocumentResource;
 
@@ -170,7 +168,7 @@ public class DocumentResourceTest {
 			assertThat(response.getStatus()).isEqualTo(Status.NO_CONTENT.getStatusCode());
 			
 			final InOrder inOrder = inOrder(document, documentDAO);
-			inOrder.verify(document).encryptAndSetBody(keySet, ImmutableList.<KeySet>of(), random, body);
+			inOrder.verify(document).encryptAndSetBody(keySet, random, body);
 			inOrder.verify(documentDAO).saveOrUpdate(document);
 		}
 		
@@ -182,7 +180,7 @@ public class DocumentResourceTest {
 			assertThat(response.getStatus()).isEqualTo(Status.NO_CONTENT.getStatusCode());
 			
 			final InOrder inOrder = inOrder(document, documentDAO);
-			inOrder.verify(document).encryptAndSetBody(keySet, ImmutableList.<KeySet>of(), random, body);
+			inOrder.verify(document).encryptAndSetBody(keySet, random, body);
 			inOrder.verify(documentDAO).saveOrUpdate(document);
 			
 			verify(documentDAO, never()).newDocument(any(User.class), anyString(), any(MediaType.class));
