@@ -22,15 +22,15 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.wesabe.grendel.entities.Document;
 import com.wesabe.grendel.entities.User;
-import com.wesabe.grendel.representations.DocumentListRepresentation;
+import com.wesabe.grendel.representations.LinkListRepresentation;
 
 @RunWith(Enclosed.class)
-public class DocumentListRepresentationTest {
-	public static class Serializing_A_Document_List {
+public class LinkListRepresentationTest {
+	public static class Serializing_A_Link_List {
 		private UriInfo uriInfo;
-		private DocumentListRepresentation rep;
+		private LinkListRepresentation rep;
 		private Document doc;
-		private User owner;
+		private User owner, reader;
 		
 		@Before
 		public void setup() throws Exception {
@@ -46,12 +46,17 @@ public class DocumentListRepresentationTest {
 			when(owner.getId()).thenReturn("mrpeepers");
 			when(owner.toString()).thenReturn("mrpeepers");
 			
+			this.reader = mock(User.class);
+			when(reader.getId()).thenReturn("flaflaf");
+			when(reader.toString()).thenReturn("flaflaf");
+			
 			this.doc = mock(Document.class);
 			when(doc.getName()).thenReturn("document1.txt");
 			when(doc.toString()).thenReturn("document1.txt");
 			when(doc.getOwner()).thenReturn(owner);
+			when(doc.getLinkedUsers()).thenReturn(ImmutableSet.of(reader));
 			
-			this.rep = new DocumentListRepresentation(uriInfo, ImmutableSet.of(doc));
+			this.rep = new LinkListRepresentation(uriInfo, doc);
 		}
 		
 		@Test
@@ -60,13 +65,16 @@ public class DocumentListRepresentationTest {
 			final String json = mapper.writeValueAsString(rep);
 			
 			final ObjectNode entity = mapper.readValue(json, ObjectNode.class);
-			final List<JsonNode> documents = ImmutableList.copyOf(entity.get("documents").getElements());
+			final List<JsonNode> links = ImmutableList.copyOf(entity.get("links").getElements());
+
+			assertThat(links).hasSize(1);
 			
-			assertThat(documents).hasSize(1);
+			final JsonNode link = links.get(0);
+			assertThat(link.get("uri").getTextValue()).isEqualTo("http://example.com/users/mrpeepers/documents/document1.txt/links/flaflaf");
 			
-			final JsonNode document = documents.get(0);
-			assertThat(document.get("name").getTextValue()).isEqualTo("document1.txt");
-			assertThat(document.get("uri").getTextValue()).isEqualTo("http://example.com/users/mrpeepers/documents/document1.txt");
+			final JsonNode user = link.get("user");
+			assertThat(user.get("id").getTextValue()).isEqualTo("flaflaf");
+			assertThat(user.get("uri").getTextValue()).isEqualTo("http://example.com/users/flaflaf");
 		}
 	}
 }

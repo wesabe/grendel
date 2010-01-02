@@ -137,10 +137,10 @@ with a list of all users' ids and URIs:
     <
     < {
     <   "users":[
-    <       {
-    <           "id":"user1",
-    <           "uri":"http://example.com/users/codahale"
-    <       }
+    <     {
+    <       "id":"user1",
+    <       "uri":"http://example.com/users/codahale"
+    <     }
     <   ]
     < }
 
@@ -261,10 +261,10 @@ documents belonging to user `codahale`:
     <
     < {
     <   "documents":[
-    <       {
-    <           "name":"document1.txt",
-    <           "uri":"http://example.com/users/codahale/documents/document1.txt"
-    <       }
+    <     {
+    <       "name":"document1.txt",
+    <       "uri":"http://example.com/users/codahale/documents/document1.txt"
+    <     }
     <   ]
     < }
 
@@ -272,7 +272,7 @@ documents belonging to user `codahale`:
 The Document Resource (`/users/{id}/documents/{name}`)
 ------------------------------------------------------
 
-The **Document Resource** provides to a document.
+The **Document Resource** provides access to a document.
 
 Basic authentication, using the user's id and password, is required for all
 methods of this resource.
@@ -326,3 +326,42 @@ delete the document named `document1.txt` belonging to user `codahale`:
     >
 
     < HTTP/1.1 204 No Content
+
+
+The Links Resource (`/users/codahale/documents/document1.txt/links`)
+====================================================================
+
+The **Links Resource** provides access to the list of users given read-only
+access to a particular document by its owner.
+
+Basic authentication, using the user's id and password, is required for all
+methods of this resource.
+
+`GET`
+-----
+
+Sending a `GET` request to `/users/codahale/documents/document1.txt/links` will
+return a list of links from the document `document1.txt` belonging to user
+`codahale` to other users:
+
+    > GET /users/codahale/documents/document1.txt/links HTTP/1.1
+    > Authorization: Basic Y29kYWhhbGU6d29vd29v
+    > Accept: application/json
+    >
+    
+    < HTTP/1.1 200 OK
+    < Content-Type: application/json
+    <
+    < {
+    <   "links":[
+    <     {
+    <       "user":{
+    <         "id":"precipice",
+    <         "uri":"http://example.com/users/precipice"
+    <       },
+    <       "uri":"http://example.com/users/codahale/documents/document1.txt/links/precipice"
+    <     }
+    <   ]
+    < }
+
+
