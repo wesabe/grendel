@@ -125,6 +125,14 @@ public class Document implements Serializable {
 	}
 	
 	/**
+	 * Returns {@code true} if the given {@link User} has read-only access to
+	 * this document.
+	 */
+	public boolean isLinked(User user) {
+		return linkedUsers.contains(user);
+	}
+	
+	/**
 	 * Returns the document's content type.
 	 */
 	public MediaType getContentType() {

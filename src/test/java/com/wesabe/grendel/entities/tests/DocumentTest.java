@@ -184,6 +184,11 @@ public class DocumentTest {
 		public void itAddsTheUserToTheDocumentsLinkedUsers() throws Exception {
 			assertThat(document.getLinkedUsers()).contains(user);
 		}
+		
+		@Test
+		public void itIsLinkedToTheUser() throws Exception {
+			assertThat(document.isLinked(user)).isTrue();
+		}
 	}
 	
 	public static class Unlinking_A_User {
@@ -209,6 +214,11 @@ public class DocumentTest {
 		@Test
 		public void itAddsTheUserToTheDocumentsLinkedUsers() throws Exception {
 			assertThat(document.getLinkedUsers()).excludes(user);
+		}
+		
+		@Test
+		public void itIsNotLinkedToTheUser() throws Exception {
+			assertThat(document.isLinked(user)).isFalse();
 		}
 	}
 }
