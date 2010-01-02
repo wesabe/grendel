@@ -35,7 +35,7 @@ import com.wideplay.warp.persist.Transactional;
  * 
  * @author coda
  */
-@Path("/users/{user_id}/{name}")
+@Path("/users/{user_id}/documents/{name}")
 @Consumes(MediaType.WILDCARD)
 @Produces(MediaType.WILDCARD)
 public class DocumentResource {

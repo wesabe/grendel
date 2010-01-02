@@ -245,8 +245,8 @@ Sending a `DELETE` request to `/users/codahale` will delete user `codahale`
     < HTTP/1.1 204 No Content
 
 
-The Document Resource (`/users/{id}/{name}`)
---------------------------------------------
+The Document Resource (`/users/{id}/documents/{name}`)
+------------------------------------------------------
 
 The **Document Resource** provides access a user's documents.
 
@@ -257,11 +257,11 @@ methods of this resource.
 `GET`
 -----
 
-Sending a `GET` request to `/users/codahale/document1.txt` will return the
-document named `document1.txt` belonging to user `codahale` in whatever content
-type the document was stored with:
+Sending a `GET` request to `/users/codahale/documents/document1.txt` will return
+the document named `document1.txt` belonging to user `codahale` in whatever
+content type the document was stored with:
 
-    > GET /users/codahale/document1.txt HTTP/1.1
+    > GET /users/codahale/documents/document1.txt HTTP/1.1
     > Authorization: Basic Y29kYWhhbGU6d29vd29v
     >
     
@@ -276,10 +276,10 @@ type the document was stored with:
 `PUT`
 -----
 
-Sending a `PUT` request to `/users/codahale/document1.txt` will store the
-request entity as `document1.txt` with the specified content type:
+Sending a `PUT` request to `/users/codahale/documents/document1.txt` will store
+the request entity as `document1.txt` with the specified content type:
 
-    > PUT /users/codahale/document1.txt HTTP/1.1
+    > PUT /users/codahale/documents/document1.txt HTTP/1.1
     > Content-Type: text/plain
     > Authorization: Basic Y29kYWhhbGU6d29vd29v
     >
@@ -294,10 +294,10 @@ doing so to a non-existent document will create it.
 `DELETE`
 --------
 
-Sending a `DELETE` request to `/users/codahale/document1.txt` will delete the
-document named `document1.txt` belonging to user `codahale`:
+Sending a `DELETE` request to `/users/codahale/documents/document1.txt` will
+delete the document named `document1.txt` belonging to user `codahale`:
 
-    > DELETE /users/codahale/document1.txt HTTP/1.1
+    > DELETE /users/codahale/documents/document1.txt HTTP/1.1
     > Authorization: Basic Y29kYWhhbGU6d29vd29v
     >
 

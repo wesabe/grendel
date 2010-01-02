@@ -80,7 +80,7 @@ public class UserInfoRepresentationTest {
 			
 			final JsonNode document = documents.get(0);
 			assertThat(document.get("name").getTextValue()).isEqualTo("document1.txt");
-			assertThat(document.get("uri").getTextValue()).isEqualTo("http://example.com/users/mrpeepers/document1.txt");
+			assertThat(document.get("uri").getTextValue()).isEqualTo("http://example.com/users/mrpeepers/documents/document1.txt");
 		}
 	}
 }
