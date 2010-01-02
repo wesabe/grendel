@@ -1,6 +1,5 @@
 package com.wesabe.grendel.representations;
 
-import java.net.URI;
 import java.util.List;
 
 import javax.ws.rs.core.UriInfo;
@@ -30,22 +29,24 @@ import com.wesabe.grendel.resources.UserResource;
  */
 public class UserListRepresentation {
 	public static class UserListItem {
-		private final String id;
-		private final URI uri;
+		private final UriInfo uriInfo;
+		private final User user;
 		
-		public UserListItem(String id, URI uri) {
-			this.id = id;
-			this.uri = uri;
+		public UserListItem(UriInfo uriInfo, User user) {
+			this.uriInfo = uriInfo;
+			this.user = user;
 		}
 		
 		@JsonGetter("id")
 		public String getId() {
-			return id;
+			return user.getId();
 		}
 		
 		@JsonGetter("uri")
 		public String getUri() {
-			return uri.toASCIIString();
+			return uriInfo.getBaseUriBuilder()
+							.path(UserResource.class)
+							.build(user).toASCIIString();
 		}
 	}
 	
@@ -61,12 +62,7 @@ public class UserListRepresentation {
 	public List<UserListItem> getUsers() {
 		final List<UserListItem> items = Lists.newArrayListWithExpectedSize(users.size());
 		for (User user : users) {
-			items.add(new UserListItem(
-				user.getId(),
-				uriInfo.getBaseUriBuilder()
-							.path(UserResource.class)
-							.build(user)
-			));
+			items.add(new UserListItem(uriInfo, user));
 		}
 		return items;
 	}
