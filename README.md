@@ -365,3 +365,89 @@ return a list of links from the document `document1.txt` belonging to user
     < }
 
 
+The Linked Documents Resource (`/users/{id}/linked-documents/`)
+---------------------------------------------------------------
+
+
+The **Linked Documents Resource** provides access to a list of documents to
+which a user has read-only access.
+
+Basic authentication, using the user's id and password, is required for all
+methods of this resource.
+
+
+`GET`
+-----
+
+Sending a `GET` request to `/users/codahale/linked-documents/` will return a
+list of documents to which user `codahale` has read-only access:
+
+    > GET /users/codahale/linked-documents/ HTTP/1.1
+    > Authorization: Basic Y29kYWhhbGU6d29vd29v
+    > Accept: application/json
+    >
+
+    < HTTP/1.1 200 OK
+    < Content-Type: application/json
+    <
+    < {
+    <   "linked-documents":[
+    <     {
+    <       "name":"document1.txt",
+    <       "uri":"http://example.com/users/codahale/linked-documents/precipice/document1.txt",
+    <       "owner":{
+    <         "id": "precipice",
+    <         "uri": "http://example.com/users/precipice"
+    <       }
+    <     }
+    <   ]
+    < }
+
+
+The Linked Document Resource (`/users/{id}/linked-documents/{owner}/{name}`)
+----------------------------------------------------------------------------
+
+The **Linked Document Resource** provides access to a linked document.
+
+Basic authentication, using the user's id and password, is required for all
+methods of this resource.
+
+
+`GET`
+-----
+
+Sending a `GET` request to
+`/users/codahale/linked-documents/precipice/document1.txt` will return the
+document named `document1.txt` belonging to user `precipice` in whatever content
+type the document was stored with:
+
+    > GET /users/codahale/linked-documents/precipice/document1.txt HTTP/1.1
+    > Authorization: Basic Y29kYWhhbGU6d29vd29v
+    >
+
+    < HTTP/1.1 200 OK
+    < Content-Length: 10
+    < Cache-Control: private, no-cache, no-store, no-transform
+    < Content-Type: text/plain
+    <
+    < yay for me
+
+
+`DELETE`
+--------
+
+Sending a `DELETE` request to
+`/users/codahale/linked-documents/precipice/document1.txt` will remove the user
+`codahale`'s access to the document named `document1.txt` belonging to user
+`precipice`:
+
+    > DELETE /users/codahale/linked-documents/precipice/document1.txt HTTP/1.1
+    > Authorization: Basic Y29kYWhhbGU6d29vd29v
+    >
+
+    < HTTP/1.1 204 No Content
+
+**N.B:** This will *not* delete the document itself, it will simply remove the
+document from the user's list of linked documents. It will also *not* re-encrypt
+the document; the next time the document is written to, however, the user will
+be excluded from the recipients.
