@@ -263,8 +263,8 @@ the request entity as `document1.txt` with the specified content type:
 Sending `PUT` request to an existing document will overwrite its contents;
 doing so to a non-existent document will create it.
 
-**Currently Grendel does not support `If-None-Match`, so Grendel will silently
-overwrite fresh data with stale data.**
+**Remember:** use `If-Match` or `If-Unmodified-Since` to avoid clobbering
+changes.
 
 
 Deleting A User's Document
