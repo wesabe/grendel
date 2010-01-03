@@ -101,6 +101,10 @@ public class User implements Serializable {
 	// @OnDelete(action=OnDeleteAction.CASCADE)
 	private Set<Document> linkedDocuments = Sets.newHashSet();
 	
+	@Version
+	@Column(name="version", nullable=false)
+	private long version = 0;
+	
 	@Deprecated
 	public User() {
 		// blank constructor to be used by Hibernate
@@ -222,5 +226,13 @@ public class User implements Serializable {
 	@Override
 	public String toString() {
 		return id;
+	}
+	
+	/**
+	 * Returns an opaque string indicating the {@link User}'s name and
+	 * version.
+	 */
+	public String getEtag() {
+		return new StringBuilder("user-").append(id).append('-').append(version).toString();
 	}
 }

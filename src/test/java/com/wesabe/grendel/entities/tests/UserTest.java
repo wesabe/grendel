@@ -73,6 +73,13 @@ public class UserTest {
 			
 			assertThat(user.toString()).isEqualTo("user");
 		}
+		
+		@Test
+		public void itHasAnETag() throws Exception {
+			final User user = new User(keySet);
+			
+			assertThat(user.getEtag()).isEqualTo("user-user-0");
+		}
 	}
 	
 	public static class A_User_Loaded_From_The_Database {
