@@ -16,6 +16,38 @@ URI Structure
 * `/users/{id}/linked-documents/{otherid}/{name}`
 
 
+Concurrency
+-----------
+
+Grendel uses `Last-Modified` and `ETag` headers, and supports `If-None-Match`,
+`If-Match`, `If-Unmodified-Since`, and `If-Modified-Since` preconditions.
+
+Your Grendel client should either use these headers or accept the possibility
+of overwriting fresh data with stale data.
+
+**To safely update a document or user:**
+
+1. `GET` the existing resource.
+2. Make any changes you need.
+3. `PUT` the new resource, using `If-Match` and the existing resource's `ETag`
+   or `If-Unmodified-Since` and the existing resource's `Last-Modified`.
+4. If you receive a `2xx` response, your change was successfully written. If you
+   receive a `412 Preconditions Failed`, you should retry the process, starting
+   with Step 1.
+
+**To efficiently re-read a document or user:**
+
+1. `GET` the existing resource.
+2. `GET` the possibly-changed resource using `If-None-Match` and the existing
+   resource's `ETag` or `If-Modified-Since` and the existing resource's
+   `Last-Modified`.
+3. If you receive a `200 OK` response, the resource was changed since you last
+   requested it. If you receive a `304 Not Modified` response, the resource has
+   not been changed.
+
+This will work for both `/users/{id}` and `/users/{id}/document`.
+
+
 Examples
 --------
 
