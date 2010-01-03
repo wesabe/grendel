@@ -31,7 +31,7 @@
 		<license>
 			<name>The MIT License</name>
 			<distribution>repo</distribution>
-			<url>COPYING.txt</url>
+			<url>LICENSE.md</url>
 		</license>
 	</licenses>
 	<properties>
