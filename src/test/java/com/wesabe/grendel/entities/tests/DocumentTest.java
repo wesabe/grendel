@@ -87,6 +87,13 @@ public class DocumentTest {
 			
 			assertThat(doc.toString()).isEqualTo(name);
 		}
+		
+		@Test
+		public void itHasAnETag() throws Exception {
+			final Document doc = new Document(owner, name, MediaType.APPLICATION_OCTET_STREAM_TYPE);
+			
+			assertThat(doc.getEtag()).isEqualTo("doc-document1.txt-0");
+		}
 	}
 	
 	public static class Encrypting_A_Document_Body {

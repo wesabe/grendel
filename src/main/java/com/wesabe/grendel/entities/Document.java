@@ -64,6 +64,10 @@ public class Document implements Serializable {
 	@JoinTable(name="links")
 	private Set<User> linkedUsers = Sets.newHashSet();
 	
+	@Version
+	@Column(name="version", nullable=false)
+	private long version = 0;
+	
 	@Deprecated
 	public Document() {
 		// for Hibernate usage only
@@ -247,5 +251,13 @@ public class Document implements Serializable {
 	@Override
 	public String toString() {
 		return name;
+	}
+	
+	/**
+	 * Returns an opaque string indicating the {@link Document}'s name and
+	 * version.
+	 */
+	public String getEtag() {
+		return new StringBuilder("doc-").append(name).append('-').append(version).toString();
 	}
 }

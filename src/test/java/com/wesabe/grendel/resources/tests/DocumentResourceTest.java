@@ -6,15 +6,20 @@ import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 import java.security.SecureRandom;
+import java.util.Date;
 
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.EntityTag;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
@@ -44,8 +49,13 @@ public class DocumentResourceTest {
 		protected User user;
 		protected UnlockedKeySet keySet;
 		protected Document document;
+		protected Request request;
+		protected DateTime modifiedAt, now;
 		
 		public void setup() throws Exception {
+			this.modifiedAt = new DateTime(2009, 12, 29, 8, 42, 32, 00, DateTimeZone.UTC);
+			this.now = new DateTime(2010, 1, 3, 9, 1, 45, 00, DateTimeZone.UTC);
+			
 			this.random = mock(SecureRandom.class);
 			this.randomProvider = new Provider<SecureRandom>() {
 				@Override
@@ -68,14 +78,17 @@ public class DocumentResourceTest {
 			this.document = mock(Document.class);
 			when(document.getName()).thenReturn("document1.txt");
 			when(document.getContentType()).thenReturn(MediaType.TEXT_PLAIN_TYPE);
-			when(document.getModifiedAt()).thenReturn(new DateTime(2009, 12, 29, 8, 42, 32, 00, DateTimeZone.UTC));
+			when(document.getModifiedAt()).thenReturn(modifiedAt);
 			when(document.decryptBody(keySet)).thenReturn("yay for everyone".getBytes());
+			when(document.getEtag()).thenReturn("doc-document1.txt-50");
 			
 			this.documentDAO = mock(DocumentDAO.class);
 			when(documentDAO.findByOwnerAndName(user, "document1.txt")).thenReturn(document);
 			
 			this.credentials = mock(Credentials.class);
 			when(credentials.buildSession(userDAO, "bob")).thenReturn(session);
+			
+			this.request = mock(Request.class);
 			
 			this.resource = new DocumentResource(randomProvider, userDAO, documentDAO);
 		}
@@ -93,7 +106,7 @@ public class DocumentResourceTest {
 			when(documentDAO.findByOwnerAndName(user, "document1.txt")).thenReturn(null);
 			
 			try {
-				resource.show(credentials, "bob", "document1.txt");
+				resource.show(request, credentials, "bob", "document1.txt");
 				fail("should have return 404 Not Found but didn't");
 			} catch (WebApplicationException e) {
 				assertThat(e.getResponse().getStatus()).isEqualTo(Status.NOT_FOUND.getStatusCode());
@@ -101,8 +114,25 @@ public class DocumentResourceTest {
 		}
 		
 		@Test
+		public void itReturnsIfPreconditionsFail() throws Exception {
+			when(request.evaluatePreconditions(any(Date.class), any(EntityTag.class))).thenReturn(Response.notModified());
+			
+			try {
+				resource.show(request, credentials, "bob", "document1.txt");
+			} catch (WebApplicationException e) {
+				assertThat(e.getResponse().getStatus()).isEqualTo(Status.NOT_MODIFIED.getStatusCode());
+			}
+		}
+		
+		@Test
+		public void itChecksPreconditions() throws Exception {
+			resource.show(request, credentials, "bob", "document1.txt");
+			verify(request).evaluatePreconditions(modifiedAt.toDate(), new EntityTag("doc-document1.txt-50"));
+		}
+		
+		@Test
 		public void itReturnsTheDecryptedDocument() throws Exception {
-			final Response response = resource.show(credentials, "bob", "document1.txt");
+			final Response response = resource.show(request, credentials, "bob", "document1.txt");
 			
 			assertThat(response.getStatus()).isEqualTo(Status.OK.getStatusCode());
 			assertThat(response.getMetadata().getFirst("Content-Type")).isEqualTo(MediaType.valueOf("text/plain"));
@@ -125,16 +155,33 @@ public class DocumentResourceTest {
 			when(documentDAO.findByOwnerAndName(user, "document1.txt")).thenReturn(null);
 			
 			try {
-				resource.delete(credentials, "bob", "document1.txt");
+				resource.delete(request, credentials, "bob", "document1.txt");
 				fail("should have return 404 Not Found but didn't");
 			} catch (WebApplicationException e) {
 				assertThat(e.getResponse().getStatus()).isEqualTo(Status.NOT_FOUND.getStatusCode());
 			}
 		}
-
+		
+		@Test
+		public void itReturnsIfPreconditionsFail() throws Exception {
+			when(request.evaluatePreconditions(any(Date.class), any(EntityTag.class))).thenReturn(Response.notModified());
+			
+			try {
+				resource.delete(request, credentials, "bob", "document1.txt");
+			} catch (WebApplicationException e) {
+				assertThat(e.getResponse().getStatus()).isEqualTo(Status.NOT_MODIFIED.getStatusCode());
+			}
+		}
+		
+		@Test
+		public void itChecksPreconditions() throws Exception {
+			resource.delete(request, credentials, "bob", "document1.txt");
+			verify(request).evaluatePreconditions(modifiedAt.toDate(), new EntityTag("doc-document1.txt-50"));
+		}
+		
 		@Test
 		public void itDeletesDocumentIfValid() throws Exception {
-			final Response response = resource.delete(credentials, "bob", "document1.txt");
+			final Response response = resource.delete(request, credentials, "bob", "document1.txt");
 
 			assertThat(response.getStatus()).isEqualTo(Status.NO_CONTENT.getStatusCode());
 			
@@ -151,6 +198,8 @@ public class DocumentResourceTest {
 		@Override
 		public void setup() throws Exception {
 			super.setup();
+			
+			DateTimeUtils.setCurrentMillisFixed(now.getMillis());
 
 			this.body = "hey, it's something new".getBytes();
 
@@ -159,15 +208,46 @@ public class DocumentResourceTest {
 
 			when(documentDAO.newDocument(user, "document1.txt", MediaType.TEXT_PLAIN_TYPE)).thenReturn(document);
 		}
+		
+		@After
+		public void teardown() {
+			DateTimeUtils.setCurrentMillisSystem();
+		}
+		
+		@Test
+		public void itReturnsIfPreconditionsFail() throws Exception {
+			when(request.evaluatePreconditions(any(Date.class), any(EntityTag.class))).thenReturn(Response.notModified());
+			
+			try {
+				resource.store(request, headers, credentials, "bob", "document1.txt", body);
+			} catch (WebApplicationException e) {
+				assertThat(e.getResponse().getStatus()).isEqualTo(Status.NOT_MODIFIED.getStatusCode());
+			}
+		}
+		
+		@Test
+		public void itChecksPreconditions() throws Exception {
+			resource.store(request, headers, credentials, "bob", "document1.txt", body);
+			verify(request).evaluatePreconditions(modifiedAt.toDate(), new EntityTag("doc-document1.txt-50"));
+		}
+		
+		@Test
+		public void itDoesNotCheckPreconditionsOnANewDocument() throws Exception {
+			when(documentDAO.findByOwnerAndName(user, "document1.txt")).thenReturn(null);
+			
+			resource.store(request, headers, credentials, "bob", "document1.txt", body);
+			verify(request, never()).evaluatePreconditions(any(Date.class), any(EntityTag.class));
+		}
 
 		@Test
 		public void itCreatesANewDocumentIfTheDocumentDoesntExist() throws Exception {
 			when(documentDAO.findByOwnerAndName(user, "document1.txt")).thenReturn(null);
 			
-			final Response response = resource.create(headers, credentials, "bob", "document1.txt", body);
+			final Response response = resource.store(request, headers, credentials, "bob", "document1.txt", body);
 			assertThat(response.getStatus()).isEqualTo(Status.NO_CONTENT.getStatusCode());
 			
 			final InOrder inOrder = inOrder(document, documentDAO);
+			inOrder.verify(document).setModifiedAt(now);
 			inOrder.verify(document).encryptAndSetBody(keySet, random, body);
 			inOrder.verify(documentDAO).saveOrUpdate(document);
 		}
@@ -176,10 +256,11 @@ public class DocumentResourceTest {
 		public void itUpdatesTheDocumentIfTheDocumentDoesExist() throws Exception {
 			when(documentDAO.findByOwnerAndName(user, "document1.txt")).thenReturn(document);
 			
-			final Response response = resource.create(headers, credentials, "bob", "document1.txt", body);
+			final Response response = resource.store(request, headers, credentials, "bob", "document1.txt", body);
 			assertThat(response.getStatus()).isEqualTo(Status.NO_CONTENT.getStatusCode());
 			
 			final InOrder inOrder = inOrder(document, documentDAO);
+			inOrder.verify(document).setModifiedAt(now);
 			inOrder.verify(document).encryptAndSetBody(keySet, random, body);
 			inOrder.verify(documentDAO).saveOrUpdate(document);
 			
