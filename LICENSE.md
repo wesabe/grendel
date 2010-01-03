@@ -3,7 +3,7 @@ Copying Grendel
 
 Grendel is MIT licensed.
 
-Copyright © 2009 Wesabe, Inc.
+Copyright © 2009, 2010 Wesabe, Inc.
 -----------------------------
 
     Permission is hereby granted, free of charge, to any person obtaining

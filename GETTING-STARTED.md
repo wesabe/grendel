@@ -43,6 +43,8 @@ For more information, please refer to the
 3. Build Grendel
 ----------------
 
+Check out the Grendel source with `git clone git://github.com/wesabe/grendel.git`.
+
 Run `mvn clean package`. This will download all of Grendel's dependencies,
 compile it, run all of its units tests, and create a composite JAR file with all
 dependencies included.
@@ -57,12 +59,15 @@ Grendel requires a single configuration file, usually named
 `grendel.properties`. It should look something like this:
 
     hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
-    hibernate.connection.username=grendel
-    hibernate.connection.password=magicsecretsauce
-    hibernate.connection.url=jdbc:mysql://grendel.db:3306/grendel?zeroDateTimeBehavior=convertToNull
+    hibernate.connection.username=${DBUSER}
+    hibernate.connection.password=${DBPASSWORD}
+    hibernate.connection.url=jdbc:mysql://${DBHOST}:3306/grendel?zeroDateTimeBehavior=convertToNull
     hibernate.c3p0.min_size=10
     hibernate.c3p0.max_size=50
     hibernate.generate_statistics=true
+
+Replace ${DBUSER}, ${DBPASSWORD}, and ${DBHOST} with values appropriate for 
+your system.
 
 The `zeroDateTimeBehavior=convertToNull` option may be required to compensate
 for MySQL's storage of null `DATETIME` values as all-zero strings.
@@ -74,7 +79,7 @@ Once you have the properties file in place, create a database and a database
 user for Grendel. Create the tables Grendel needs by generating a full database
 schema script (see _Run Grendel_, below) and running it. For instance:
 
-    java -jar target/grendel-${VERSION}.jar schema --migration -c grendel.properties > setup-grendel.sql
+    java -jar target/grendel-${VERSION}.jar schema -c grendel.properties > setup-grendel.sql
     mysql -u grendel -p grendel < setup-grendel.sql
 
 Grendel should work with relational databases other than MySQL. Simply use an
@@ -82,7 +87,7 @@ appropriate JDBC connection URL and Hibernate dialect in the configuration file:
 
     hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
     ...
-    hibernation.connection.url=jdbc:postgres://grendel.db/grendel
+    hibernation.connection.url=jdbc:postgres://${DBHOST}/grendel
 
 You'll also need to place the JDBC drivers for your database on Grendel's
 classpath when running Grendel:

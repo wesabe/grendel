@@ -22,10 +22,9 @@ Examples
 All of the operations documented below are demonstrated with shell scripts that
 you can find in the
 [examples directory](http://github.com/wesabe/grendel/tree/master/examples/).
-These assume that Grendel is running on localhost, port 8080. Run them with
-arguments as shown in the source; for instance:
-
-    ./examples/users/create.sh codahale seekritpass
+These assume that Grendel is running on localhost, port 8080. If you run them 
+without arguments and they require arguments, a help line will appear showing you
+how to use them.
 
 The full request and response will be shown as output. All the example scripts
 use `curl`, a command-line HTTP client.
@@ -395,8 +394,8 @@ Deleting A Linked Document
 
 Sending a `DELETE` request to
 `/users/codahale/linked-documents/precipice/document1.txt` will remove the user
-`precipice`'s access to the document named `document1.txt` belonging to user
-`codahale`:
+`codahale`'s access to the document named `document1.txt` belonging to user
+`precipice`:
 
     > DELETE /users/codahale/linked-documents/precipice/document1.txt HTTP/1.1
     > Authorization: Basic Y29kYWhhbGU6d29vd29v
