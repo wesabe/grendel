@@ -5,4 +5,4 @@ if [ $# -ne 1 ]; then
   exit -1
 fi
 
-curl -v "http://0.0.0.0:8080/users/$1"
+curl -v "http://0.0.0.0:8080/users/$1" && echo

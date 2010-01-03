@@ -4,4 +4,4 @@ if [ $# -ne 2 ]; then
   echo "    $0 <id> <document>"
   exit -1
 fi
-curl -v -u $1 -X DELETE "http://0.0.0.0:8080/users/$1/documents/$2"
+curl -v -u $1 -X DELETE "http://0.0.0.0:8080/users/$1/documents/$2" && echo
