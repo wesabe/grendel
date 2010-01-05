@@ -98,7 +98,12 @@ public class UserResourceTest {
 		
 		@Test
 		public void itReturnsAUserIfFound() throws Exception {
-			final UserInfoRepresentation list = resource.show(request, uriInfo, "bob");
+			final Response response = resource.show(request, uriInfo, "bob");
+			assertThat(response.getStatus()).isEqualTo(Status.OK.getStatusCode());
+			assertThat(response.getMetadata().getFirst("ETag")).isEqualTo(new EntityTag("user-bob-4"));
+			assertThat(response.getMetadata().getFirst("Last-Modified")).isEqualTo(modifiedAt.toDate());
+			
+			final UserInfoRepresentation list = (UserInfoRepresentation) response.getEntity();
 			assertThat(list.getUser()).isEqualTo(user);
 			assertThat(list.getUriInfo()).isEqualTo(uriInfo);
 		}

@@ -56,8 +56,9 @@ public class UserResource {
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public UserInfoRepresentation show(@Context Request request,
-		@Context UriInfo uriInfo, @PathParam("id") String id) {
+	public Response show(@Context Request request, @Context UriInfo uriInfo,
+		@PathParam("id") String id) {
+		
 		final User user = userDAO.findById(id);
 		if (user == null) {
 			throw new WebApplicationException(Status.NOT_FOUND);
@@ -65,7 +66,10 @@ public class UserResource {
 		
 		checkPreconditions(request, user);
 		
-		return new UserInfoRepresentation(uriInfo, user);
+		return Response.ok(new UserInfoRepresentation(uriInfo, user))
+						.tag(user.getEtag())
+						.lastModified(user.getModifiedAt().toDate())
+						.build();
 	}
 	
 	/**
