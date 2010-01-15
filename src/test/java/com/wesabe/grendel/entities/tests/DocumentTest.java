@@ -38,7 +38,7 @@ public class DocumentTest {
 			DateTimeUtils.setCurrentMillisFixed(now.getMillis());
 
 			this.owner = mock(User.class);
-			this.name = "sekrit";
+			this.name = "document1.txt";
 		}
 		
 		@After
