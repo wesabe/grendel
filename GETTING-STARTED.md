@@ -13,12 +13,12 @@ or newer.
 
 First, download the
 [latest JDK16 release of the Bouncy Castle JCE Provider](http://www.bouncycastle.org/latest_releases.html).
-(You'll need version **144** or newer, no IDEA implementation required.)
+(You'll need version **145** or newer, no IDEA implementation required.)
 
 Second, copy the Bouncy Castle JCE Provider JAR file to the `lib/ext` directory
 of your `$JAVA_HOME` directory. On OS X, this looks something like this:
 
-    $ cp bcprov-jdk16-144.jar /System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home/lib/ext
+    $ cp bcprov-jdk16-145.jar /System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home/lib/ext
 
 Third, add the Bouncy Castle JCE Provider to the list of allowed JCE providers
 by editing the `security/java.security` file in your Java install and adding the

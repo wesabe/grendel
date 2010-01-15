@@ -35,7 +35,7 @@
 		</license>
 	</licenses>
 	<properties>
-		<bouncycastle.version>1.44</bouncycastle.version>
+		<bouncycastle.version>1.45</bouncycastle.version>
 		<jackson.version>1.4.0</jackson.version>
 	</properties>
 	<repositories>
