@@ -39,6 +39,13 @@ For example:
 For more information, please refer to the
 [Bouncy Castle documentation](http://www.bouncycastle.org/specifications.html#install).
 
+**NOTE:** Due to US export restrictions, your version of Java may not ship with a
+security policy that enables the use of AES-256 by default. If you're affected, you'll
+see this when you run Grendel and do an operation that requires it:
+
+    com.wesabe.grendel.openpgp.CryptographicException: org.bouncycastle.openpgp.PGPException: Exception encrypting key
+
+If that happens you need to install the non-export security policy from [Sun's website](http://java.sun.com/javase/downloads/index.jsp) under "Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files 6".
 
 3. Build Grendel
 ----------------
@@ -66,7 +73,7 @@ Grendel requires a single configuration file, usually named
     hibernate.c3p0.max_size=50
     hibernate.generate_statistics=true
 
-Replace ${DBUSER}, ${DBPASSWORD}, and ${DBHOST} with values appropriate for 
+Replace ${DBUSER}, ${DBPASSWORD}, and ${DBHOST} with values appropriate for
 your system.
 
 The `zeroDateTimeBehavior=convertToNull` option may be required to compensate
@@ -91,7 +98,7 @@ appropriate JDBC connection URL and Hibernate dialect in the configuration file:
 
 You'll also need to place the JDBC drivers for your database on Grendel's
 classpath when running Grendel:
-    
+
     java -cp postgresql-8.4-701.jdbc4.jar -jar target/grendel-${VERSION}.jar etc.
 
 
@@ -99,13 +106,13 @@ classpath when running Grendel:
 --------------
 
 For help, simply run:
-    
+
     java -jar target/grendel-${VERSION}.jar
 
 (Replace `${VERSION}` with whatever version you're running.)
 
 To generate a full database schema script, run this:
-    
+
     java -jar target/grendel-${VERSION}.jar schema -c grendel.properties
 
 To generate a migration database schema script, run this:
@@ -113,7 +120,7 @@ To generate a migration database schema script, run this:
     java -jar target/grendel-${VERSION}.jar schema --migration -c grendel.properties
 
 To run Grendel as a web service, run this:
-    
+
     java -jar target/grendel-${VERSION}.jar server -c grendel.properties -p 8080
 
 This will run Grendel on port 8080.
