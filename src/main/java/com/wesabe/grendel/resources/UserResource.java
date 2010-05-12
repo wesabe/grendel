@@ -110,19 +110,15 @@ public class UserResource {
 	/**
 	 * Responds to a {@link DELETE} request by deleting the user <strong>and
 	 * all their {@link Document}s.</strong>
-	 * <p>
-	 * <strong>N.B.:</strong> Requires Basic authentication.
 	 */
 	@DELETE
 	@Transactional
-	public Response delete(@Context Request request,@Context UriInfo uriInfo,
-		@Context Credentials credentials, @PathParam("id") String id) {
+	public Response delete(@Context Request request,@Context UriInfo uriInfo, @PathParam("id") String id) {
+		final User user = userDAO.findById(id);
 		
-		final Session session = credentials.buildSession(userDAO, id);
+		checkPreconditions(request, user);
 		
-		checkPreconditions(request, session.getUser());
-		
-		userDAO.delete(session.getUser());
+		userDAO.delete(user);
 		return Response.noContent().build();
 	}
 	
