@@ -44,7 +44,7 @@ public enum AsymmetricAlgorithm implements IntegerEquivalent {
 	RSA(		"RSA",			PublicKeyAlgorithmTags.RSA_GENERAL) {
 		@Override
 		public AlgorithmParameterSpec getAlgorithmParameterSpec() {
-			return new RSAKeyGenParameterSpec(2048, RSAKeyGenParameterSpec.F0);
+			return new RSAKeyGenParameterSpec(2048, RSAKeyGenParameterSpec.F4);
 		}},
 	
 	/**
