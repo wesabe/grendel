@@ -6,7 +6,10 @@ import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 import java.security.SecureRandom;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.EntityTag;
@@ -134,10 +137,14 @@ public class DocumentResourceTest {
 		public void itReturnsTheDecryptedDocument() throws Exception {
 			final Response response = resource.show(request, credentials, "bob", "document1.txt");
 			
+			SimpleDateFormat formatter = (SimpleDateFormat) DateFormat.getDateTimeInstance();
+			formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+			formatter.applyPattern("EEE MMM dd HH:mm:ss z yyyy");
+			
 			assertThat(response.getStatus()).isEqualTo(Status.OK.getStatusCode());
 			assertThat(response.getMetadata().getFirst("Content-Type")).isEqualTo(MediaType.valueOf("text/plain"));
 			assertThat(response.getMetadata().getFirst("Cache-Control").toString()).isEqualTo("private, no-cache, no-store, no-transform");
-			assertThat(response.getMetadata().getFirst("Last-Modified").toString()).isEqualTo("Tue Dec 29 00:42:32 PST 2009");
+			assertThat(formatter.format(response.getMetadata().getFirst("Last-Modified"))).isEqualTo("Tue Dec 29 08:42:32 UTC 2009");
 			assertThat((byte[]) response.getEntity()).isEqualTo("yay for everyone".getBytes());
 		}
 
