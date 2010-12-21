@@ -18,6 +18,6 @@ purposes, or may grant permanent access to another user for sharing purposes.
 
 **To read about how to use Grendel, read [API.md](http://github.com/wesabe/grendel/blob/master/API.md).**
 
-**For a longer overview of the ideas behind Grendel, read "[Protecting 'Cloud' Secrets with Grendel](http://blog.wesabe.com/2010/01/04/protecting-cloud-secrets-with-grendel/)."**
+**For a longer overview of the ideas behind Grendel, read "[Protecting 'Cloud' Secrets with Grendel](http://wesabe.wordpress.com/2010/01/04/protecting-cloud-secrets-with-grendel/)."**
 
 **To read Grendel's distribution license, read [LICENSE.md](http://github.com/wesabe/grendel/blob/master/LICENSE.md).**
