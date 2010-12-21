@@ -1,15 +1,14 @@
 package com.wesabe.grendel.openpgp;
 
+import com.wesabe.grendel.util.IntegerEquivalents;
+import org.bouncycastle.openpgp.*;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.security.NoSuchProviderException;
-
-import org.bouncycastle.openpgp.*;
-
-import com.wesabe.grendel.util.IntegerEquivalents;
 
 /**
  * A reader class capable of decrypting OpenPGP messages created by
@@ -89,9 +88,13 @@ public class MessageReader {
 				signature.update(b, 0, r);
 			}
 			
-			signature.verify(getSignature(signer, factory));
+			if (!signature.verify(getSignature(signer, factory))) {
+                throw new CryptographicException("Invalid signature");
+            }
 			
-			encryptedData.verify();
+			if (!encryptedData.verify()) {
+                throw new CryptographicException("Integrity check failed");
+            }
 			
 			return output.toByteArray();
 		} catch (IOException e) {
